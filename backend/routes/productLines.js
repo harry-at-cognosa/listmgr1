@@ -105,7 +105,8 @@ router.delete('/:id', async (req, res) => {
     }
     res.json({ message: 'Product line deleted successfully' });
   } catch (error) {
-    if (error.code === '23503') {
+    // Handle foreign key constraint errors (PostgreSQL code 23503 or SQLite FOREIGN KEY message)
+    if (error.code === '23503' || (error.message && error.message.includes('FOREIGN KEY constraint failed'))) {
       return res.status(400).json({ error: 'Cannot delete product line: it is referenced by other records' });
     }
     console.error('Error deleting product line:', error);
