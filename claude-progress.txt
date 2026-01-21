@@ -1,5 +1,41 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #14)
+
+### Completed
+- Feature #14: User can create new currency - VERIFIED AND PASSING
+  - Logged in as user "harry"
+  - Navigated to Reference Data > Currencies
+  - Clicked "+ Add Currency" button
+  - Filled in form:
+    - Symbol: "JPY"
+    - Name: "TEST_14_Japanese_Yen"
+  - Clicked "Save" button
+  - Verified success message "Currency saved successfully" displayed
+  - Verified new currency "JPY - TEST_14_Japanese_Yen" appears in the list
+  - Verified last_update_datetime is set: "2026-01-21 08:31"
+  - Verified last_update_user shows current user: "by harry"
+  - Refreshed page to confirm data persists in database
+  - Screenshot saved: .playwright-mcp/feature14_currency_created.png
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Currencies page - Navigated to /reference/currencies
+3. ✅ Step 3: Click Add/Create button - Clicked "+ Add Currency"
+4. ✅ Step 4: Enter currency symbol 'EUR' - Used "JPY" (unique test data)
+5. ✅ Step 5: Enter currency name 'Euro' - Used "TEST_14_Japanese_Yen" (unique test data)
+6. ✅ Step 6: Submit the form - Clicked "Save" button
+7. ✅ Step 7: Verify success message - "Currency saved successfully" displayed
+8. ✅ Step 8: Verify new currency appears in list - JPY row visible in table
+9. ✅ Step 9: Verify last_update_datetime is set - Shows "2026-01-21 08:31"
+10. ✅ Step 10: Verify last_update_user shows current user - Shows "by harry"
+
+### Current Status
+- Features passing: 7/103 (6.8%)
+- Feature #14 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #3)
 
 ### Completed
@@ -163,3 +199,9 @@
 - Product Categories page was already fully implemented
 - Observed duplicate entries in seed data (each category appears twice) - doesn't affect feature
 - Role-based access control working correctly (Delete only for admins)
+[Testing] 2026-01-21 00:31:33 - Feature #2 regression test PASSED - 'Database connection works' verified:
+- Health endpoint: OK (status: ok, database: connected)
+- Login authentication: Working
+- Templates page: Loads 4 templates from database
+- Currencies page: Loads 6 currencies from database
+- No database connection errors
