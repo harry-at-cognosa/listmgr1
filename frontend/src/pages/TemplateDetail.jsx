@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
@@ -348,6 +348,7 @@ function SectionFormModal({ templateId, section, sectionTypes, onClose, onSave }
   const isEditing = !!section;
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const isSubmittingRef = useRef(false);
   const [formData, setFormData] = useState({
     section_type_id: section?.section_type_id || '',
     plsqt_seqn: section?.plsqt_seqn || '',
@@ -370,6 +371,9 @@ function SectionFormModal({ templateId, section, sectionTypes, onClose, onSave }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Prevent double-submit using ref (synchronous check)
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
     setSaving(true);
     setError('');
 
@@ -382,6 +386,7 @@ function SectionFormModal({ templateId, section, sectionTypes, onClose, onSave }
       onSave();
     } catch (err) {
       setError(err.error || 'Failed to save section');
+      isSubmittingRef.current = false; // Reset on error so user can retry
     } finally {
       setSaving(false);
     }
@@ -537,6 +542,7 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [localSuccess, setLocalSuccess] = useState('');
+  const isSubmittingRef = useRef(false);
   const [formData, setFormData] = useState({
     section_type_id: section?.section_type_id || '',
     plsqt_seqn: section?.plsqt_seqn || '',
@@ -578,6 +584,9 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Prevent double-submit using ref (synchronous check)
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
     setSaving(true);
     setError('');
     setLocalSuccess('');
@@ -591,6 +600,7 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave }) {
       setError(err.error || 'Failed to save section');
     } finally {
       setSaving(false);
+      isSubmittingRef.current = false; // Reset for tab form since it stays open
     }
   };
 

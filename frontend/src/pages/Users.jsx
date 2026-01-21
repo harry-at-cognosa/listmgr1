@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
@@ -145,6 +145,7 @@ function UserFormModal({ user, onClose, onSave }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
+  const isSubmittingRef = useRef(false);
   const [formData, setFormData] = useState({
     username: user?.username || '',
     password: '',
@@ -194,6 +195,8 @@ function UserFormModal({ user, onClose, onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Prevent double-submit using ref (synchronous check)
+    if (isSubmittingRef.current) return;
     setError('');
 
     // Validate form
@@ -203,6 +206,7 @@ function UserFormModal({ user, onClose, onSave }) {
       return;
     }
 
+    isSubmittingRef.current = true;
     setFieldErrors({});
     setSaving(true);
 
@@ -224,6 +228,7 @@ function UserFormModal({ user, onClose, onSave }) {
       } else {
         setError(err.error || 'Failed to save user');
       }
+      isSubmittingRef.current = false; // Reset on error so user can retry
     } finally {
       setSaving(false);
     }

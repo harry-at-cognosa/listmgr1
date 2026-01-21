@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
@@ -126,6 +126,7 @@ function ProductLineFormModal({ item, categories, onClose, onSave }) {
   const isEditing = !!item;
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const isSubmittingRef = useRef(false);
   const [formData, setFormData] = useState({
     product_cat_id: item?.product_cat_id || '',
     product_line_abbr: item?.product_line_abbr || '',
@@ -134,6 +135,9 @@ function ProductLineFormModal({ item, categories, onClose, onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Prevent double-submit using ref (synchronous check)
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
     setSaving(true);
     setError('');
 
@@ -146,6 +150,7 @@ function ProductLineFormModal({ item, categories, onClose, onSave }) {
       onSave();
     } catch (err) {
       setError(err.error || 'Failed to save product line');
+      isSubmittingRef.current = false; // Reset on error so user can retry
     } finally {
       setSaving(false);
     }

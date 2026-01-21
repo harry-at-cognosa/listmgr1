@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 
@@ -12,6 +12,7 @@ function TemplateForm() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const isSubmittingRef = useRef(false);
 
   // Reference data
   const [countries, setCountries] = useState([]);
@@ -101,6 +102,9 @@ function TemplateForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Prevent double-submit using ref (synchronous check)
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
     setError('');
     setSaving(true);
 
@@ -123,6 +127,7 @@ function TemplateForm() {
       }
     } catch (err) {
       setError(err.error || 'Failed to save template');
+      isSubmittingRef.current = false; // Reset on error so user can retry
     } finally {
       setSaving(false);
     }

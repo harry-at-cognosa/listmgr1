@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
@@ -142,6 +142,7 @@ function SectionTypeFormModal({ item, onClose, onSave }) {
   const isEditing = !!item;
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const isSubmittingRef = useRef(false);
   const [formData, setFormData] = useState({
     plsqtst_name: item?.plsqtst_name || '',
     plsqtst_has_total_price: item?.plsqtst_has_total_price || false,
@@ -154,6 +155,9 @@ function SectionTypeFormModal({ item, onClose, onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Prevent double-submit using ref (synchronous check)
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
     setSaving(true);
     setError('');
 
@@ -166,6 +170,7 @@ function SectionTypeFormModal({ item, onClose, onSave }) {
       onSave();
     } catch (err) {
       setError(err.error || 'Failed to save section type');
+      isSubmittingRef.current = false; // Reset on error so user can retry
     } finally {
       setSaving(false);
     }
