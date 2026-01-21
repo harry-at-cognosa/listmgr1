@@ -1,0 +1,484 @@
+<project_specification>
+  <project_name>listmgr1</project_name>
+
+  <overview>
+    A collaborative web application for managing sales quote templates. Users can create, edit, clone, and organize quote templates that contain multiple sections. The app serves as a community collaboration notebook for a small team managing product line sales quote templates across different countries, currencies, and product categories.
+  </overview>
+
+  <technology_stack>
+    <frontend>
+      <framework>React with Vite</framework>
+      <styling>Tailwind CSS</styling>
+      <state_management>React Context or useState/useReducer</state_management>
+    </frontend>
+    <backend>
+      <runtime>Node.js with Express</runtime>
+      <database>PostgreSQL</database>
+      <authentication>Session-based with bcrypt password hashing</authentication>
+    </backend>
+    <communication>
+      <api>REST API</api>
+    </communication>
+    <deployment>
+      <development>Local macOS</development>
+      <production>AWS EC2 Ubuntu (future)</production>
+    </deployment>
+  </technology_stack>
+
+  <prerequisites>
+    <environment_setup>
+      - Node.js (v18+ recommended)
+      - PostgreSQL installed and running
+      - npm or yarn package manager
+    </environment_setup>
+  </prerequisites>
+
+  <feature_count>103</feature_count>
+
+  <security_and_access_control>
+    <user_roles>
+      <role name="admin">
+        <permissions>
+          - Full CRUD on all tables (create, read, update, delete)
+          - User management (add, edit, delete users)
+          - All operations available to regular users
+        </permissions>
+        <protected_routes>
+          - /admin/users (user management)
+        </protected_routes>
+      </role>
+      <role name="user">
+        <permissions>
+          - Create, read, update on all data tables
+          - Cannot delete records
+          - Cannot access user management
+        </permissions>
+        <protected_routes>
+          - All routes except /admin/*
+        </protected_routes>
+      </role>
+    </user_roles>
+    <authentication>
+      <method>Username and password (session-based)</method>
+      <session_timeout>Optional - low security requirement</session_timeout>
+      <password_requirements>Minimal - this is a collaboration tool, not high security</password_requirements>
+    </authentication>
+    <seed_users>
+      <user username="admin" password="admin" role="admin"/>
+      <user username="harry" password="harry" role="user"/>
+      <user username="clint" password="clint" role="user"/>
+    </seed_users>
+  </security_and_access_control>
+
+  <core_features>
+    <authentication>
+      - User login with username/password
+      - User logout
+      - Session persistence
+      - Role-based access control (admin vs user)
+      - Redirect unauthenticated users to login
+    </authentication>
+
+    <user_management_admin_only>
+      - View list of all users
+      - Create new user with username, password, role
+      - Edit existing user (change password, role)
+      - Delete user (admin only)
+    </user_management_admin_only>
+
+    <reference_tables>
+      <currency>
+        - List all currencies
+        - Create new currency (symbol, name)
+        - Edit currency
+        - Delete currency (admin only)
+        - Auto-track last_update_datetime and last_update_user
+      </currency>
+      <country>
+        - List all countries
+        - Create new country (abbr, name, currency dropdown)
+        - Edit country
+        - Delete country (admin only)
+        - Currency shown as dropdown from currency table
+        - Auto-track last_update_datetime and last_update_user
+      </country>
+      <product_cat>
+        - List all product categories
+        - Create new category (abbr, name)
+        - Edit category
+        - Delete category (admin only)
+        - Auto-track last_update_datetime and last_update_user
+      </product_cat>
+      <product_line>
+        - List all product lines
+        - Create new product line (abbr, name, product_cat dropdown)
+        - Edit product line
+        - Delete product line (admin only)
+        - Product category shown as dropdown
+        - Auto-track last_update_datetime and last_update_user
+      </product_line>
+      <plsqts_type>
+        - List all section types
+        - Create new section type (name, has_total_price, has_lineitem_prices, comment, file_ref, active, version)
+        - Edit section type
+        - Delete section type (admin only)
+        - Auto-track last_update_datetime and last_update_user
+      </plsqts_type>
+    </reference_tables>
+
+    <templates>
+      - List all templates with filtering and search
+      - Filter by: country, product_cat, product_line, active status
+      - Search by: template name keywords (supports partial match, wildcards)
+      - Create new template with all fields including content (500 char)
+      - Edit template (all fields)
+      - Delete template (admin only, cascades to sections)
+      - Clone template (deep copy: new template + all sections with new IDs, status set to "cloned")
+      - View template detail with collapsible section list
+      - Foreign keys shown as dropdowns (country, currency, product_cat, product_line)
+      - Status field: "not started", "in process", "in review", "approved", "cloned"
+      - Status change option: apply to all sections
+      - Auto-track status_datetime, last_update_datetime, last_update_user
+    </templates>
+
+    <sections>
+      - View all sections for a template (tabbed interface)
+      - Create new section linked to template
+      - Edit section (all fields including content 500 char)
+      - Delete section (admin only)
+      - Clone individual section within same template
+      - Section type shown as dropdown from plsqts_type
+      - Sequence number for ordering
+      - Status field: "not started", "in process", "in review", "approved", "cloned"
+      - Auto-track status_datetime, last_update_datetime, last_update_user
+      - Collapsed view showing sequence, name, status at template level
+    </sections>
+
+    <ui_features>
+      - Responsive layout (basic mobile support)
+      - Navigation sidebar or header
+      - Breadcrumb navigation
+      - Loading states for async operations
+      - Error messages for failed operations
+      - Success feedback for completed operations
+      - Empty states when no data exists
+      - Confirmation dialogs for delete operations
+    </ui_features>
+  </core_features>
+
+  <database_schema>
+    <tables>
+      <users>
+        - user_id SERIAL PRIMARY KEY
+        - username VARCHAR(50) UNIQUE NOT NULL
+        - password VARCHAR(255) NOT NULL (hashed)
+        - role VARCHAR(20) NOT NULL (admin/user)
+        - last_update_datetime VARCHAR(15)
+        - last_update_user VARCHAR(50)
+      </users>
+      <currency>
+        - currency_id SERIAL PRIMARY KEY
+        - currency_symbol VARCHAR(3) NOT NULL
+        - currency_name VARCHAR(20)
+        - last_update_datetime VARCHAR(15)
+        - last_update_user VARCHAR(50)
+      </currency>
+      <country>
+        - country_id SERIAL PRIMARY KEY
+        - country_abbr CHAR(3) NOT NULL
+        - country_name VARCHAR(50) NOT NULL
+        - currency_id INTEGER REFERENCES currency
+        - last_update_datetime VARCHAR(15)
+        - last_update_user VARCHAR(50)
+      </country>
+      <product_cat>
+        - product_cat_id SERIAL PRIMARY KEY
+        - product_cat_abbr CHAR(3)
+        - product_cat_name VARCHAR(50)
+        - last_update_datetime VARCHAR(15)
+        - last_update_user VARCHAR(50)
+      </product_cat>
+      <product_line>
+        - product_line_id SERIAL PRIMARY KEY
+        - product_cat_id INTEGER NOT NULL REFERENCES product_cat
+        - product_line_abbr CHAR(3)
+        - product_line_name VARCHAR(20)
+        - last_update_datetime VARCHAR(15)
+        - last_update_user VARCHAR(50)
+      </product_line>
+      <plsqts_type>
+        - plsqtst_id SERIAL PRIMARY KEY
+        - plsqtst_name VARCHAR(50)
+        - plsqtst_has_total_price BOOLEAN
+        - plsqtst_has_lineitem_prices BOOLEAN
+        - plsqtst_comment VARCHAR(100)
+        - extrn_file_ref VARCHAR(500)
+        - plsqtst_active BOOLEAN
+        - plsqtst_version VARCHAR(25)
+        - last_update_datetime VARCHAR(15)
+        - last_update_user VARCHAR(50)
+      </plsqts_type>
+      <plsq_templates>
+        - plsqt_id SERIAL PRIMARY KEY
+        - country_id INTEGER REFERENCES country
+        - currency_id INTEGER REFERENCES currency
+        - product_cat_id INTEGER REFERENCES product_cat
+        - product_line_id INTEGER REFERENCES product_line
+        - plsqt_name VARCHAR(100)
+        - plsqt_order_codes VARCHAR(200)
+        - plsqt_desc VARCHAR(800)
+        - plsqt_comment VARCHAR(100)
+        - plsqt_section_count INTEGER NOT NULL
+        - plsqt_fbo_location VARCHAR(50)
+        - plsqs_as_of_date DATE
+        - extrn_file_ref VARCHAR(500)
+        - plsqt_active BOOLEAN
+        - plsqt_version VARCHAR(25)
+        - content VARCHAR(500)
+        - plsqt_status VARCHAR(20) (not started/in process/in review/approved/cloned)
+        - status_datetime VARCHAR(15)
+        - last_update_datetime VARCHAR(15)
+        - last_update_user VARCHAR(50)
+      </plsq_templates>
+      <plsqt_sections>
+        - plsqts_id SERIAL PRIMARY KEY
+        - plsqt_id INTEGER NOT NULL REFERENCES plsq_templates
+        - section_type_id INTEGER NOT NULL REFERENCES plsqts_type
+        - plsqt_seqn INTEGER NOT NULL
+        - plsqt_alt_name VARCHAR(50)
+        - plsqt_comment VARCHAR(100)
+        - plsqt_use_alt_name BOOLEAN
+        - plsqts_subsection_count INTEGER NOT NULL
+        - plsqts_active BOOLEAN
+        - plsqts_version VARCHAR(25)
+        - extrn_file_ref VARCHAR(500)
+        - content VARCHAR(500)
+        - plsqts_status VARCHAR(20) (not started/in process/in review/approved/cloned)
+        - status_datetime VARCHAR(15)
+        - last_update_datetime VARCHAR(15)
+        - last_update_user VARCHAR(50)
+      </plsqt_sections>
+    </tables>
+  </database_schema>
+
+  <api_endpoints_summary>
+    <auth>
+      - POST /api/auth/login
+      - POST /api/auth/logout
+      - GET /api/auth/me (current user)
+    </auth>
+    <users>
+      - GET /api/users (admin only)
+      - POST /api/users (admin only)
+      - PUT /api/users/:id (admin only)
+      - DELETE /api/users/:id (admin only)
+    </users>
+    <currency>
+      - GET /api/currencies
+      - POST /api/currencies
+      - PUT /api/currencies/:id
+      - DELETE /api/currencies/:id (admin only)
+    </currency>
+    <country>
+      - GET /api/countries
+      - POST /api/countries
+      - PUT /api/countries/:id
+      - DELETE /api/countries/:id (admin only)
+    </country>
+    <product_cat>
+      - GET /api/product-categories
+      - POST /api/product-categories
+      - PUT /api/product-categories/:id
+      - DELETE /api/product-categories/:id (admin only)
+    </product_cat>
+    <product_line>
+      - GET /api/product-lines
+      - POST /api/product-lines
+      - PUT /api/product-lines/:id
+      - DELETE /api/product-lines/:id (admin only)
+    </product_line>
+    <plsqts_type>
+      - GET /api/section-types
+      - POST /api/section-types
+      - PUT /api/section-types/:id
+      - DELETE /api/section-types/:id (admin only)
+    </plsqts_type>
+    <templates>
+      - GET /api/templates (with query params for filter/search)
+      - GET /api/templates/:id
+      - POST /api/templates
+      - PUT /api/templates/:id
+      - DELETE /api/templates/:id (admin only)
+      - POST /api/templates/:id/clone
+      - PUT /api/templates/:id/status (with cascade option)
+    </templates>
+    <sections>
+      - GET /api/templates/:templateId/sections
+      - GET /api/sections/:id
+      - POST /api/templates/:templateId/sections
+      - PUT /api/sections/:id
+      - DELETE /api/sections/:id (admin only)
+      - POST /api/sections/:id/clone
+    </sections>
+  </api_endpoints_summary>
+
+  <ui_layout>
+    <main_structure>
+      - Header with app name, current user, logout button
+      - Sidebar navigation with links to: Templates, Reference Data (expandable), User Management (admin only)
+      - Main content area
+    </main_structure>
+    <templates_list_page>
+      - Filter bar: country dropdown, product_cat dropdown, product_line dropdown, active toggle
+      - Search box: keyword search on template name
+      - Results table/grid with columns: name, country, product_line, section_count, status, actions
+      - Action buttons: View, Edit, Clone, Delete (admin only)
+      - Pagination if needed
+    </templates_list_page>
+    <template_detail_page>
+      - Template header with key info and status
+      - Collapsed section list showing: sequence, section name (or alt_name), status
+      - Expand/collapse all sections button
+      - Tabbed section editor below (one tab per section)
+      - Each tab shows full section form for editing
+    </template_detail_page>
+    <reference_table_pages>
+      - Simple table view with all records
+      - Add new button
+      - Edit/Delete actions per row
+      - Foreign key fields as dropdowns
+    </reference_table_pages>
+  </ui_layout>
+
+  <design_system>
+    <color_palette>
+      - Primary: Blue tones (professional, trustworthy)
+      - Secondary: Gray tones for backgrounds and borders
+      - Status colors: Green (approved), Yellow (in review), Blue (in process), Gray (not started), Purple (cloned)
+      - Error: Red
+      - Success: Green
+    </color_palette>
+    <typography>
+      - System fonts (no custom font loading needed)
+      - Clear hierarchy: larger headings, readable body text
+    </typography>
+    <components>
+      - Clean, simple form inputs
+      - Clear button styles (primary, secondary, danger)
+      - Readable tables with hover states
+      - Status badges with color coding
+    </components>
+  </design_system>
+
+  <implementation_steps>
+    <step number="1">
+      <title>Project Setup and Database</title>
+      <tasks>
+        - Initialize Node.js project with Express
+        - Initialize React project with Vite
+        - Set up PostgreSQL database with all tables
+        - Create database connection and config
+        - Seed users and initial reference data
+      </tasks>
+    </step>
+    <step number="2">
+      <title>Authentication</title>
+      <tasks>
+        - Implement login/logout API endpoints
+        - Set up session management
+        - Create login page UI
+        - Implement auth middleware for protected routes
+        - Role-based access control
+      </tasks>
+    </step>
+    <step number="3">
+      <title>Reference Tables CRUD</title>
+      <tasks>
+        - API endpoints for all 5 reference tables
+        - UI pages for listing, creating, editing each table
+        - Dropdown population from related tables
+        - Last update tracking
+      </tasks>
+    </step>
+    <step number="4">
+      <title>Templates Core Features</title>
+      <tasks>
+        - Templates API with filtering and search
+        - Templates list page with filters
+        - Template create/edit forms
+        - Template detail view
+        - Status management with cascade option
+      </tasks>
+    </step>
+    <step number="5">
+      <title>Sections Features</title>
+      <tasks>
+        - Sections API endpoints
+        - Tabbed section editor UI
+        - Collapsed section list view
+        - Section create/edit forms
+        - Status management
+      </tasks>
+    </step>
+    <step number="6">
+      <title>Clone Functionality</title>
+      <tasks>
+        - Clone template API (deep copy)
+        - Clone section API
+        - UI buttons and confirmation
+        - Set cloned status on new records
+      </tasks>
+    </step>
+    <step number="7">
+      <title>User Management (Admin)</title>
+      <tasks>
+        - User management API (admin only)
+        - User list page
+        - Create/edit user forms
+        - Delete user functionality
+      </tasks>
+    </step>
+    <step number="8">
+      <title>Polish and Testing</title>
+      <tasks>
+        - Error handling throughout
+        - Loading states
+        - Empty states
+        - Confirmation dialogs
+        - Basic responsive adjustments
+        - End-to-end testing
+      </tasks>
+    </step>
+  </implementation_steps>
+
+  <success_criteria>
+    <functionality>
+      - All CRUD operations work for all 8 tables
+      - Clone feature works correctly (deep copy with new IDs)
+      - Search and filter work on templates list
+      - Status workflow functions with cascade option
+      - Role-based permissions enforced (admin vs user)
+      - All foreign keys displayed as dropdowns
+      - Last update tracking works on all tables
+    </functionality>
+    <user_experience>
+      - Users can login and see appropriate content for their role
+      - Navigation is clear and intuitive
+      - Forms validate input and show helpful errors
+      - Success/error feedback provided for all actions
+      - Template sections viewable in collapsed list and editable in tabs
+    </user_experience>
+    <technical_quality>
+      - App runs locally on macOS without errors
+      - PostgreSQL database persists all data correctly
+      - No console errors during normal operation
+      - API responses are properly formatted
+    </technical_quality>
+    <design_polish>
+      - Consistent visual styling throughout
+      - Status badges clearly indicate state
+      - Tables are readable and well-organized
+      - Forms are clean and usable
+    </design_polish>
+  </success_criteria>
+</project_specification>
