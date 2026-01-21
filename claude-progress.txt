@@ -1,5 +1,50 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #81)
+
+### Completed
+- Feature #81: 404 page shown for non-existent routes - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to /nonexistent/page/url - Navigated to multiple invalid URLs
+3. ✅ Step 3: Verify 404 or 'Page Not Found' message displays
+   - Large "404" heading displayed
+   - "Page Not Found" message shown
+   - Helpful message: "Sorry, the page you're looking for doesn't exist or has been moved."
+   - Two action buttons: "Go to Templates" and "Go Back"
+4. ✅ Step 4: Verify no application crash
+   - Application continues to function normally
+   - No console errors (only expected React Router warnings)
+   - All functionality remains accessible
+5. ✅ Step 5: Verify navigation still works from 404 page
+   - "Go to Templates" link works correctly
+   - "Go Back" button works correctly
+   - Sidebar navigation (Templates, Reference Data menu) works from 404 page
+   - Reference Data submenu expands and links work
+
+### Implementation Details
+- Created NotFound.jsx component in frontend/src/pages/
+- Added catch-all routes (path="*") in App.jsx for both authenticated and unauthenticated routes
+- 404 page displays within the authenticated layout (with sidebar) when logged in
+- Unauthenticated users accessing invalid routes are redirected to login first (correct security behavior)
+
+### Screenshots
+- .playwright-mcp/feature-81-step3-404-page.png (404 page with message)
+- .playwright-mcp/feature-81-step5-navigation-works-from-404.png (navigation working from 404)
+
+### Technical Notes
+- Catch-all route placed at end of route definitions to match unmatched paths
+- NotFound component styled consistently with app design (Tailwind CSS)
+- Page includes both "Go to Templates" link and "Go Back" button for user convenience
+- No JavaScript errors during 404 page rendering
+
+### Current Status
+- Features passing: 48/103 (46.6%)
+- Feature #81 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #77)
 
 ### Completed
