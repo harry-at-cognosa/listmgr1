@@ -116,8 +116,10 @@ function TemplateDetail() {
     <div>
       {/* Breadcrumb */}
       <nav className="mb-4 text-sm">
+        <Link to="/templates" className="text-primary-600 hover:text-primary-800">Home</Link>
+        <span className="mx-2 text-gray-400">&gt;</span>
         <Link to="/templates" className="text-primary-600 hover:text-primary-800">Templates</Link>
-        <span className="mx-2 text-gray-400">/</span>
+        <span className="mx-2 text-gray-400">&gt;</span>
         <span className="text-gray-600">{template.plsqt_name}</span>
       </nav>
 
