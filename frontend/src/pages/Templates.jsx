@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
@@ -13,10 +13,21 @@ const STATUS_COLORS = {
 
 function Templates() {
   const { isAdmin } = useAuth();
+  const location = useLocation();
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Check for success message from navigation state (e.g., after template create/edit)
+  useEffect(() => {
+    if (location.state?.success) {
+      setSuccess(location.state.success);
+      setTimeout(() => setSuccess(''), 3000);
+      // Clear the state so message doesn't show again on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   // Filter states
   const [countries, setCountries] = useState([]);

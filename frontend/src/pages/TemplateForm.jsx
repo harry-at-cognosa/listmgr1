@@ -116,10 +116,11 @@ function TemplateForm() {
 
       if (isEditing) {
         await api.put(`/templates/${id}`, dataToSubmit);
+        navigate('/templates', { state: { success: 'Template updated successfully' } });
       } else {
         await api.post('/templates', dataToSubmit);
+        navigate('/templates', { state: { success: 'Template created successfully' } });
       }
-      navigate('/templates');
     } catch (err) {
       setError(err.error || 'Failed to save template');
     } finally {
