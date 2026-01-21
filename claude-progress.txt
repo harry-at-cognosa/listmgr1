@@ -2927,3 +2927,63 @@ Example verification output for Template form:
 - Features passing: 57/103 (55.3%)
 - Feature #89 marked as passing
 [Testing] Session complete - Feature #89 PASSED
+[Testing] 2026-01-21 04:45 - Feature #86 regression test PASSED - 'Search is case insensitive' verified working
+- Logged in as harry
+- Step 1: Template 'MyTestTemplate' exists in list ✓
+- Step 2: Searched for 'mytesttemplate' (lowercase) ✓
+- Step 3: Template 'MyTestTemplate' found - matches regardless of case ✓
+- Step 4: Searched for 'MYTESTTEMPLATE' (uppercase) ✓
+- Step 5: Template 'MyTestTemplate' found - matches regardless of case ✓
+- Only expected 401 errors (pre-login auth checks on /api/auth/me)
+- Screenshot: regression-feature86-uppercase-search.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #86 regression test passed
+[Testing] 2026-01-21 04:45 - Feature #36 regression test PASSED - 'User can filter templates by product category' verified working
+- Logged in as harry
+- Step 1: Log in as any user ✓
+- Step 2: Navigate to Templates page ✓
+- Step 3: Locate product category filter dropdown - visible at top of template list ✓
+- Step 4: Select 'Hardware' category - filter applied, URL updated to ?product_cat_id=1 ✓
+- Step 5: Verify list updates correctly - list reduced from 17 to 5 templates (only Hardware category items) ✓
+- Step 6: Clear filter - dropdown reset to 'All Categories', all 17 templates shown again ✓
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression-feature36-product-category-filter.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #36 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #92)
+
+### Completed
+- Feature #92: Application displays correctly on desktop - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Set browser window to 1920px width - Resized browser to 1920x1080
+2. ✅ Step 2: Navigate through all pages - Tested Login, Templates list, Template form, Template detail, Currencies, Section Types, User Management
+3. ✅ Step 3: Verify sidebar and main content display side by side - All pages show proper side-by-side layout
+4. ✅ Step 4: Verify tables not truncated - All tables fully visible:
+   - Templates: 6 columns (NAME, COUNTRY, PRODUCT LINE, SECTIONS, STATUS, ACTIONS)
+   - Currencies: 4 columns (SYMBOL, NAME, LAST UPDATED, ACTIONS)
+   - Section Types: 7 columns (NAME, TOTAL PRICE, LINE PRICES, ACTIVE, VERSION, LAST UPDATED, ACTIONS)
+   - Users: 4 columns (USERNAME, ROLE, LAST UPDATED, ACTIONS)
+5. ✅ Step 5: Verify forms properly sized - Template form shows full-width inputs with 2-column layout
+6. ✅ Step 6: Verify no horizontal scroll needed - Verified programmatically: document.scrollWidth === window.innerWidth (1920px)
+
+### Screenshots
+- .playwright-mcp/feature-92-login-1920px.png (login page at 1920px)
+- .playwright-mcp/feature-92-templates-1920px.png (templates list at 1920px)
+- .playwright-mcp/feature-92-template-form-1920px.png (template create form at 1920px)
+- .playwright-mcp/feature-92-currencies-1920px.png (currencies table at 1920px)
+- .playwright-mcp/feature-92-users-1920px.png (user management at 1920px)
+- .playwright-mcp/feature-92-template-detail-1920px.png (template view at 1920px)
+- .playwright-mcp/feature-92-section-types-1920px.png (section types table at 1920px)
+
+### Console Errors
+- None (only expected React Router future flag warnings)
+
+### Current Status
+- Features passing: 59/103 (57.3%)
+- Feature #92 marked as passing
+
+[Testing] Session complete - Feature #92 PASSED
