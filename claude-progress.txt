@@ -4677,3 +4677,83 @@ Why ref instead of just state:
   * regression-f98-step3-template-not-found.png
 - All 5 verification steps PASSED
 [Testing] Session complete - Feature #98 regression test passed
+[Testing] 2026-01-21 - Feature #36 regression test PASSED - 'User can filter templates by product category'
+- Step 1: Logged in as harry (regular user) ✓
+- Step 2: Navigated to Templates page ✓
+- Step 3: Located Product Category filter dropdown - visible with options: All Categories, Hardware, Services, Software, test categories ✓
+- Step 4: Selected 'Hardware' category ✓
+- Step 5: Verified list updates correctly ✓
+  * URL updated to ?product_cat_id=1
+  * Only Hardware category templates shown (Servers, Storage product lines)
+  * Software category templates (Operating Systems) not shown
+- Step 6: Clicked 'Clear Filters' button ✓
+  * URL reset to /templates (no query parameters)
+  * Product Category dropdown reset to 'All Categories'
+  * All templates now visible again (including Operating Systems)
+- Console errors: Only expected 401 errors from pre-login auth checks
+- Screenshots: regression-f36-step3-all-templates.png, regression-f36-step5-filtered-by-hardware.png, regression-f36-step6-filters-cleared.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #36 regression test passed
+[Testing] 2026-01-21 - Feature #19 regression test PASSED - 'User can create new country'
+- Logged in as harry (regular user)
+- Step 1: Log in as any user ✓
+- Step 2: Navigate to Countries page via Reference Data > Countries ✓
+- Step 3: Click '+ Add Country' button - modal opened ✓
+- Step 4: Enter country abbr 'F19' ✓
+- Step 5: Enter country name 'TEST_FEATURE_19_COUNTRY' ✓
+- Step 6: Select currency 'USD - US Dollar' from dropdown ✓
+- Step 7: Verify dropdown populated from currency table - many currencies available (USD, EUR, GBP, JPY, etc.) ✓
+- Step 8: Submit form by clicking Save ✓
+- Step 9: Verify success message - 'Country saved successfully' displayed ✓
+- Step 10: Verify new country appears with correct currency - F19 / TEST_FEATURE_19_COUNTRY / USD - US Dollar visible in list with timestamp '2026-01-21 13:31 by harry' ✓
+- Console errors: Only expected 401 from pre-login auth checks (normal)
+- Screenshots: regression-f19-form-filled.png, regression-f19-country-created-success.png
+- All 10 verification steps PASSED
+[Testing] Session complete - Feature #19 regression test passed
+[Testing] 2026-01-21 - Feature #26 regression test PASSED - 'Product line list page displays all lines'
+- Step 1: Logged in as harry (regular user) ✓
+- Step 2: Navigated to Reference Data > Product Lines (/reference/product-lines) ✓
+- Step 3: Page loaded without errors (only expected 401 pre-login auth checks) ✓
+- Step 4: Table displays columns: Abbr, Name, Product Category, Last Updated, Actions ✓
+- Step 5: Product category shows name not ID - verified 'Software' and 'Hardware' names displayed ✓
+- Product lines shown: OS/Operating Systems, SRV/Servers, STR/Storage, STG/Storage, NTW/REGRESSION_TEST_F27_NETWORKING, TST/TEST_F27_FINAL_VERIFY
+- No JavaScript errors
+- Screenshot: regression-f26-product-lines-page.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #26 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #17)
+
+### Completed
+- Feature #17: Regular user cannot delete currency - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. Step 1: Log in as regular user 'harry' - Logged in successfully
+2. Step 2: Navigate to Currencies page - Accessed via Reference Data > Currencies
+3. Step 3: Verify Delete button is hidden - Only "Edit" buttons visible, NO Delete buttons for harry
+4. Step 4: Attempt API DELETE directly - Executed: curl -X DELETE http://localhost:3001/api/currencies/1
+5. Step 5: Verify 403 response - Received HTTP 403 with error message "Admin access required"
+6. Step 6: Verify currency still exists - Currency ID 1 (USD) still retrievable via API
+
+### Additional Verification
+- Admin comparison: Logged in as admin and confirmed Delete buttons ARE visible for admin users
+- Both UI and API enforce the admin-only restriction
+
+### Technical Implementation
+- Frontend: Currencies.jsx line 90-97 - isAdmin conditional renders Delete button
+- Backend: currencies.js line 98-100 - checks user.role !== 'admin' and returns 403
+
+### Screenshots
+- .playwright-mcp/feature-17-step3-no-delete-button-harry.png (Currencies page as harry - no Delete button)
+- .playwright-mcp/feature-17-admin-has-delete-button.png (Currencies page as admin - Delete button visible)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks
+- No JavaScript errors
+
+### Current Status
+- Feature #17 marked as passing
+
+[Testing] Session complete - Feature #17 PASSED
