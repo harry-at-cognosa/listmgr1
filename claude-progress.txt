@@ -4897,3 +4897,43 @@ Why ref instead of just state:
 - Feature #25 marked as passing
 
 [Testing] Session complete - Feature #25 PASSED
+[Testing] 2026-01-21 - Feature #92 regression test PASSED - 'Application displays correctly on desktop'
+- Step 1: Set browser window to 1920x1080 ✓
+- Step 2: Navigated through all pages ✓
+  * Login page - properly centered
+  * Templates list page - sidebar + main content side by side
+  * Currencies page - table fully visible
+  * Template edit form - two-column layout proper
+  * Template detail page - sections list visible
+  * Section Types page - all 7 columns visible
+- Step 3: Verified sidebar and main content display side by side on all pages ✓
+- Step 4: Verified tables not truncated ✓
+  * Templates table: Name, Country, Product Line, Sections, Status, Actions - all visible
+  * Currencies table: Symbol, Name, Last Updated, Actions - all visible
+  * Section Types table: Name, Total Price, Line Prices, Active, Version, Last Updated, Actions - all visible
+- Step 5: Verified forms properly sized ✓
+  * Currency modal form - properly sized and centered
+  * Template edit form - two-column layout uses space effectively
+- Step 6: Verified no horizontal scroll needed ✓
+- Console errors: None (only React dev warnings, no actual errors)
+- Screenshots:
+  * regression-f92-step1-login-1920px.png
+  * regression-f92-step2-templates-1920px.png
+  * regression-f92-step2-currencies-1920px.png
+  * regression-f92-step5-form-1920px.png
+  * regression-f92-step5-template-form-1920px.png
+  * regression-f92-step2-template-detail-1920px.png
+  * regression-f92-step4-section-types-1920px.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #92 regression test passed
+[Testing] 2026-01-21 - Feature #56 regression test PASSED - 'Expand/collapse all sections button works'
+- Step 1: Logged in as harry (regular user) ✓
+- Step 2: Viewed template 'Storage Quote - UK' with 5 sections ✓
+- Step 3: Clicked 'Expand All' button ✓
+- Step 4: Verified all 5 sections expanded - showing Type, Active, Version, Comment, Content, Last updated ✓
+- Step 5: Clicked 'Collapse All' button ✓
+- Step 6: Verified all 5 sections collapsed - showing only section number, type name, and status ✓
+- Console errors: Only expected 401 pre-login auth checks (normal behavior)
+- Screenshots: regression-f56-step4-all-expanded.png, regression-f56-step6-all-collapsed.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #56 regression test passed
