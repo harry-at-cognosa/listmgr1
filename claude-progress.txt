@@ -1,5 +1,37 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #12)
+
+### Completed
+- Feature #12: API returns 403 for unauthorized role access - VERIFIED AND PASSING
+  - Admin-only API endpoints correctly reject regular user requests
+  - DELETE /api/currencies/:id returns 403 for non-admin users (inline check in route)
+  - DELETE /api/users/:id returns 403 for non-admin users (requireAdmin middleware)
+  - Data is NOT deleted when unauthorized requests are made
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as regular user 'harry' - Successfully logged in
+2. ✅ Step 2: Make DELETE request to /api/currencies/1 - Response: 403 "Admin access required"
+3. ✅ Step 3: Verify 403 response - Confirmed 403 status code
+4. ✅ Step 4: Make DELETE request to /api/users/1 - Response: 403 "Admin access required"
+5. ✅ Step 5: Verify 403 response - Confirmed 403 status code
+6. ✅ Step 6: Verify data was not deleted - Currency ID 1 (USD) and User ID 1 (admin) still exist
+
+### Technical Details
+- currencies.js: DELETE endpoint has inline admin check `if (req.session.user.role !== 'admin')`
+- users.js: All endpoints protected by `requireAdmin` middleware at router level in index.js
+- Both return 403 Forbidden with error message "Admin access required"
+
+### Screenshots
+- .playwright-mcp/feature-12-users-still-exist.png (all 3 users in User Management)
+- .playwright-mcp/feature-12-currencies-still-exist.png (all currencies including USD)
+
+### Current Status
+- Features passing: 26/103 (25.2%)
+- Feature #12 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #30)
 
 ### Completed
