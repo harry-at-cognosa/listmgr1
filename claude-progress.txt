@@ -1,5 +1,48 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #5)
+
+### Completed
+- Feature #5: User cannot log in with invalid credentials - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to login page - Successfully on /login
+2. ✅ Step 2: Enter invalid username 'wronguser' - Entered in username field
+3. ✅ Step 3: Enter invalid password 'wrongpass' - Entered in password field
+4. ✅ Step 4: Click login button - Clicked Login button
+5. ✅ Step 5: Verify error message displays - "Invalid username or password" shown in red
+6. ✅ Step 6: Verify user remains on login page - URL stayed at /login
+7. ✅ Step 7: Verify no session is created - API /api/auth/me returns 401 Unauthorized
+
+### Additional Testing
+- Valid username with wrong password: Also shows "Invalid username or password"
+- Valid credentials: Login works correctly (redirects to /templates)
+- Backend security: Same error message for both invalid username and invalid password (security best practice)
+
+### Technical Details
+- Backend: /routes/auth.js POST /login endpoint
+  - Line 20-22: Returns 401 if username not found
+  - Line 27-29: Returns 401 if password doesn't match
+  - Uses bcrypt.compare for password verification
+  - Session only created on successful login (lines 31-35)
+- Frontend: Login.jsx displays error message from API response
+- Error message styled in red for clear visibility
+
+### Screenshots
+- .playwright-mcp/feature-5-invalid-login-error.png (Error message for invalid credentials)
+- .playwright-mcp/feature-5-valid-user-wrong-password.png (Valid user with wrong password error)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Current Status
+- Features passing: 87/103 (84.5%)
+- Feature #5 marked as passing
+
+[Testing] Session complete - Feature #5 PASSED
+
+---
+
 ## Session 2026-01-21 (Feature #55)
 
 ### Completed
@@ -4496,3 +4539,20 @@ Why ref instead of just state:
 - Feature #73 marked as passing
 
 [Testing] Session complete - Feature #73 PASSED
+[Testing] 2026-01-21 - Feature #70 regression test PASSED - 'Invalid form input shows field-level errors'
+- Logged in as admin
+- Step 1: Opened user creation form (Add User modal) ✓
+- Step 2: Entered very short username ('ab' - 2 characters) ✓
+- Step 3: Left password field empty ✓
+- Step 4: Clicked Save to trigger validation ✓
+- Step 5: Verified each invalid field has error message ✓
+  * Username field: 'Username must be at least 3 characters' (red text, red border)
+  * Password field: 'Password is required' (red text, red border)
+- Step 6: Fixed errors - changed username to 'testf70user', added password 'testpassword' ✓
+- Step 7: Verified errors cleared - no error messages, fields had normal styling ✓
+- Additional verification: Form submitted successfully with 'User saved successfully' message ✓
+- New user 'testf70user' appeared in user list with correct metadata
+- Only expected console errors (401 pre-login auth checks)
+- Screenshots: regression-f70-step5-field-level-errors.png, regression-f70-step7-errors-cleared.png, regression-f70-complete-success.png
+- All 7 verification steps PASSED
+[Testing] Session complete - Feature #70 regression test passed
