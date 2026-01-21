@@ -1,5 +1,38 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #10)
+
+### Completed
+- Feature #10: Header displays current user info - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as 'harry' - Logged in successfully via /login form
+2. ✅ Step 2: Verify header shows username 'harry' - Header displays "Logged in as harry" in top-right
+3. ✅ Step 3: Verify logout button is present - "Logout" button visible next to username
+4. ✅ Step 4: Log out and log in as 'admin' - Clicked Logout, redirected to /login, logged in as admin
+5. ✅ Step 5: Verify header now shows 'admin' - Header displays "Logged in as admin (Admin)"
+
+### Additional Observations
+- Admin users see "(Admin)" role indicator after their username
+- Admin users see "User Management" link in sidebar (regular users don't)
+- Admin users see "Delete" buttons on templates (regular users don't)
+- Header persists correctly across page navigations
+
+### Screenshots
+- .playwright-mcp/.playwright-mcp/feature-10-step2-harry-logged-in.png (Logged in as harry)
+- .playwright-mcp/.playwright-mcp/feature-10-step5-admin-logged-in.png (Logged in as admin)
+
+### Console Errors
+- Only expected 401 errors from initial auth checks before login (normal behavior)
+
+### Current Status
+- Features passing: 97/103 (94.2%)
+- Feature #10 marked as passing
+
+[Testing] Session complete - Feature #10 PASSED
+
+---
+
 ## Session 2026-01-21 (Feature #6)
 
 ### Completed
@@ -5221,3 +5254,40 @@ Why ref instead of just state:
 - Feature #9 marked as passing
 
 [Testing] Session complete - Feature #9 PASSED
+[Testing] 2026-01-21 - Feature #23 regression test PASSED - 'User can create new product category'
+- Step 1: Logged in as harry (regular user) ✓
+- Step 2: Navigated to Product Categories page ✓
+- Step 3: Clicked '+ Add Category' button ✓
+- Step 4: Entered category abbr 'T23' ✓
+- Step 5: Entered category name 'TEST_F23_REGRESSION_JAN21' ✓
+- Step 6: Submitted the form ✓
+- Step 7: Success message displayed: 'Product category saved successfully' ✓
+- Step 8: New category appears in list with correct data ✓
+  * Abbr: T23
+  * Name: TEST_F23_REGRESSION_JAN21  
+  * Last Updated: 2026-01-21 13:40 by harry
+- Console errors: Only expected 401 pre-login auth checks (normal behavior)
+- Screenshot: regression-f23-category-created.png
+- All 8 verification steps PASSED
+[Testing] Session complete - Feature #23 regression test passed
+[Testing] 2026-01-21 - Feature #30 regression test PASSED - 'Section type list page displays all types'
+- Step 1: Logged in as harry (regular user) ✓
+- Step 2: Navigated to Reference Data > Section Types ✓
+- Step 3: Page loaded without errors ✓
+  * URL: /reference/section-types
+  * 9 section types displayed
+- Step 4: Table displays required columns ✓
+  * Name column: Detail, Header, Product List, Standard, Standard Quote Section, Summary, TEST_F55_SECTION_TYPE_DROPDOWN, Terms
+  * Total Price (has_total_price): Yes/No values shown
+  * Line Prices (has_lineitem_prices): Yes/No values shown
+  * Active: Active badges shown
+  * Version: Version numbers or '-' displayed
+- Step 5: Boolean fields display correctly ✓
+  * has_total_price: 'Yes' (green) or 'No'
+  * has_lineitem_prices: 'Yes' (green) or 'No'
+  * active: Green 'Active' badge
+- Additional: Last Updated and Actions columns also present
+- Console errors: Only expected 401 pre-login auth checks (normal behavior)
+- Screenshot: regression-f30-section-types-page.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #30 regression test passed
