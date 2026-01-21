@@ -2669,3 +2669,14 @@ All limits match the VARCHAR specifications in the database schema (app_spec.txt
 - Screenshots: regression-feature41-template-created.png, regression-feature41-template-view.png
 - All 14 verification steps PASSED
 [Testing] Session complete - Feature #41 regression test passed
+[Testing] 2026-01-21 04:35 - Feature #13 regression test PASSED - 'Currency list page displays all currencies' verified working
+- Logged in as harry
+- Navigated to Reference Data > Currencies
+- Page loaded at /reference/currencies without errors
+- Table displays 16 currencies with 4 columns: SYMBOL, NAME, LAST UPDATED, ACTIONS
+- Seeded currencies visible: USD (US Dollar), EUR (Euro), GBP (British Pound)
+- Additional test/regression currencies also visible (F14, F67, F75, F76, F77, A77, etc.)
+- Only expected 401 errors (pre-login auth checks on /api/auth/me)
+- Screenshot: regression-feature13-currencies-list-jan21.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #13 regression test passed
