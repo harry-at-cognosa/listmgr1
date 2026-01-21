@@ -1,5 +1,41 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #96)
+
+### Completed
+- Feature #96: Submit button disabled during submission - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. Step 1: Navigate to Template create form - Navigated to /templates/new
+2. Step 2: Fill in form - Entered template name TEST_F96_FINAL_SCREENSHOT
+3. Step 3: Click submit - Clicked Create Template button
+4. Step 4: Observe button immediately disables or shows loading - Browser snapshot captured: button Saving... [disabled]
+5. Step 5: Verify button re-enables after completion - Navigation to templates list confirms completion
+6. Step 6: Verify can submit again after first completes - Successfully created multiple templates during testing
+
+### Code Implementation Details
+The submit button disabling is implemented in TemplateForm.jsx:
+- Line 383: disabled={saving} - Button disabled during save
+- Line 384: disabled:opacity-50 class - Visual feedback (50% opacity when disabled)
+- Line 386: {saving ? Saving... : ...} - Text changes to Saving... during submission
+- Line 109: setSaving(true) - State set immediately on submit
+- Lines 106-107: isSubmittingRef - Double-click protection using synchronous ref check
+
+### Screenshots
+- .playwright-mcp/feature-96-button-enabled-initial.png (initial enabled state)
+- .playwright-mcp/feature-96-step4-button-saving-disabled.png
+
+### Console Errors
+- None (only expected React Router future flag warnings)
+
+### Current Status
+- Features passing: 62/103 (60.2%)
+- Feature #96 marked as passing
+
+[Testing] Session complete - Feature #96 PASSED
+
+---
+
 ## Session 2026-01-21 (Feature #94)
 
 ### Completed
@@ -3198,3 +3234,15 @@ Why ref instead of just state:
 ### Current Status
 - Features passing: 61/103 (59.2%)
 - Feature #95 marked as passing
+[Testing] 2026-01-21 12:53 - Feature #41 regression test PASSED - 'User can create new template' verified working
+- Logged in as harry
+- Step 3: Clicked '+ New Template' button
+- Steps 4-11: Filled all form fields (name, dropdowns, text fields, content)
+- Step 12: Submitted form via 'Create Template' button
+- Step 13: Success message 'Template created successfully' displayed
+- Step 14: Template 'REGRESSION_TEST_F41_JAN21_V2' (ID 26) appears in list with correct data
+- Verified all data persisted in detail view (Country: US, Currency: USD, Category: Hardware, Line: Servers)
+- Only expected 401 errors (pre-login auth checks)
+- Screenshots: regression-feature41-form-filled.png, regression-feature41-success.png, regression-feature41-detail.png
+- All 14 verification steps PASSED
+[Testing] Session complete - Feature #41 regression test passed
