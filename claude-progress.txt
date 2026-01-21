@@ -1365,3 +1365,29 @@
 - Screenshots: regression-feature36-hardware-filter.png, regression-feature36-clear-filters.png
 - All 6 verification steps PASSED
 [Testing] Session complete - Feature #36 regression test passed
+[Testing] 2026-01-21 03:59:14 - Feature #13 regression test PASSED - 'Currency list page displays all currencies' verified working
+- Logged in as harry
+- Navigated to Reference Data > Currencies
+- Page loaded without errors (401s were pre-login auth checks)
+- Table displays with columns: SYMBOL, NAME, LAST UPDATED, ACTIONS
+- Currencies visible: EUR (Euro), GBP (British Pound), USD (US Dollar), JPY
+- Last update info shows datetime and username correctly
+- + Add Currency button present
+- Edit buttons available for each row
+- Note: Some duplicate currency entries in DB (likely from testing), but feature works correctly
+- Screenshot: regression-feature13-currencies-list.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #13 regression test passed
+[Testing] 2026-01-21 - Feature #54 regression test PASSED - 'Section tabbed interface works' verified working
+- Logged in as harry
+- Viewed 'Storage Quote - UK' template with 3 sections
+- Tabbed interface displayed correctly with tabs: 1.Standard, 2.Header, 3.Terms
+- Clicked each tab - all loaded correct section content:
+  - 1.Standard: Type=Standard, Seq=1, Status=in review, Content present
+  - 2.Header: Type=Header, Seq=2, Status=not started, Content=TEST_F54_HEADER_SECTION_CONTENT
+  - 3.Terms: Type=Terms, Seq=3, Version=F54_TAB_TEST, Content=TEST_F54_TERMS_SECTION_CONTENT
+- Verified edits on one tab don't affect others (edited Terms comment, Standard unchanged)
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression-feature54-tabbed-interface.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #54 regression test passed
