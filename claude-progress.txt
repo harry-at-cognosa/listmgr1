@@ -5487,3 +5487,56 @@ Why ref instead of just state:
 
 [Testing] Session complete - Feature #29 PASSED
 
+
+
+---
+
+## Session 2026-01-21 (Feature #48)
+
+### Completed
+- Feature #48: Template status change can cascade to sections - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: View template with multiple sections - Used 'Storage Quote - UK' with 6 sections
+3. ✅ Step 3: Click 'Change Status' button - Modal opened with status dropdown
+4. ✅ Step 4: Change status to 'approved' and check 'Apply to all 6 sections' checkbox
+5. ✅ Step 5: Clicked 'Update Status' button
+6. ✅ Step 6: Verified template status changed to 'approved'
+7. ✅ Step 7: Verified ALL 6 sections now show 'approved' status (cascade worked)
+8. ✅ Step 8: Success message displayed: 'Template and all section statuses updated successfully'
+
+### Additional Testing - Non-Cascade Mode
+- Changed template status back to 'in process' WITHOUT cascade checkbox
+- Template status changed to 'in process'
+- All section statuses REMAINED as 'approved' (correctly not cascaded)
+- Success message: 'Template status updated successfully' (note: template only)
+
+### Technical Implementation (Already Existed)
+- Backend: templates.js lines 191-227 - PUT /:id/status with cascade parameter
+- Frontend: TemplateDetail.jsx - Added Change Status UI with cascade option
+
+### UI Features Verified
+- 'Change Status' button next to status badge in template header
+- Modal with status dropdown showing all 5 status options
+- Checkbox 'Apply status to all N sections' with dynamic section count
+- Helper text dynamically updates to show target status
+- Update button disabled when status hasn't changed
+- Different success messages for cascade vs non-cascade
+
+### Screenshots
+- feature-48-step1-template-detail-with-sections.png (Initial template view)
+- feature-48-step2-status-change-modal.png (Modal opened)
+- feature-48-step3-cascade-checkbox-checked.png (Checkbox enabled)
+- feature-48-step4-cascade-success-all-approved.png (All sections updated)
+- feature-48-step5-no-cascade-sections-unchanged.png (Non-cascade test)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Current Status
+- Feature #48 marked as passing
+- Progress: 102/103 features passing (99.0%)
+
+[Testing] Session complete - Feature #48 PASSED
+
