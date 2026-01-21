@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import api from '../services/api';
 
 const STATUS_OPTIONS = ['not started', 'in process', 'in review', 'approved', 'cloned'];
@@ -7,7 +7,12 @@ const STATUS_OPTIONS = ['not started', 'in process', 'in review', 'approved', 'c
 function TemplateForm() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const isEditing = !!id;
+
+  // Get preserved search params from location state (passed when clicking from Templates list)
+  const preservedSearchParams = location.state?.searchParams || '';
+  const templatesUrl = preservedSearchParams ? `/templates?${preservedSearchParams}` : '/templates';
 
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -120,10 +125,10 @@ function TemplateForm() {
 
       if (isEditing) {
         await api.put(`/templates/${id}`, dataToSubmit);
-        navigate('/templates', { state: { success: 'Template updated successfully' } });
+        navigate(templatesUrl, { state: { success: 'Template updated successfully' } });
       } else {
         await api.post('/templates', dataToSubmit);
-        navigate('/templates', { state: { success: 'Template created successfully' } });
+        navigate(templatesUrl, { state: { success: 'Template created successfully' } });
       }
     } catch (err) {
       setError(err.error || 'Failed to save template');
@@ -145,9 +150,9 @@ function TemplateForm() {
     <div>
       {/* Breadcrumb */}
       <nav className="mb-4 text-sm">
-        <Link to="/templates" className="text-primary-600 hover:text-primary-800">Home</Link>
+        <Link to={templatesUrl} className="text-primary-600 hover:text-primary-800">Home</Link>
         <span className="mx-2 text-gray-400">&gt;</span>
-        <Link to="/templates" className="text-primary-600 hover:text-primary-800">Templates</Link>
+        <Link to={templatesUrl} className="text-primary-600 hover:text-primary-800">Templates</Link>
         <span className="mx-2 text-gray-400">&gt;</span>
         <span className="text-gray-600">{isEditing ? 'Edit Template' : 'New Template'}</span>
       </nav>

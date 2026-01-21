@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
@@ -14,6 +14,13 @@ const STATUS_COLORS = {
 function TemplateDetail() {
   const { id } = useParams();
   const { isAdmin } = useAuth();
+  const location = useLocation();
+
+  // Get preserved search params from location state (passed when clicking from Templates list)
+  // This allows breadcrumb navigation back to preserve filters
+  const preservedSearchParams = location.state?.searchParams || '';
+  const templatesUrl = preservedSearchParams ? `/templates?${preservedSearchParams}` : '/templates';
+
   const [template, setTemplate] = useState(null);
   const [sections, setSections] = useState([]);
   const [sectionTypes, setSectionTypes] = useState([]);
@@ -116,9 +123,9 @@ function TemplateDetail() {
     <div>
       {/* Breadcrumb */}
       <nav className="mb-4 text-sm">
-        <Link to="/templates" className="text-primary-600 hover:text-primary-800">Home</Link>
+        <Link to={templatesUrl} className="text-primary-600 hover:text-primary-800">Home</Link>
         <span className="mx-2 text-gray-400">&gt;</span>
-        <Link to="/templates" className="text-primary-600 hover:text-primary-800">Templates</Link>
+        <Link to={templatesUrl} className="text-primary-600 hover:text-primary-800">Templates</Link>
         <span className="mx-2 text-gray-400">&gt;</span>
         <span className="text-gray-600">{template.plsqt_name}</span>
       </nav>

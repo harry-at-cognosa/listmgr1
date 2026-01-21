@@ -262,7 +262,11 @@ function Templates() {
                 {templates.map(template => (
                   <tr key={template.plsqt_id} className="hover:bg-gray-50">
                     <td className="px-4 md:px-6 py-4">
-                      <Link to={`/templates/${template.plsqt_id}`} className="text-primary-600 hover:text-primary-800 font-medium">
+                      <Link
+                        to={`/templates/${template.plsqt_id}`}
+                        state={{ searchParams: searchParams.toString() }}
+                        className="text-primary-600 hover:text-primary-800 font-medium"
+                      >
                         {template.plsqt_name}
                       </Link>
                     </td>
@@ -278,12 +282,14 @@ function Templates() {
                       <div className="flex items-center gap-2 flex-wrap">
                         <Link
                           to={`/templates/${template.plsqt_id}`}
+                          state={{ searchParams: searchParams.toString() }}
                           className="text-sm text-blue-600 hover:text-blue-800 min-w-[40px] min-h-[32px] flex items-center"
                         >
                           View
                         </Link>
                         <Link
                           to={`/templates/${template.plsqt_id}/edit`}
+                          state={{ searchParams: searchParams.toString() }}
                           className="text-sm text-green-600 hover:text-green-800 min-w-[40px] min-h-[32px] flex items-center"
                         >
                           Edit
