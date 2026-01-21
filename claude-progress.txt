@@ -1,5 +1,40 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #35)
+
+### Completed
+- Feature #35: User can filter templates by country - VERIFIED AND PASSING
+  - Country dropdown filter already implemented and working correctly
+  - Dropdown populated from countries table: "All Countries", "Germany", "United Kingdom", "United States"
+  - Selecting a country filters the templates list to show only templates for that country
+  - "Clear Filters" button resets the filter and shows all templates
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Templates - On Templates page
+3. ✅ Step 3: Locate country filter dropdown - Found dropdown with ref=e48
+4. ✅ Step 4: Verify dropdown populated from countries table - Shows all countries from database
+5. ✅ Step 5: Select a specific country - Selected "Germany"
+6. ✅ Step 6: Verify list updates to show only templates for that country - Only 2 Germany templates shown (OS License Quote - Germany, TEST_TEMPLATE_REGRESSION_F41)
+7. ✅ Step 7: Clear filter and verify all templates show again - All 6 templates shown after clicking "Clear Filters"
+
+### Additional Testing
+- Tested "United Kingdom" filter - correctly shows only 1 UK template (Storage Quote - UK)
+- No JavaScript errors (only expected 401 pre-login auth checks)
+- Filter is server-side via API - real data filtering
+
+### Screenshots
+- .playwright-mcp/feature-35-templates-all.png (all templates before filtering)
+- .playwright-mcp/feature-35-filtered-germany.png (filtered by Germany)
+- .playwright-mcp/feature-35-filtered-uk.png (filtered by United Kingdom)
+- .playwright-mcp/feature-35-filters-cleared.png (after clearing filters)
+
+### Current Status
+- Features passing: 20/103 (19.4%)
+- Feature #35 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #71)
 
 ### Completed
