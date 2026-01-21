@@ -1,5 +1,38 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #88)
+
+### Completed
+- Feature #88: Clear individual filter works - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Templates - Logged in as harry, navigated to /templates
+2. ✅ Step 2: Apply country filter - Selected "Germany" (URL: ?country_id=3)
+3. ✅ Step 3: Apply product category filter - Selected "Software" (URL: ?country_id=3&product_cat_id=2)
+4. ✅ Step 4: Clear only the country filter - Set Country dropdown to "All Countries"
+5. ✅ Step 5: Verify product category filter still active - Software [selected] remained in dropdown
+6. ✅ Step 6: Verify results updated correctly - Results increased from 8 to 11 templates (all countries, but still Software category)
+
+### Technical Details
+- URL-based filter persistence using React Router's useSearchParams
+- Setting dropdown to "All Countries" clears only country_id from URL params
+- URL after clearing country: http://localhost:5173/templates?product_cat_id=2
+- Other filter parameters preserved independently
+- handleFilterChange() removes param when value is empty (line 100 of Templates.jsx)
+
+### Screenshots
+- .playwright-mcp/feature-88-step3-both-filters-active.png (Germany + Software filters active)
+- .playwright-mcp/feature-88-step6-country-cleared-category-active.png (All Countries + Software)
+
+### Console Errors
+- Only expected connection refused errors from hot module reload during development
+
+### Current Status
+- Features passing: 54/103 (52.4%)
+- Feature #88 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #86)
 
 ### Completed
@@ -2615,3 +2648,24 @@ All limits match the VARCHAR specifications in the database schema (app_spec.txt
 - Screenshot: regression-feature4-login-success.png
 - All 7 verification steps PASSED
 [Testing] Session complete - Feature #4 regression test passed
+[Testing] 2026-01-21 12:31 - Feature #41 regression test PASSED - 'User can create new template' verified working
+- Logged in as harry (regular user)
+- Navigated to Templates page
+- Clicked '+ New Template' button - form page loaded correctly
+- Step 4: Entered template name 'TEST_REGRESSION_F41_VERIFY_JAN21' ✓
+- Step 5: Selected country 'United States' from dropdown ✓
+- Step 6: Selected currency 'USD - US Dollar' from dropdown ✓
+- Step 7: Selected product category 'Hardware' from dropdown ✓
+- Step 8: Selected product line 'Servers' from dropdown ✓
+- Step 9: Entered order codes, description, comment ✓
+- Step 10: Entered content (155/500 characters) ✓
+- Step 11: Status set to 'not started' (default) ✓
+- Step 12: Submitted form - form submitted successfully ✓
+- Step 13: Success message 'Template created successfully' displayed ✓
+- Step 14: Template appears in list with correct Country, Product Line, Status ✓
+- Verified template view shows all saved fields correctly
+- Last updated shows '2026-01-21 12:31 by harry'
+- Only expected React Router future flag warnings (not errors)
+- Screenshots: regression-feature41-template-created.png, regression-feature41-template-view.png
+- All 14 verification steps PASSED
+[Testing] Session complete - Feature #41 regression test passed

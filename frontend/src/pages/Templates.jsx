@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
@@ -11,9 +11,19 @@ const STATUS_COLORS = {
   'cloned': 'bg-purple-100 text-purple-800'
 };
 
+// Helper to get filter values from URL search params
+const getFiltersFromParams = (searchParams) => ({
+  country_id: searchParams.get('country_id') || '',
+  product_cat_id: searchParams.get('product_cat_id') || '',
+  product_line_id: searchParams.get('product_line_id') || '',
+  active: searchParams.get('active') || '',
+  search: searchParams.get('search') || ''
+});
+
 function Templates() {
   const { isAdmin } = useAuth();
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -29,26 +39,23 @@ function Templates() {
     }
   }, [location.state]);
 
-  // Filter states
+  // Reference data states
   const [countries, setCountries] = useState([]);
   const [productCategories, setProductCategories] = useState([]);
   const [productLines, setProductLines] = useState([]);
-  const [filters, setFilters] = useState({
-    country_id: '',
-    product_cat_id: '',
-    product_line_id: '',
-    active: '',
-    search: ''
-  });
 
+  // Get filters from URL search params (persists across navigation)
+  const filters = getFiltersFromParams(searchParams);
+
+  // Load reference data once on mount
   useEffect(() => {
     loadReferenceData();
-    loadTemplates();
   }, []);
 
+  // Load templates whenever URL search params change (filters from URL)
   useEffect(() => {
     loadTemplates();
-  }, [filters]);
+  }, [searchParams]);
 
   const loadReferenceData = async () => {
     try {
@@ -65,11 +72,13 @@ function Templates() {
     }
   };
 
-  const loadTemplates = async () => {
+  const loadTemplates = useCallback(async () => {
     try {
       setLoading(true);
+      // Build API params from URL search params
+      const currentFilters = getFiltersFromParams(searchParams);
       const params = new URLSearchParams();
-      Object.entries(filters).forEach(([key, value]) => {
+      Object.entries(currentFilters).forEach(([key, value]) => {
         if (value) params.append(key, value);
       });
       const response = await api.get(`/templates?${params.toString()}`);
@@ -79,21 +88,23 @@ function Templates() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchParams]);
 
+  // Update URL search params when filter changes (this persists filters in URL)
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prev => ({ ...prev, [name]: value }));
+    const newParams = new URLSearchParams(searchParams);
+    if (value) {
+      newParams.set(name, value);
+    } else {
+      newParams.delete(name);
+    }
+    setSearchParams(newParams, { replace: true });
   };
 
+  // Clear all filters by resetting URL search params
   const clearFilters = () => {
-    setFilters({
-      country_id: '',
-      product_cat_id: '',
-      product_line_id: '',
-      active: '',
-      search: ''
-    });
+    setSearchParams({}, { replace: true });
   };
 
   const handleClone = async (id) => {
