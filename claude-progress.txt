@@ -2410,3 +2410,83 @@ All limits match the VARCHAR specifications in the database schema (app_spec.txt
 ### Current Status
 - Features passing: 48/103 (46.6%)
 - Feature #80 marked as passing
+[Testing] 2026-01-21 12:26 - Feature #14 regression test PASSED - 'User can create new currency' verified working
+- Logged in as harry
+- Navigated to Reference Data > Currencies
+- Step 1: Logged in as any user (harry) ✓
+- Step 2: Navigated to Currencies page ✓
+- Step 3: Clicked '+ Add Currency' button - modal form appeared ✓
+- Step 4: Entered currency symbol 'F14' ✓
+- Step 5: Entered currency name 'REGRESSION_TEST_F14' ✓
+- Step 6: Submitted the form by clicking Save ✓
+- Step 7: Success message 'Currency saved successfully' displayed ✓
+- Step 8: New currency 'F14 | REGRESSION_TEST_F14' appears in list ✓
+- Step 9: last_update_datetime is set: '2026-01-21 12:26' ✓
+- Step 10: last_update_user shows current user: 'by harry' ✓
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression-feature14-currency-created.png
+- All 10 verification steps PASSED
+[Testing] Session complete - Feature #14 regression test passed
+[Testing] 2026-01-21 - Feature #60 regression test PASSED - 'Tables have readable styling' verified working
+- Logged in as harry
+- Step 1: Viewed Currencies table at /reference/currencies - 4 columns (SYMBOL, NAME, LAST UPDATED, ACTIONS), 16+ rows
+- Step 2: Viewed Templates table at /templates - 6 columns (NAME, COUNTRY, PRODUCT LINE, SECTIONS, STATUS, ACTIONS), 12 rows
+- Step 3: Verified consistent table styling - white backgrounds, blue action buttons/links across all tables
+- Step 4: Header rows distinguished - uppercase gray text headers on all tables
+- Step 5: Hover states working - subtle light gray background on row hover (verified on Templates, Currencies, Countries)
+- Step 6: Columns properly aligned with consistent padding
+- Also verified Countries table at /reference/countries - 5 columns (ABBR, NAME, CURRENCY, LAST UPDATED, ACTIONS)
+- Only expected 401 errors (pre-login auth checks)
+- Screenshots: regression-feature60-*.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #60 regression test passed
+[Testing] 2026-01-21 12:28 - Feature #41 regression test PASSED - 'User can create new template' verified working
+- Logged in as harry (regular user)
+- Navigated to Templates page
+- Clicked '+ New Template' button - form page loaded correctly
+- Step 4: Entered template name 'TEST_REGRESSION_F41_JAN21_VERIFY' ✓
+- Step 5: Selected country 'United States' from dropdown ✓
+- Step 6: Selected currency 'USD - US Dollar' from dropdown ✓
+- Step 7: Selected product category 'Hardware' from dropdown ✓
+- Step 8: Selected product line 'Servers' from dropdown ✓
+- Step 9: Entered order codes, description, comment ✓
+- Step 10: Entered content (237/500 characters) ✓
+- Step 11: Status set to 'not started' (default) ✓
+- Step 12: Submitted form - form submitted successfully ✓
+- Step 13: Success message 'Template created successfully' displayed ✓
+- Step 14: Template appears in list with correct Country, Product Line, Status ✓
+- Verified template view shows all saved fields correctly
+- Last updated shows '2026-01-21 12:28 by harry'
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression-feature41-template-created-view.png
+- All 14 verification steps PASSED
+[Testing] Session complete - Feature #41 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #84)
+
+### Completed
+- Feature #84: Empty search shows all results - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Templates - Logged in as harry, navigated to /templates
+2. ✅ Step 2: Enter search term to filter results - Searched "Storage" (1 result), searched "Server" (1 result)
+3. ✅ Step 3: Clear the search box - Cleared text field manually and via Clear Filters button
+4. ✅ Step 4: Verify all templates display again - All 14 templates displayed after clearing
+5. ✅ Step 5: Verify count matches total - 14 templates shown matches total available
+
+### Screenshots
+- .playwright-mcp/feature-84-step4-all-templates-after-clear.png (all templates after clearing search)
+- .playwright-mcp/feature-84-clear-filters-all-templates.png (all templates after Clear Filters button)
+
+### Technical Notes
+- Search filtering works correctly with partial name matching
+- Clearing search box (either manually or via Clear Filters) restores full template list
+- Clear Filters button also resets all dropdown filters
+- No console errors during testing (only expected 401 pre-login auth checks)
+
+### Current Status
+- Features passing: 51/103 (49.5%)
+- Feature #84 marked as passing
+[Testing] Session complete - Feature #84 PASSED
