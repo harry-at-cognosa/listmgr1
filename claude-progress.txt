@@ -1,5 +1,40 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #85)
+
+### Completed
+- Feature #85: Search with special characters handled - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. Step 1: Navigate to Templates - Logged in as harry, navigated to /templates
+2. Step 2: Enter '!@#$%' in search box - Entered special characters in search field
+3. Step 3: Verify no errors occur - Page handled gracefully, no JavaScript errors
+4. Step 4: Verify empty results or graceful handling - "No templates found. Try adjusting your filters." displayed
+5. Step 5: Enter 'test & test' with ampersand - Ampersand handled correctly
+6. Step 6: Verify no errors - No errors, graceful handling with empty results message
+
+### Additional Security Tests Performed
+- XSS test: <script>alert('xss')</script> - Handled safely, no script execution
+- SQL injection test: '; DROP TABLE templates; -- - Handled safely, templates remain intact
+
+### Screenshots
+- .playwright-mcp/feature-85-special-chars-search.png (search with !@#$%)
+- .playwright-mcp/feature-85-ampersand-search.png (search with "test & test")
+- .playwright-mcp/feature-85-sql-injection-safe.png (SQL injection attempt handled safely)
+- .playwright-mcp/feature-85-templates-intact.png (all templates still intact after tests)
+
+### Technical Notes
+- Search functionality properly escapes/handles special characters
+- No JavaScript errors in console (only expected 401 pre-login auth checks)
+- Backend uses parameterized queries - SQL injection not possible
+- All templates remain intact after special character searches
+
+### Current Status
+- Features passing: 51/103 (49.5%)
+- Feature #85 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #83)
 
 ### Completed
