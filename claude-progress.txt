@@ -1,5 +1,55 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #102)
+
+### Completed
+- Feature #102: Network failure shows user-friendly error - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Used harry
+2. ✅ Step 2: Stop the backend server - Simulated by pointing Vite proxy to non-existent port 9999
+3. ✅ Step 3: Try to navigate to Templates - Tried to login while backend was unreachable
+4. ✅ Step 4: Verify user-friendly error message - Saw "Unable to connect to the server. Please check your connection and try again."
+5. ✅ Step 5: Verify no raw error or crash - App showed friendly error message in red box, no raw errors or crashes
+6. ✅ Step 6: Restart server - Restored Vite proxy to correct port 3001
+7. ✅ Step 7: Verify app recovers - App loaded templates list successfully after server restart
+
+### Implementation Details
+Enhanced api.js service to handle network failures gracefully:
+
+**frontend/src/services/api.js:**
+- Added `safeFetch()` wrapper that catches TypeError (network errors) and throws user-friendly error
+- Added `parseErrorResponse()` helper to handle 500+ status codes as network errors
+- Error message: "Unable to connect to the server. Please check your connection and try again."
+- Handles both true network failures (fetch throws) and proxy errors (500 from Vite)
+
+**All page components updated to display network errors:**
+- Currencies.jsx, Countries.jsx, ProductCategories.jsx, ProductLines.jsx
+- SectionTypes.jsx, Users.jsx, Templates.jsx
+- TemplateForm.jsx, TemplateDetail.jsx
+- All now use `err.error || 'Failed to load ...'` pattern
+
+### Test Methodology
+- Modified vite.config.js to point proxy to port 9999 (non-existent)
+- This simulates backend unreachable scenario
+- Vite proxy returns 500 error when backend unreachable
+- Our error handling converts this to user-friendly message
+
+### Screenshots
+- .playwright-mcp/feature-102-network-error-login.png (Error message on login page)
+- .playwright-mcp/feature-102-app-recovered.png (App working after server restart)
+
+### Console Errors
+- Expected 500 errors from proxy (handled gracefully)
+- No raw JavaScript errors or app crashes
+
+### Current Status
+- Feature #102 marked as passing
+
+[Testing] Session complete - Feature #102 PASSED
+
+---
+
 ## Session 2026-01-21 (Feature #98)
 
 ### Completed
@@ -3681,3 +3731,35 @@ Why ref instead of just state:
 - Feature #8 marked as passing
 
 [Testing] Session complete - Feature #8 PASSED
+[Testing] 2026-01-21 - Feature #34 regression test PASSED - 'Templates list page displays all templates'
+- Step 1: Logged in as harry (user) and admin
+- Step 2: Successfully navigated to Templates page
+- Step 3: Page loads without functional errors
+- Step 4: Table displays all required columns (Name, Country, Product Line, Sections, Status, Actions)
+- Step 5: Action buttons View, Edit, Clone present for all rows
+- Step 6: Delete button ONLY visible for admin, NOT visible for regular user harry
+- Screenshots: regression-f34-templates-list-harry.png, regression-f34-templates-list-admin.png
+- No console errors (only expected pre-login 401 and React Router warnings)
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #34 regression test passed
+[Testing] 2026-01-21 - Feature #64 regression test PASSED - 'Empty states shown when no data exists' verified working
+- Logged in as harry
+- Step 1: Filtered templates with search term 'XYZNONEXISTENT_REGRESSION_F64' - zero results ✓
+- Step 2: 'No templates found. Try adjusting your filters.' message displayed ✓
+- Step 3: Viewed 'OS License Quote - Germany' template (ID 3) with 0 sections ✓
+- Step 4: 'No sections yet. Add your first section!' message displayed ✓
+- Step 5: Both empty states suggest next actions ✓
+- Only expected 401 errors (pre-login auth checks)
+- Screenshots: regression-f64-step2-no-templates.png, regression-f64-step4-no-sections.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #64 regression test passed
+[Testing] 2026-01-21 - Feature #22 regression test PASSED - 'Product category list page displays all categories'
+- Logged in as harry
+- Step 1: Logged in as user harry ✓
+- Step 2: Navigated to Reference Data > Product Categories ✓
+- Step 3: Page loaded without errors (only pre-login 401s expected) ✓
+- Step 4: Table displays Abbr and Name columns with 10 categories ✓
+- Step 5: Last Updated column shows date/time and username ✓
+- Screenshot: regression-f22-product-categories-list.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #22 regression test passed
