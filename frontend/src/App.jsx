@@ -1,0 +1,69 @@
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider, useAuth } from './context/AuthContext'
+import Layout from './components/Layout'
+import Login from './pages/Login'
+import Templates from './pages/Templates'
+import TemplateDetail from './pages/TemplateDetail'
+import TemplateForm from './pages/TemplateForm'
+import Currencies from './pages/Currencies'
+import Countries from './pages/Countries'
+import ProductCategories from './pages/ProductCategories'
+import ProductLines from './pages/ProductLines'
+import SectionTypes from './pages/SectionTypes'
+import Users from './pages/Users'
+
+function PrivateRoute({ children }) {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
+    )
+  }
+
+  return user ? children : <Navigate to="/login" />
+}
+
+function AdminRoute({ children }) {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
+    )
+  }
+
+  if (!user) return <Navigate to="/login" />
+  if (user.role !== 'admin') return <Navigate to="/templates" />
+
+  return children
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
+          <Route index element={<Navigate to="/templates" replace />} />
+          <Route path="templates" element={<Templates />} />
+          <Route path="templates/new" element={<TemplateForm />} />
+          <Route path="templates/:id" element={<TemplateDetail />} />
+          <Route path="templates/:id/edit" element={<TemplateForm />} />
+          <Route path="reference/currencies" element={<Currencies />} />
+          <Route path="reference/countries" element={<Countries />} />
+          <Route path="reference/product-categories" element={<ProductCategories />} />
+          <Route path="reference/product-lines" element={<ProductLines />} />
+          <Route path="reference/section-types" element={<SectionTypes />} />
+          <Route path="admin/users" element={<AdminRoute><Users /></AdminRoute>} />
+        </Route>
+      </Routes>
+    </AuthProvider>
+  )
+}
+
+export default App

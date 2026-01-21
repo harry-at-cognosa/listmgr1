@@ -1,0 +1,13 @@
+{
+  "name": "1_listmgr",
+  "version": "1.0.0",
+  "description": "A collaborative web application for managing sales quote templates. Users can create, edit, clone, and organize quote templates that contain multiple sections. The app serves as a community collaboration notebook for a small team managing product line sales quote templates across different countries, currencies, and product categories.",
+  "main": "get-feature.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
