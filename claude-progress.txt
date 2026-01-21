@@ -4151,3 +4151,115 @@ Why ref instead of just state:
 - Feature #52 marked as passing
 
 [Testing] Session complete - Feature #52 PASSED
+
+
+---
+
+## Session 2026-01-21 (Feature #46)
+
+### Completed
+- Feature #46: User can clone template - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Create/use a template with multiple sections - Used 'Storage Quote - UK' (ID 2) with 2 sections
+3. ✅ Step 3: Note the original template ID - ID 2
+4. ✅ Step 4: Click Clone on the template - Clicked Clone button, success message displayed
+5. ✅ Step 5: Verify new template created with different ID - Clone has ID 31 (different from 2)
+6. ✅ Step 6: Verify new template has status 'cloned' - plsqt_status = 'cloned' ✓
+7. ✅ Step 7: Verify all sections were copied with new IDs - Section IDs 14 & 15 (different from original 1 & 2)
+8. ✅ Step 8: Verify original template unchanged - Status still 'in process', sections unchanged
+9. ✅ Step 9: Verify cloned sections have status 'cloned' - Both cloned sections have plsqts_status = 'cloned'
+
+### Database Verification
+- Original Template (ID 2):
+  - Name: 'Storage Quote - UK'
+  - Status: 'in process' (unchanged)
+  - Sections: IDs 1, 2 (unchanged)
+  
+- Cloned Template (ID 31):
+  - Name: 'Storage Quote - UK (Clone)'
+  - Status: 'cloned'
+  - Sections: IDs 14, 15 (new IDs, both with 'cloned' status)
+
+### Screenshots
+- .playwright-mcp/feature-46-original-template.png (original template before clone)
+- .playwright-mcp/feature-46-clone-success.png (success message after clone)
+- .playwright-mcp/feature-46-cloned-template-detail.png (cloned template detail showing 'cloned' status)
+- .playwright-mcp/feature-46-original-unchanged.png (original template unchanged after clone)
+
+### Console Errors
+- None (only expected React Router future flag warnings)
+
+### Current Status
+- Feature #46 marked as passing
+
+[Testing] Session complete - Feature #46 PASSED
+
+[Testing] 2026-01-21 - Feature #82 regression test PASSED - 'Direct URL access to template works'
+- Step 1: Logged in as admin, identified template IDs (1: Server Quote - US Standard, 2: Storage Quote - UK) ✓
+- Step 2: Noted template URLs /templates/1 and /templates/2 ✓
+- Step 3: Opened new browser tab (verified session shared across tabs in same context) ✓
+- Step 4: Navigated directly to /templates/1 while unauthenticated ✓
+- Step 5: Verified redirect to /login when not authenticated ✓
+  - Console showed expected 401 Unauthorized errors for /api/auth/me
+- Step 6: Logged in as harry (regular user) ✓
+- Step 7: Verified automatic redirect back to /templates/1 - correct template displayed ✓
+  - Template name: 'Server Quote - US Standard'
+  - All details correct: approved, United States, Servers, 2 sections, USD, Hardware, Active
+- Additional test: Repeated with /templates/2 (Storage Quote - UK) ✓
+  - Same behavior: redirect to login, then redirect to correct template after login
+  - Template: in process, United Kingdom, Storage, 3 sections, GBP, Hardware, Active
+- Deep linking works correctly for both admin and regular users
+- No unexpected console errors
+- Screenshots: regression-f82-step5-redirected-to-login.png, regression-f82-step7-template-displayed-after-login.png, regression-f82-deep-link-template2-success.png
+- All 7 verification steps PASSED
+[Testing] Session complete - Feature #82 regression test passed
+
+
+---
+
+## Session 2026-01-21 (Feature #53)
+
+### Completed
+- Feature #53: User can clone individual section - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: View template detail - Viewed 'Storage Quote - UK' (ID 2) with 2 sections initially
+3. ✅ Step 3: Click Clone on a section - Clicked Clone on 'Standard' section (seq 1)
+4. ✅ Step 4: Verify new section created with new ID - New section created with seq 3, new database ID assigned
+5. ✅ Step 5: Verify new section has status 'cloned' - Section 3 displays purple 'cloned' status badge
+6. ✅ Step 6: Verify template section_count incremented - Count changed from 2 → 3 (verified in detail and list pages)
+
+### Additional Verification
+- Data persists after page refresh
+- Clone preserves all fields from original (type, version, comment, content, active status)
+- Clone sets new timestamp for `last_update_datetime` (when clone was created)
+- Clone sets `last_update_user` to current user (harry)
+- Success message 'Section cloned successfully' displayed
+- Template list view also shows updated section count
+
+### Technical Implementation (Already Existed)
+- Frontend: TemplateDetail.jsx - handleCloneSection() calls api.post(`/sections/${sectionId}/clone`)
+- Backend: sections.js - POST /sections/:id/clone endpoint creates copy with:
+  - New sequence number (max + 1)
+  - Status set to 'cloned'
+  - All other fields copied from original
+  - Template section_count updated
+
+### Screenshots
+- feature-53-step2-template-detail-before-clone.png (initial state with 2 sections)
+- feature-53-step3-after-clone-success.png (success message, section count = 3)
+- feature-53-step4-all-sections-expanded.png (all sections visible)
+- feature-53-step5-cloned-section-with-status.png (full page showing 'cloned' status)
+- feature-53-step6-templates-list-section-count-updated.png (list view)
+
+### Console Errors
+- None (only expected React Router future flag warnings)
+
+### Current Status
+- Feature #53 marked as passing
+
+[Testing] Session complete - Feature #53 PASSED
+
