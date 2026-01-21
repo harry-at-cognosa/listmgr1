@@ -4801,3 +4801,46 @@ Why ref instead of just state:
 - Feature #24 marked as passing
 
 [Testing] Session complete - Feature #24 PASSED
+
+---
+
+## Session 2026-01-21 (Feature #16)
+
+### Completed
+- Feature #16: Admin can delete currency - VERIFIED AND PASSING
+
+### Bug Fixed
+- Issue: Delete endpoint returning 404 even when deletion succeeded
+- Root cause: Code checked `result.rows.length === 0` but SQLite DELETE returns empty rows array even on success
+- Fix: Changed to `result.rowCount === 0` which correctly indicates number of affected rows
+- File: backend/routes/currencies.js line 107
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in as admin user
+2. ✅ Step 2: Navigate to Currencies page - Accessed /reference/currencies
+3. ✅ Step 3: Create a test currency to delete - Created D16 DELETE_FEATURE_16_TEST
+4. ✅ Step 4: Click Delete on test currency - Clicked Delete button
+5. ✅ Step 5: Verify confirmation dialog appears - "Are you sure you want to delete this currency?" shown
+6. ✅ Step 6: Confirm deletion - Clicked OK on confirmation dialog
+7. ✅ Step 7: Verify success message - "Currency deleted successfully" displayed
+8. ✅ Step 8: Verify currency no longer in list - D16 removed from list (confirmed in snapshot)
+
+### Additional Verification
+- Network request: DELETE /api/currencies/26 => 200 OK (after fix)
+- Regular user (harry) cannot see Delete buttons - Confirmed
+- Only "Edit" button visible for non-admin users
+- Backend properly returns 403 for non-admin delete attempts
+
+### Screenshots
+- feature-16-step3-currency-d16-created.png (D16 currency in list)
+- feature-16-step7-delete-success.png (After deletion, D16 gone)
+- feature-16-regular-user-no-delete.png (harry sees only Edit button)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks
+- No JavaScript errors
+
+### Current Status
+- Feature #16 marked as passing
+
+[Testing] Session complete - Feature #16 PASSED
