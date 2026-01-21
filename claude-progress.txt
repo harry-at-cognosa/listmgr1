@@ -486,3 +486,21 @@
 - No console errors after login
 - Screenshot: regression_feature4_login_success.png
 [Testing] 2026-01-21 00:44:21 - Feature #22 regression test PASSED - 'Product category list page displays all categories' verified working
+[Testing] 2026-01-21 00:46:15 - Feature #22 regression test PASSED - 'Product category list page displays all categories' verified working
+- Logged in as harry
+- Navigated to Reference Data > Product Categories
+- Page loaded without errors (401s were pre-login auth checks)
+- Table displays ABBR, NAME, LAST UPDATED, ACTIONS columns
+- Categories visible: HW/Hardware, SVC/Services, SW/Software
+- Last update info showing datetime and user (e.g., '2026-01-21 08:19 by system')
+- Screenshot: regression_feature22_product_categories.png
+- All 5 verification steps PASSED
+[Testing] 2026-01-21 00:46:34 - Feature #13 regression test PASSED - 'Currency list page displays all currencies' verified working
+- Logged in as harry
+- Navigated to Reference Data > Currencies
+- Page loaded without errors
+- Table displays SYMBOL, NAME, LAST UPDATED, ACTIONS columns
+- Currencies visible: EUR, GBP, USD, JPY
+- Last update info showing datetime and user
+- Screenshot: regression_feature13_currencies_list.png
+- No console errors after login

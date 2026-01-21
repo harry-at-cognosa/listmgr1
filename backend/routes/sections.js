@@ -73,9 +73,9 @@ router.post('/template/:templateId', async (req, res) => {
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
        RETURNING *`,
       [
-        req.params.templateId, section_type_id, nextSeqn, plsqt_alt_name, plsqt_comment,
-        plsqt_use_alt_name || false, plsqts_subsection_count || 0, plsqts_active !== false, plsqts_version,
-        extrn_file_ref, content, plsqts_status || 'not started', now,
+        req.params.templateId, section_type_id, nextSeqn, plsqt_alt_name || null, plsqt_comment || null,
+        plsqt_use_alt_name || false, plsqts_subsection_count || 0, plsqts_active !== false, plsqts_version || null,
+        extrn_file_ref || null, content || null, plsqts_status || 'not started', now,
         now, req.session.user.username
       ]
     );
@@ -125,10 +125,10 @@ router.put('/:id', async (req, res) => {
        WHERE plsqts_id = $15
        RETURNING *`,
       [
-        section_type_id, plsqt_seqn, plsqt_alt_name, plsqt_comment,
+        section_type_id, plsqt_seqn, plsqt_alt_name || null, plsqt_comment || null,
         plsqt_use_alt_name || false, plsqts_subsection_count || 0, plsqts_active,
-        plsqts_version, extrn_file_ref, content, plsqts_status,
-        statusDatetime, now, req.session.user.username,
+        plsqts_version || null, extrn_file_ref || null, content || null, plsqts_status,
+        statusDatetime || null, now, req.session.user.username,
         req.params.id
       ]
     );
