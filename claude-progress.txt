@@ -1,0 +1,39 @@
+# ListMgr Progress Notes
+
+## Session 2026-01-21 (Feature #13)
+
+### Completed
+- Feature #13: Currency list page displays all currencies - VERIFIED AND PASSING
+  - Logged in as user "harry"
+  - Navigated to Reference Data > Currencies
+  - Page loaded without errors
+  - Table displays currencies with columns: Symbol, Name, Last Updated, Actions
+  - Seeded currencies appear: EUR (Euro), GBP (British Pound), USD (US Dollar)
+  - Screenshot saved: .playwright-mcp/verification_feature13_currencies_list.png
+
+### Previous Sessions
+[Testing] 2026-01-21 00:27:16 - Feature #34 verified - 'Templates list page displays all templates' still passing
+- Verified login as admin and regular user
+- Verified table columns (name, country, product_line, sections, status)
+- Verified action buttons (View, Edit, Clone)
+- Verified Delete button only visible for admin users
+- All 6 verification steps passed
+
+### Current Status
+- Features passing: 2/103
+- Feature #13 marked as passing
+
+### Notes
+- The Currencies page was already fully implemented with:
+  - Backend API at /api/currencies (GET, POST, PUT, DELETE)
+  - Frontend page at /reference/currencies
+  - List view with table showing all currencies
+  - Add Currency button and modal form
+  - Edit functionality
+  - Delete functionality (admin only)
+  - Last update tracking displayed
+- Observed duplicate currencies in seed data (EUR, GBP, USD appear twice each)
+  - This doesn't affect the feature - it correctly displays all records
+
+### Next Steps
+- Continue with next pending features (likely other reference table CRUD operations)
