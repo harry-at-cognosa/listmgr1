@@ -1,5 +1,40 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #21)
+
+### Completed
+- Feature #21: Admin can delete country - VERIFIED AND PASSING
+  - Admin user can successfully delete country records
+  - Delete button only visible to admin users (not regular users)
+  - Confirmation dialog appears before deletion
+  - Country is removed from database after deletion
+  - List refreshes to show updated data
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in as "admin" user
+2. ✅ Step 2: Navigate to Countries page - Successfully navigated to /reference/countries
+3. ✅ Step 3: Create a test country - Created "FINAL_TEST_F21" with abbreviation "AAA"
+4. ✅ Step 4: Click Delete on the test country - Delete button clicked
+5. ✅ Step 5: Confirm deletion - Confirmation dialog accepted
+6. ✅ Step 6: Verify success message - Delete operation succeeded
+7. ✅ Step 7: Verify country no longer in list - After refresh, test country is gone
+
+### Security Verification
+- Regular user "harry" does NOT see Delete buttons on Countries page
+- Only Edit buttons visible for non-admin users
+- Role-based access control working correctly
+
+### Screenshots
+- .playwright-mcp/feature-21-test-country-created.png (test country before deletion)
+- .playwright-mcp/feature-21-country-deleted-verified.png (countries list after deletion)
+- .playwright-mcp/feature-21-regular-user-no-delete.png (regular user view - no Delete buttons)
+
+### Current Status
+- Features passing: 28/103 (27.2%)
+- Feature #21 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #12)
 
 ### Completed
@@ -1208,3 +1243,37 @@
 - No console errors (only expected 401 pre-login auth checks)
 - All 14 verification steps PASSED
 [Testing] Session complete - Feature #41 regression test passed
+[Testing] 2026-01-21 - Feature #13 regression test PASSED - 'Currency list page displays all currencies' verified working
+- Logged in as harry
+- Navigated to Reference Data > Currencies
+- Page loaded without errors (401s were pre-login auth checks)
+- Table displays with columns: SYMBOL, NAME, LAST UPDATED, ACTIONS
+- All seeded currencies visible: EUR (Euro), GBP (British Pound), USD (US Dollar), JPY
+- Last update info shows datetime and username correctly
+- + Add Currency button present
+- Edit buttons available for each row
+- Screenshot: regression_feature13_currencies_list.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #13 regression test passed
+[Testing] 2026-01-21 - Feature #12 regression test PASSED - 'API returns 403 for unauthorized role access' verified working
+- Logged in as regular user 'harry'
+- DELETE /api/currencies/1 returned 403 Forbidden with 'Admin access required'
+- DELETE /api/users/1 returned 403 Forbidden with 'Admin access required'
+- Verified currency 1 (USD) still exists after attempted delete
+- Verified user 1 (admin) still exists after attempted delete
+- All 3 seeded users still present: admin, harry, clint
+- Console errors are expected (401 pre-login checks, 403 from security tests)
+- Screenshot: regression_feature12_api_403_unauthorized.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #12 regression test passed
+[Testing] 2026-01-21 - Feature #12 regression test PASSED - 'API returns 403 for unauthorized role access' verified working
+- Logged in as regular user 'harry'
+- DELETE /api/currencies/1 returned 403 Forbidden with 'Admin access required'
+- DELETE /api/users/1 returned 403 Forbidden with 'Admin access required'
+- Verified currency 1 (USD) still exists after attempted delete
+- Verified user 1 (admin) still exists after attempted delete
+- All 3 seeded users still present: admin, harry, clint
+- Console errors are expected (401 pre-login checks, 403 from security tests)
+- Screenshot: regression_feature12_api_403_unauthorized.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #12 regression test passed
