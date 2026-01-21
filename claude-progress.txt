@@ -1,5 +1,44 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #39)
+
+### Completed
+- Feature #39: User can search templates by name keyword - VERIFIED AND PASSING
+  - Search box filters templates by name using LIKE %keyword% pattern
+  - Partial matches are included (e.g., "Quote" matches multiple templates)
+  - Case-insensitive search (e.g., "storage" matches "Storage Quote - UK")
+  - Clear Filters button resets search and shows all templates
+  - Real-time filtering via API (no mock data)
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "admin"
+2. ✅ Step 2: Navigate to Templates - On Templates page (6 templates total)
+3. ✅ Step 3: Enter keyword in search box - Tested "Server", "Quote", "storage"
+4. ✅ Step 4: Verify list updates to show matching templates - Works correctly:
+   - "Server" → 1 result (Server Quote - US Standard)
+   - "Quote" → 3 results (OS License Quote, Server Quote, Storage Quote)
+   - "storage" → 1 result (Storage Quote - UK)
+5. ✅ Step 5: Verify partial matches are included - Confirmed with "Quote" search
+6. ✅ Step 6: Clear search and verify all templates show - All 6 templates restored
+
+### Additional Testing
+- Case-insensitive search verified: lowercase "storage" matches "Storage" in template name
+- No JavaScript errors (only expected 401 pre-login auth checks)
+- Search is server-side via API (not client-side filtering)
+
+### Screenshots
+- .playwright-mcp/feature-39-templates-before-search.png (all templates before search)
+- .playwright-mcp/feature-39-search-server.png (search for "Server")
+- .playwright-mcp/feature-39-search-partial-match.png (search for "Quote" - partial matches)
+- .playwright-mcp/feature-39-search-cleared.png (after clearing filters)
+- .playwright-mcp/feature-39-case-insensitive-search.png (lowercase "storage" search)
+
+### Current Status
+- Features passing: 22/103 (21.4%)
+- Feature #39 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #35)
 
 ### Completed
