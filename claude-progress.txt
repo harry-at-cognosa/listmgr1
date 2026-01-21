@@ -1,5 +1,42 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #19)
+
+### Completed
+- Feature #19: User can create new country - VERIFIED AND PASSING
+  - Country creation form works with currency dropdown populated from database
+  - New country saved with correct abbreviation, name, and currency reference
+  - Last update tracking displays datetime and current user
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Countries page - Navigated to /reference/countries
+3. ✅ Step 3: Click Add/Create button - Clicked "+ Add Country", form appeared
+4. ✅ Step 4: Enter country abbr 'USA' - Entered "TST" (unique test data)
+5. ✅ Step 5: Enter country name 'United States' - Entered "TEST_F19_COUNTRY_CREATE"
+6. ✅ Step 6: Select currency from dropdown - Selected "JPY - TEST_14_Japanese_Yen"
+7. ✅ Step 7: Verify dropdown populated from currency table - Dropdown shows all currencies: EUR, GBP, JPY, USD
+8. ✅ Step 8: Submit the form - Clicked "Save" button
+9. ✅ Step 9: Verify success message - "Country saved successfully" displayed
+10. ✅ Step 10: Verify new country appears with correct currency - New row visible with all correct data
+
+### Additional Verifications
+- ✅ Data persists after page refresh (proves database storage)
+- ✅ Last update datetime is set: "2026-01-21 11:48"
+- ✅ Last update user shows current user: "by harry"
+- ✅ New country appears in Templates page country filter dropdown
+- ✅ No console errors during operation
+- ✅ Test data cleanup completed (deleted via admin)
+
+### Screenshots
+- .playwright-mcp/feature-19-country-created-success.png (new country in list with all data)
+
+### Current Status
+- Features passing: 25/103 (24.3%)
+- Feature #19 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #72)
 
 ### Completed
@@ -949,3 +986,40 @@
 ### Current Status
 - Features passing: 22/103 (21.4%)
 - Feature #36 marked as passing
+[Testing] 2026-01-21 03:48:44 - Feature #35 regression test PASSED - 'User can filter templates by country' verified working
+- Logged in as harry
+- Country filter dropdown present with all countries from database
+- Tested filtering by Germany (2 templates), UK (1 template), US (3 templates)
+- Clear Filters button properly resets to 'All Countries' showing all 6 templates
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression-feature35-country-filter.png
+- All 7 verification steps PASSED
+[Testing] Session complete - Feature #35 regression test passed
+[Testing] 2026-01-21 03:48:48 - Feature #71 regression test PASSED - 'Admin can view user list' verified working
+- Logged in as admin
+- Navigated to User Management (/admin/users)
+- Page loaded without errors (401s were pre-login auth checks)
+- Table displays USERNAME, ROLE, LAST UPDATED, ACTIONS columns
+- All 3 seeded users visible: admin (admin role), harry (user role), clint (user role)
+- Current user (admin) marked with '(you)' indicator
+- Delete button disabled for current user (can't delete yourself)
+- Edit/Delete buttons available for other users
+- '+ Add User' button visible
+- Screenshot: regression_feature71_user_management.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #71 regression test passed
+[Testing] 2026-01-21 03:49:24 - Feature #2 regression test PASSED - 'Database connection works' verified working
+- Backend server running on port 3001
+- Frontend server running on port 5173  
+- No database connection errors in console (only expected 401 pre-login auth checks)
+- Multiple API calls verified:
+  - POST /api/auth/login => 200 OK
+  - GET /api/templates => 200 OK (returned 6 templates)
+  - GET /api/currencies => 200 OK (returned EUR, GBP, JPY, USD)
+  - GET /api/countries => 200 OK (returned DEU, GBR, USA, TST)
+  - GET /api/product-categories => 200 OK
+  - GET /api/product-lines => 200 OK
+- All responses contain properly formatted data with correct joins
+- Screenshot: regression_feature2_database_connection.png
+- All 4 verification steps PASSED
+[Testing] Session complete - Feature #2 regression test passed
