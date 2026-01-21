@@ -64,7 +64,7 @@ function TemplateForm() {
       setProductCategories(categoriesRes.data);
       setProductLines(linesRes.data);
     } catch (err) {
-      setError('Failed to load reference data');
+      setError(err.error || 'Failed to load reference data');
     }
   };
 
@@ -91,7 +91,7 @@ function TemplateForm() {
         plsqt_status: template.plsqt_status || 'not started'
       });
     } catch (err) {
-      setError('Failed to load template');
+      setError(err.error || 'Failed to load template');
     } finally {
       setLoading(false);
     }

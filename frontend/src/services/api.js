@@ -16,6 +16,22 @@ const safeFetch = async (url, options) => {
   }
 };
 
+// Helper to parse error response
+const parseErrorResponse = async (response) => {
+  // For proxy/server errors (500, 502, 503, 504), return user-friendly message
+  if (response.status >= 500) {
+    return { error: NETWORK_ERROR_MESSAGE, isNetworkError: true };
+  }
+
+  // Try to parse JSON error response
+  try {
+    return await response.json();
+  } catch {
+    // If response is not JSON (e.g., HTML error page from proxy), return generic message
+    return { error: 'Request failed' };
+  }
+};
+
 const api = {
   async get(url) {
     const response = await safeFetch(`${API_BASE}${url}`, {
@@ -26,7 +42,7 @@ const api = {
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Request failed' }));
+      const error = await parseErrorResponse(response);
       throw { status: response.status, ...error };
     }
 
@@ -44,7 +60,7 @@ const api = {
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Request failed' }));
+      const error = await parseErrorResponse(response);
       throw { status: response.status, ...error };
     }
 
@@ -62,7 +78,7 @@ const api = {
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Request failed' }));
+      const error = await parseErrorResponse(response);
       throw { status: response.status, ...error };
     }
 
@@ -79,7 +95,7 @@ const api = {
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Request failed' }));
+      const error = await parseErrorResponse(response);
       throw { status: response.status, ...error };
     }
 

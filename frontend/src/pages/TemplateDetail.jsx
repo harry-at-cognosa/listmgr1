@@ -48,7 +48,7 @@ function TemplateDetail() {
       setSections(sectionsRes.data);
       setSectionTypes(typesRes.data);
     } catch (err) {
-      setError('Failed to load template');
+      setError(err.error || 'Failed to load template');
     } finally {
       setLoading(false);
     }

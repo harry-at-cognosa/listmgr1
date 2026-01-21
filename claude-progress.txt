@@ -3578,3 +3578,60 @@ Why ref instead of just state:
 
 [Testing] Session complete - Feature #101 PASSED
 
+[Testing] 2026-01-21 - Feature #93 regression test PASSED - 'Application displays correctly on tablet'
+- Logged in as harry
+- Step 1: Resized browser to 768x1024 (tablet)
+- Step 2: Navigated through all pages:
+  * Login page - centered form, properly sized
+  * Templates list - filters in 2-row grid, table adapts
+  * Template detail - content wraps appropriately
+  * Template create form - 2-column responsive grid
+  * Currencies - 4 columns visible
+  * Countries - columns accessible
+  * Section Types - 7 columns visible
+- Step 3: Layout adjusts appropriately for all pages
+- Step 4: All content accessible via scrolling
+- Step 5: Tables show key columns, rest accessible via scroll
+- Step 6: No content cut off
+- No console errors (only expected React Router warnings)
+- Screenshots saved to .playwright-mcp/regression-f93-*.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #93 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #7)
+
+### Completed
+- Feature #7: Unauthenticated user redirected to login - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Clear all session/cookie data - Cleared cookies, localStorage, sessionStorage programmatically
+2. ✅ Step 2: Attempt to navigate directly to /templates - Successfully redirected to /login
+3. ✅ Step 3: Verify redirect to login page - URL confirmed as http://localhost:5173/login
+4. ✅ Step 4: Attempt to navigate to /admin/users - Successfully redirected to /login
+5. ✅ Step 5: Verify redirect to login page - URL confirmed as /login
+6. ✅ Step 6: Verify no protected content is visible - Only login form displayed, no data leaked
+
+### Additional Routes Tested
+- /reference/currencies → redirected to /login ✅
+- /templates/1 (template detail) → redirected to /login ✅
+- /templates/new (template create form) → redirected to /login ✅
+
+### API Endpoints Verified
+- GET /api/templates → returns {"error":"Authentication required"} (401)
+- GET /api/users → returns {"error":"Authentication required"} (401)
+- GET /api/currencies → returns {"error":"Authentication required"} (401)
+
+### Screenshots
+- .playwright-mcp/feature-7-redirect-to-login.png (login page shown after redirect)
+
+### Console Errors
+- Only expected 401 errors for unauthenticated API calls
+- React Router future flag warnings (expected)
+
+### Current Status
+- Feature #7 marked as passing
+- Features passing: 71/103 (68.9%)
+
+[Testing] Session complete - Feature #7 PASSED
