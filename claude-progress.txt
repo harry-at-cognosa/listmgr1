@@ -1,5 +1,44 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #82)
+
+### Completed
+- Feature #82: Direct URL access to template works - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in and get a template ID - Logged in as harry, identified template #2 "Storage Quote - UK"
+2. ✅ Step 2: Note the URL - URL: http://localhost:5173/templates/2
+3. ✅ Step 3: Open new browser tab - Simulated by logging out
+4. ✅ Step 4: Navigate directly to template URL - Navigated to http://localhost:5173/templates/2
+5. ✅ Step 5: Verify redirect to login if not authenticated - Confirmed redirect to /login page
+6. ✅ Step 6: Log in - Logged in with harry/harry
+7. ✅ Step 7: Verify correct template displays - After login, automatically redirected to /templates/2 showing "Storage Quote - UK"
+
+### Additional Verification
+- ✅ Tested deep linking to /templates/1/edit (edit URL) - Works correctly
+- ✅ Only expected 401 errors in console (pre-login auth checks)
+
+### Implementation Changes
+- Modified App.jsx PrivateRoute to pass current location to login page via React Router state
+- Modified Login.jsx to read redirect URL from location state and navigate there after successful login
+- AdminRoute also updated to preserve redirect URL for admin-protected routes
+
+### Screenshots
+- .playwright-mcp/feature-82-redirect-to-login.png (redirected to login when not authenticated)
+- .playwright-mcp/feature-82-redirect-after-login.png (redirected to correct template after login)
+- .playwright-mcp/feature-82-edit-url-redirect.png (edit URL deep linking works)
+
+### Technical Notes
+- React Router's Navigate component now passes state={{ from: location }}
+- Login component retrieves redirect URL via location.state?.from?.pathname
+- Default redirect is /templates if no redirect URL is stored
+
+### Current Status
+- Features passing: 50/103 (48.5%)
+- Feature #82 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #81)
 
 ### Completed
