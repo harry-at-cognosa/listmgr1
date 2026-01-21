@@ -1,5 +1,46 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #58)
+
+### Completed
+- Feature #58: Navigation sidebar styled correctly - VERIFIED AND PASSING
+  - Sidebar has proper professional blue color scheme using Tailwind primary colors
+  - Hover states work on all menu items with smooth transitions
+  - Active page is highlighted with blue background (primary-600)
+  - Reference Data section is expandable/collapsible with rotating chevron icon
+  - Sub-menu items have proper indentation and lighter active state (primary-100)
+  - User Management link only visible to admin users
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry" and "admin"
+2. ✅ Step 2: Examine sidebar navigation - Verified Templates, Reference Data, User Management (admin)
+3. ✅ Step 3: Verify professional blue color scheme - Uses primary-600/700 (blue #2563eb)
+4. ✅ Step 4: Verify hover states on menu items - All items have hover:bg-gray-100 or hover:bg-primary-50
+5. ✅ Step 5: Verify active page highlighted - Active items have bg-primary-600 (main) or bg-primary-100 (sub)
+6. ✅ Step 6: Verify expandable Reference Data section - Chevron rotates on toggle, submenu shows 5 links
+
+### Technical Details
+- Layout.jsx implements sidebar with proper CSS classes
+- tailwind.config.js defines primary color scale (#eff6ff to #1e3a8a)
+- navLinkClass: Active uses bg-primary-600, inactive uses text-gray-700 with hover states
+- subNavLinkClass: Active uses bg-primary-100, inactive uses text-gray-600 with hover states
+- Reference Data toggle uses useState hook with rotate-180 transform animation
+
+### Screenshots
+- .playwright-mcp/feature-58-step1-sidebar-initial.png (initial sidebar view)
+- .playwright-mcp/feature-58-step2-hover-reference-data.png (hover on Reference Data)
+- .playwright-mcp/feature-58-step3-reference-data-expanded.png (expanded submenu)
+- .playwright-mcp/feature-58-step4-hover-submenu-item.png (hover on submenu)
+- .playwright-mcp/feature-58-step5-active-submenu-highlight.png (active submenu highlight)
+- .playwright-mcp/feature-58-step6-admin-sidebar-with-user-management.png (admin view)
+- .playwright-mcp/feature-58-step7-user-management-active.png (User Management active)
+
+### Current Status
+- Features passing: 30/103 (29.1%)
+- Feature #58 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #21)
 
 ### Completed
@@ -1277,3 +1318,14 @@
 - Screenshot: regression_feature12_api_403_unauthorized.png
 - All 6 verification steps PASSED
 [Testing] Session complete - Feature #12 regression test passed
+[Testing] 2026-01-21 - Feature #36 regression test PASSED - 'User can filter templates by product category' verified working
+- Logged in as harry
+- Product Category dropdown present with Hardware, Services, Software options
+- Hardware filter: 3 templates (Servers, Storage product lines)
+- Software filter: 4 templates (Operating Systems product line)
+- Services filter: 'No templates found' (correct - no Services templates)
+- Clear Filters resets dropdown to 'All Categories' and shows all templates
+- Only expected 401 errors (pre-login auth checks)
+- Screenshots: regression-feature36-hardware-filter.png, regression-feature36-clear-filters.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #36 regression test passed
