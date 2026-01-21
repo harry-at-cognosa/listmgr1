@@ -1,5 +1,29 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #2)
+
+### Completed
+- Feature #2: Database connection works - VERIFIED AND PASSING
+  - Backend server confirmed running on port 3001
+  - Health check endpoint `/api/health` returns `{"status":"ok","database":"connected"}`
+  - Database queries work - currencies API returns proper JSON data
+  - Login authentication works (queries users table)
+  - Templates page loads with data from multiple database tables (templates, countries, product_categories, product_lines)
+  - No database connection errors in console
+  - Screenshot saved: .playwright-mcp/verification_feature2_database_connection.png
+
+### Verification Steps Completed
+1. ✅ Step 1: Start the backend server - Backend running on port 3001
+2. ✅ Step 2: Verify no database connection errors in logs - Clean logs, health check OK
+3. ✅ Step 3: Make a simple API call that queries the database - Health check and currencies API both work
+4. ✅ Step 4: Verify response returns expected data format - JSON arrays with proper schema
+
+### Current Status
+- Features passing: 5/103 (4.9%)
+- Feature #2 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #41)
 
 ### Completed
@@ -71,3 +95,9 @@
 
 ### Next Steps
 - Continue with next pending features (likely other reference table CRUD operations)
+[Testing] 2026-01-21 00:29:11 - Feature #13 regression test PASSED - 'Currency list page displays all currencies' still working correctly
+[Testing] 2026-01-21 00:29:12 - Feature #34 regression test PASSED - 'Templates list page displays all templates' still working correctly
+- Verified login as admin (Delete button visible)
+- Verified login as regular user harry (Delete button NOT visible)
+- All 6 verification steps passed
+- No console errors after login
