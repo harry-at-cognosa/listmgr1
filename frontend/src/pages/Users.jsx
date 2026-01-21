@@ -144,16 +144,67 @@ function UserFormModal({ user, onClose, onSave }) {
   const isEditing = !!user;
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
   const [formData, setFormData] = useState({
     username: user?.username || '',
     password: '',
     role: user?.role || 'user'
   });
 
+  // Validate form and return errors object
+  const validateForm = () => {
+    const errors = {};
+
+    // Username validation
+    if (!formData.username.trim()) {
+      errors.username = 'Username is required';
+    } else if (formData.username.trim().length < 3) {
+      errors.username = 'Username must be at least 3 characters';
+    } else if (formData.username.trim().length > 50) {
+      errors.username = 'Username must be 50 characters or less';
+    }
+
+    // Password validation (required for new users)
+    if (!isEditing) {
+      if (!formData.password) {
+        errors.password = 'Password is required';
+      } else if (formData.password.length < 3) {
+        errors.password = 'Password must be at least 3 characters';
+      }
+    } else if (formData.password && formData.password.length < 3) {
+      // For editing, only validate if password is provided
+      errors.password = 'Password must be at least 3 characters';
+    }
+
+    return errors;
+  };
+
+  // Clear field error when user starts typing
+  const handleFieldChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear the specific field error when user types
+    if (fieldErrors[field]) {
+      setFieldErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSaving(true);
     setError('');
+
+    // Validate form
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+
+    setFieldErrors({});
+    setSaving(true);
 
     try {
       const data = { ...formData };
@@ -163,19 +214,28 @@ function UserFormModal({ user, onClose, onSave }) {
       if (isEditing) {
         await api.put(`/users/${user.user_id}`, data);
       } else {
-        if (!data.password) {
-          setError('Password is required for new users');
-          setSaving(false);
-          return;
-        }
         await api.post('/users', data);
       }
       onSave();
     } catch (err) {
-      setError(err.error || 'Failed to save user');
+      // Handle server-side errors (like duplicate username)
+      if (err.error && err.error.toLowerCase().includes('username')) {
+        setFieldErrors({ username: err.error });
+      } else {
+        setError(err.error || 'Failed to save user');
+      }
     } finally {
       setSaving(false);
     }
+  };
+
+  // Helper to get input class based on error state
+  const getInputClass = (fieldName) => {
+    const baseClass = "w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2";
+    if (fieldErrors[fieldName]) {
+      return `${baseClass} border-red-500 focus:ring-red-500 focus:border-red-500`;
+    }
+    return `${baseClass} border-gray-300 focus:ring-primary-500 focus:border-primary-500`;
   };
 
   return (
@@ -184,17 +244,19 @@ function UserFormModal({ user, onClose, onSave }) {
         <div className="p-6">
           <h3 className="text-lg font-semibold mb-4">{isEditing ? 'Edit User' : 'Add User'}</h3>
           {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md text-sm">{error}</div>}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Username *</label>
               <input
                 type="text"
                 value={formData.username}
-                onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-                required
+                onChange={(e) => handleFieldChange('username', e.target.value)}
                 maxLength={50}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className={getInputClass('username')}
               />
+              {fieldErrors.username && (
+                <p className="mt-1 text-sm text-red-600">{fieldErrors.username}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -203,21 +265,26 @@ function UserFormModal({ user, onClose, onSave }) {
               <input
                 type="password"
                 value={formData.password}
-                onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                required={!isEditing}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                onChange={(e) => handleFieldChange('password', e.target.value)}
+                className={getInputClass('password')}
               />
+              {fieldErrors.password && (
+                <p className="mt-1 text-sm text-red-600">{fieldErrors.password}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Role *</label>
               <select
                 value={formData.role}
-                onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                onChange={(e) => handleFieldChange('role', e.target.value)}
+                className={getInputClass('role')}
               >
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
               </select>
+              {fieldErrors.role && (
+                <p className="mt-1 text-sm text-red-600">{fieldErrors.role}</p>
+              )}
             </div>
             <div className="flex justify-end gap-3 pt-4">
               <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md">Cancel</button>

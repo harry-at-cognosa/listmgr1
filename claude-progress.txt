@@ -1754,3 +1754,58 @@ All pages consistently implement loading states:
 - Screenshot: regression-feature19-country-created.png
 - All 10 verification steps PASSED
 [Testing] Session complete - Feature #19 regression test passed
+[Testing] 2026-01-21 12:06 - Feature #13 regression test PASSED - 'Currency list page displays all currencies' verified working
+- Logged in as harry
+- Navigated to Reference Data > Currencies
+- Page loaded without errors (401s were pre-login auth checks)
+- Table displays with columns: SYMBOL, NAME, LAST UPDATED, ACTIONS
+- Currencies visible: EUR (Euro), GBP (British Pound), USD (US Dollar), JPY, TST
+- Last update info shows datetime and username correctly
+- + Add Currency button present
+- Edit buttons available for each row
+- Screenshot: regression-feature13-currencies-list-jan21-1206.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #13 regression test passed
+[Testing] 2026-01-21 12:07 - Feature #35 regression test PASSED - 'User can filter templates by country' verified working
+- Logged in as harry
+- Navigated to Templates page
+- Country dropdown present and populated from countries table (Canada, Germany, UK, USA)
+- Germany filter: showed 4 templates (only Germany templates)
+- United States filter: showed 3 templates (only US templates)
+- Clear Filters: reset to 'All Countries' and showed all 8 templates
+- Only expected 401 errors (pre-login auth checks)
+- Screenshots: regression-feature35-germany-filter.png, regression-feature35-usa-filter.png
+- All 7 verification steps PASSED
+[Testing] Session complete - Feature #35 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #67)
+
+### Completed
+- Feature #67: Required fields prevent form submission - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Open Currency create form - Clicked "+ Add Currency" button
+2. ✅ Step 2: Leave symbol field empty - Left the Symbol field empty
+3. ✅ Step 3: Try to submit - Clicked Save button
+4. ✅ Step 4: Verify error shown for required field - Browser native validation showed "Please fill out this field."
+5. ✅ Step 5: Verify form not submitted - Modal remained open, no data was saved
+6. ✅ Step 6: Fill required field - Filled Symbol with "F67" and Name with "TEST_FEATURE_67_VALIDATION"
+7. ✅ Step 7: Verify form can now submit - Form submitted successfully, "Currency saved successfully" message shown
+
+### Additional Verification
+- Also tested Countries form validation - same browser native validation behavior confirmed
+- Required fields marked with asterisk (*) in UI (Symbol *, Abbreviation *, Name *)
+- Non-required fields have no asterisk (Name for Currency, Currency for Country)
+- No unexpected console errors (only expected 401 pre-login auth checks)
+
+### Screenshots
+- .playwright-mcp/feature-67-step3-validation-error.png (validation error on Currency form)
+- .playwright-mcp/feature-67-step7-form-submitted.png (successful submission after filling required field)
+- .playwright-mcp/feature-67-countries-validation.png (validation error on Countries form)
+
+### Current Status
+- Features passing: 39/103 (37.9%)
+- Feature #67 marked as passing
+[Testing] Session complete - Feature #67 PASSED
