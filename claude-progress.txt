@@ -1,5 +1,43 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #77)
+
+### Completed
+- Feature #77: Last update fields track correctly - VERIFIED AND PASSING
+- Fixed bug in SQLite UPDATE...RETURNING handling in backend/db/index.js
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as 'harry' - Logged in successfully
+2. ✅ Step 2: Create a new currency - Created currency A77 "TEST_AUDIT_FIELD_HARRY"
+3. ✅ Step 3: Verify last_update_user shows 'harry' - Confirmed: "2026-01-21 12:19 by harry"
+4. ✅ Step 4: Verify last_update_datetime is current - Confirmed: "2026-01-21 12:19"
+5. ✅ Step 5: Log in as 'admin' - Logged in successfully
+6. ✅ Step 6: Edit the same currency - Changed name to "TEST_AUDIT_FIELD_ADMIN"
+7. ✅ Step 7: Verify last_update_user now shows 'admin' - Confirmed: "2026-01-21 12:20 by admin"
+8. ✅ Step 8: Verify last_update_datetime updated - Confirmed: Changed from "12:19" to "12:20"
+
+### Bug Fix
+- Found issue: SQLite UPDATE...RETURNING was not returning the updated row
+- Backend db/index.js was returning empty rows for UPDATE queries with RETURNING
+- Fix: Added logic to fetch the updated row after UPDATE operation by querying with primary key
+- This fix affects all reference data edit operations (currencies, countries, etc.)
+
+### Screenshots
+- .playwright-mcp/feature-77-step3-4-created-by-harry.png (currency created by harry)
+- .playwright-mcp/feature-77-step7-8-edited-by-admin.png (currency edited by admin)
+
+### Technical Notes
+- last_update_datetime and last_update_user fields are properly tracked on all modifications
+- Both CREATE and UPDATE operations correctly update audit fields
+- Fields track which user made the last change and when
+- No console errors (only expected 401 pre-login auth checks)
+
+### Current Status
+- Features passing: 44/103 (42.7%)
+- Feature #77 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #78)
 
 ### Completed
