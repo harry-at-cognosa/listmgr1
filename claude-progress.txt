@@ -1,5 +1,42 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #87)
+
+### Completed
+- Feature #87: Filter persists after viewing detail - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Templates - Logged in as harry, navigated to /templates
+2. ✅ Step 2: Apply country and product category filters - Selected "Germany" and "Software"
+   - URL changed to: http://localhost:5173/templates?country_id=3&product_cat_id=2
+3. ✅ Step 3: Click to view a template detail - Clicked View on "OS License Quote - Germany"
+   - Navigated to /templates/3
+4. ✅ Step 4: Click back or navigate to Templates - Used browser back button
+   - URL preserved: http://localhost:5173/templates?country_id=3&product_cat_id=2
+5. ✅ Step 5: Verify filters still applied - Germany and Software dropdowns showed selected values
+6. ✅ Step 6: Verify same filtered results shown - Same 8 Germany + Software templates displayed
+
+### Technical Implementation
+- Updated Templates.jsx to use URL search params (useSearchParams hook from react-router-dom)
+- Created getFiltersFromParams() helper to read filters from URL
+- handleFilterChange() now updates URL params instead of component state
+- clearFilters() resets all URL search params
+- Filters persist in browser history for back/forward navigation
+- Filter state is also bookmarkable (shareable URLs with filters)
+
+### Screenshots
+- .playwright-mcp/feature-87-filters-persisted-after-back.png (filters preserved after back)
+- .playwright-mcp/feature-87-final-verification.png (final state with filters)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks
+
+### Current Status
+- Features passing: 54/103 (52.4%)
+- Feature #87 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #88)
 
 ### Completed
