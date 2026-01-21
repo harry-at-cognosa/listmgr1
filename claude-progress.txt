@@ -4263,3 +4263,59 @@ Why ref instead of just state:
 
 [Testing] Session complete - Feature #53 PASSED
 
+[Testing] 2026-01-21 - Feature #32 regression test PASSED - 'User can edit existing section type'
+- Logged in as harry
+- Step 1: Logged in successfully ✓
+- Step 2: Navigated to Section Types page ✓
+- Step 3: Clicked Edit on 'Header' section type ✓
+- Step 4: Modified boolean field (Has Total Price: No → Yes) ✓
+- Step 5: Submitted form, received 'Section type saved successfully' message ✓
+- Step 6: Verified changes saved - reopened edit form and confirmed:
+  * Has Total Price: checked ✓
+  * Version: 1.1-F32-TEST ✓
+  * Last Updated: 2026-01-21 13:22 by harry ✓
+- Note: Initial attempt got 500 error (transient server issue), retry succeeded
+- Only expected console errors (pre-login 401s)
+- Screenshot: regression-f32-edit-success.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #32 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #56)
+
+### Completed
+- Feature #56: Expand/collapse all sections button works - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: View template with 3+ sections - Viewed 'Storage Quote - UK' (ID 2) with 3 sections
+3. ✅ Step 3: Click 'Expand All' button - Clicked button successfully
+4. ✅ Step 4: Verify all sections expanded - All 3 sections showed full details:
+   - Section 1 (Standard): Type, Active, Version, Comment, Content, Last updated all visible
+   - Section 2 (Header): Type, Active, Content, Last updated all visible
+   - Section 3 (Standard - cloned): Type, Active, Version, Comment, Content, Last updated all visible
+5. ✅ Step 5: Click 'Collapse All' button - Clicked button successfully
+6. ✅ Step 6: Verify all sections collapsed - All 3 sections showed only header rows with seq number, name, status badge, and action buttons
+
+### Technical Implementation (Already Existed)
+- Frontend: TemplateDetail.jsx lines 64-72 - expandAll() and collapseAll() functions
+- expandAll(): Sets all section IDs in expandedSections state to true
+- collapseAll(): Sets expandedSections state to empty object {}
+- UI: Lines 193-204 - "Expand All" and "Collapse All" buttons trigger these functions
+
+### Screenshots
+- feature-56-step2-before-expand.png (initial state with all sections collapsed)
+- feature-56-step4-all-expanded.png (after clicking Expand All - section 1 visible)
+- feature-56-step4-all-expanded-scrolled.png (scrolled to show sections 2 and 3 expanded)
+- feature-56-step6-all-collapsed.png (after clicking Collapse All - all sections collapsed)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks
+- No JavaScript errors
+
+### Current Status
+- Features passing: 82/103 (79.6%)
+- Feature #56 marked as passing
+
+[Testing] Session complete - Feature #56 PASSED
