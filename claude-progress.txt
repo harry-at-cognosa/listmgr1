@@ -1,5 +1,55 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #75)
+
+### Completed
+- Feature #75: Data persists after page refresh - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in and create a unique currency 'F75' / 'TEST_F75_PERSISTENCE_VERIFY'
+   - Logged in as harry
+   - Navigated to Reference Data > Currencies
+   - Clicked "+ Add Currency" and created currency F75 / TEST_F75_PERSISTENCE_VERIFY
+   - Success message displayed
+2. ✅ Step 2: Refresh the page
+   - Navigated to http://localhost:5173/reference/currencies (fresh page load)
+3. ✅ Step 3: Navigate to Currencies
+   - Page loaded successfully
+4. ✅ Step 4: Verify 'F75' still exists
+   - Currency F75 / TEST_F75_PERSISTENCE visible in table with timestamp "2026-01-21 12:13 by harry"
+5. ✅ Step 5: Create a template with unique name
+   - Clicked "+ New Template"
+   - Created template: TEST_F75_TEMPLATE_PERSISTENCE_VERIFY
+   - Set Country: Germany, Currency: EUR, Category: Software, Product Line: Operating Systems
+   - Added description and content with unique test strings
+   - Template created successfully
+6. ✅ Step 6: Refresh page
+   - Navigated to http://localhost:5173/templates (fresh page load)
+7. ✅ Step 7: Verify template still exists
+   - Template TEST_F75_TEMPLATE_PERSISTENCE_VERIFY visible in list
+   - Clicked to view details - all fields persisted correctly:
+     - Name, Country, Product Line, Description, Content, Currency, Category all correct
+     - Last updated: 2026-01-21 12:14 by harry
+
+### Screenshots
+- .playwright-mcp/feature-75-step1-currency-created.png (currency created with F75 symbol)
+- .playwright-mcp/feature-75-step2-currency-persists-after-refresh.png (currency still visible after refresh)
+- .playwright-mcp/feature-75-step5-template-created.png (template created in list)
+- .playwright-mcp/feature-75-step6-template-persists-after-refresh.png (template still visible after refresh)
+- .playwright-mcp/feature-75-step7-template-detail-verified.png (template detail page with all persisted data)
+
+### Technical Notes
+- Data persistence verified for both Currencies (reference data) and Templates (main data)
+- Session maintained through page refreshes (user still logged in as harry)
+- No console errors during testing
+- Database correctly storing and retrieving all fields
+
+### Current Status
+- Features passing: 42/103 (40.8%)
+- Feature #75 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #70)
 
 ### Completed
