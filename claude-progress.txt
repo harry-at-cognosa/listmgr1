@@ -1,5 +1,49 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #15)
+
+### Completed
+- Feature #15: User can edit existing currency - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Currencies page - Navigated to /reference/currencies
+3. ✅ Step 3: Click Edit on an existing currency - Clicked Edit on GBP (British Pound)
+4. ✅ Step 4: Modify the currency name - Changed to "British Pound Sterling - F15 TEST"
+5. ✅ Step 5: Submit the form - Clicked Save button
+6. ✅ Step 6: Verify success message - "Currency saved successfully" displayed
+7. ✅ Step 7: Verify changes persist in list - Name updated to "British Pound Sterli..." (truncated)
+8. ✅ Step 8: Verify last_update_datetime is updated - Shows "2026-01-21 13:28"
+9. ✅ Step 9: Verify last_update_user shows current user - Shows "by harry"
+
+### Additional Verification
+- Data persists after page refresh
+- Edit form properly pre-populates with existing values
+- Currency edit properly tracks audit fields (last_update_datetime, last_update_user)
+- Restored GBP to original "British Pound" value after testing
+
+### Technical Implementation (Already Existed)
+- Frontend: Currencies.jsx - Edit button opens modal with handleEdit() function
+- Backend: PUT /api/currencies/:id endpoint updates record
+- Audit fields automatically updated on save
+
+### Screenshots
+- .playwright-mcp/feature-15-step2-currencies-page.png (Currencies list page)
+- .playwright-mcp/feature-15-step3-edit-form-opened.png (Edit modal with GBP data)
+- .playwright-mcp/feature-15-step6-success-message.png (After save)
+- .playwright-mcp/feature-15-step7-changes-persist-gbp-updated.png (Updated GBP with new timestamp)
+
+### Console Errors
+- None (only expected React Router future flag warnings)
+
+### Current Status
+- Features passing: 87/103 (84.5%)
+- Feature #15 marked as passing
+
+[Testing] Session complete - Feature #15 PASSED
+
+---
+
 ## Session 2026-01-21 (Feature #74)
 
 ### Completed
