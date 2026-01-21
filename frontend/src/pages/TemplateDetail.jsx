@@ -23,6 +23,7 @@ function TemplateDetail() {
   const [expandedSections, setExpandedSections] = useState({});
   const [showSectionForm, setShowSectionForm] = useState(false);
   const [editingSection, setEditingSection] = useState(null);
+  const [activeTabId, setActiveTabId] = useState(null); // For tabbed section editor
 
   useEffect(() => {
     loadData();
@@ -80,12 +81,23 @@ function TemplateDetail() {
     try {
       await api.delete(`/sections/${sectionId}`);
       setSuccess('Section deleted successfully');
+      // If the deleted section was the active tab, reset
+      if (activeTabId === sectionId) {
+        setActiveTabId(null);
+      }
       loadData();
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       setError(err.error || 'Failed to delete section');
       setTimeout(() => setError(''), 3000);
     }
+  };
+
+  // Handle tab-based section save
+  const handleTabSectionSave = () => {
+    loadData();
+    setSuccess('Section saved successfully');
+    setTimeout(() => setSuccess(''), 3000);
   };
 
   if (loading) {
@@ -268,6 +280,53 @@ function TemplateDetail() {
           </div>
         )}
       </div>
+
+      {/* Tabbed Section Editor */}
+      {sections.length > 0 && (
+        <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Section Editor (Tabs)</h3>
+
+          {/* Tab Bar */}
+          <div className="border-b border-gray-200">
+            <nav className="flex -mb-px space-x-1 overflow-x-auto" aria-label="Section tabs">
+              {sections.map(section => (
+                <button
+                  key={section.plsqts_id}
+                  onClick={() => setActiveTabId(activeTabId === section.plsqts_id ? null : section.plsqts_id)}
+                  className={`
+                    px-4 py-2 text-sm font-medium border-b-2 whitespace-nowrap transition-colors
+                    ${activeTabId === section.plsqts_id
+                      ? 'border-primary-500 text-primary-600 bg-primary-50'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }
+                  `}
+                >
+                  <span className="mr-2 text-gray-400">{section.plsqt_seqn}.</span>
+                  {section.plsqt_use_alt_name && section.plsqt_alt_name
+                    ? section.plsqt_alt_name
+                    : section.section_type_name}
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          {/* Tab Content - Section Form */}
+          {activeTabId ? (
+            <div className="pt-4">
+              <SectionTabForm
+                templateId={id}
+                section={sections.find(s => s.plsqts_id === activeTabId)}
+                sectionTypes={sectionTypes}
+                onSave={handleTabSectionSave}
+              />
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              Click a tab above to edit that section
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Section Form Modal */}
       {showSectionForm && (
@@ -466,6 +525,205 @@ function SectionFormModal({ templateId, section, sectionTypes, onClose, onSave }
             </div>
           </form>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// Inline section form for tabbed editor (not a modal)
+function SectionTabForm({ templateId, section, sectionTypes, onSave }) {
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [localSuccess, setLocalSuccess] = useState('');
+  const [formData, setFormData] = useState({
+    section_type_id: section?.section_type_id || '',
+    plsqt_seqn: section?.plsqt_seqn || '',
+    plsqt_alt_name: section?.plsqt_alt_name || '',
+    plsqt_comment: section?.plsqt_comment || '',
+    plsqt_use_alt_name: section?.plsqt_use_alt_name || false,
+    plsqts_active: section?.plsqts_active !== false,
+    plsqts_version: section?.plsqts_version || '',
+    content: section?.content || '',
+    plsqts_status: section?.plsqts_status || 'not started'
+  });
+
+  // Reset form when section changes (user clicks different tab)
+  useEffect(() => {
+    if (section) {
+      setFormData({
+        section_type_id: section.section_type_id || '',
+        plsqt_seqn: section.plsqt_seqn || '',
+        plsqt_alt_name: section.plsqt_alt_name || '',
+        plsqt_comment: section.plsqt_comment || '',
+        plsqt_use_alt_name: section.plsqt_use_alt_name || false,
+        plsqts_active: section.plsqts_active !== false,
+        plsqts_version: section.plsqts_version || '',
+        content: section.content || '',
+        plsqts_status: section.plsqts_status || 'not started'
+      });
+      setError('');
+      setLocalSuccess('');
+    }
+  }, [section?.plsqts_id]);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    setError('');
+    setLocalSuccess('');
+
+    try {
+      await api.put(`/sections/${section.plsqts_id}`, formData);
+      setLocalSuccess('Section updated successfully!');
+      onSave();
+      setTimeout(() => setLocalSuccess(''), 3000);
+    } catch (err) {
+      setError(err.error || 'Failed to save section');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (!section) return null;
+
+  return (
+    <div>
+      {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md">{error}</div>}
+      {localSuccess && <div className="mb-4 p-3 bg-green-50 text-green-700 rounded-md">{localSuccess}</div>}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Section Type *</label>
+            <select
+              name="section_type_id"
+              value={formData.section_type_id}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              <option value="">Select Type</option>
+              {sectionTypes.map(t => (
+                <option key={t.plsqtst_id} value={t.plsqtst_id}>{t.plsqtst_name}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Sequence</label>
+            <input
+              type="number"
+              name="plsqt_seqn"
+              value={formData.plsqt_seqn}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select
+              name="plsqts_status"
+              value={formData.plsqts_status}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              {['not started', 'in process', 'in review', 'approved', 'cloned'].map(s => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Alternate Name</label>
+            <input
+              type="text"
+              name="plsqt_alt_name"
+              value={formData.plsqt_alt_name}
+              onChange={handleChange}
+              maxLength={50}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            />
+          </div>
+          <div className="flex items-end pb-2">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="plsqt_use_alt_name"
+                checked={formData.plsqt_use_alt_name}
+                onChange={handleChange}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <span className="ml-2 text-sm text-gray-700">Use Alternate Name</span>
+            </label>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Version</label>
+            <input
+              type="text"
+              name="plsqts_version"
+              value={formData.plsqts_version}
+              onChange={handleChange}
+              maxLength={25}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Comment</label>
+          <input
+            type="text"
+            name="plsqt_comment"
+            value={formData.plsqt_comment}
+            onChange={handleChange}
+            maxLength={100}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
+          <textarea
+            name="content"
+            value={formData.content}
+            onChange={handleChange}
+            rows={4}
+            maxLength={500}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+          />
+          <p className="mt-1 text-sm text-gray-500">{formData.content.length}/500</p>
+        </div>
+
+        <div className="flex items-center justify-between pt-4 border-t">
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              name="plsqts_active"
+              checked={formData.plsqts_active}
+              onChange={handleChange}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <span className="ml-2 text-sm text-gray-700">Active</span>
+          </label>
+
+          <button
+            type="submit"
+            disabled={saving}
+            className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-colors disabled:opacity-50"
+          >
+            {saving ? 'Saving...' : 'Save Changes'}
+          </button>
+        </div>
+      </form>
+
+      <div className="mt-4 text-xs text-gray-400">
+        Last updated: {section.last_update_datetime} by {section.last_update_user}
       </div>
     </div>
   );

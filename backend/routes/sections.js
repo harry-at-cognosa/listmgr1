@@ -108,7 +108,7 @@ router.put('/:id', async (req, res) => {
     const now = getDateTime();
 
     // Get current status to check if it changed
-    const current = await db.query('SELECT plsqts_status FROM plsqt_sections WHERE plsqts_id = $1', [req.params.id]);
+    const current = await db.query('SELECT plsqts_status, status_datetime FROM plsqt_sections WHERE plsqts_id = $1', [req.params.id]);
     if (current.rows.length === 0) {
       return res.status(404).json({ error: 'Section not found' });
     }
