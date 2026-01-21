@@ -26,7 +26,7 @@ function ProductLines() {
       setItems(linesRes.data);
       setCategories(catsRes.data);
     } catch (err) {
-      setError('Failed to load product lines');
+      setError(err.error || 'Failed to load product lines');
     } finally {
       setLoading(false);
     }

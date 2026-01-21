@@ -21,7 +21,7 @@ function Users() {
       const response = await api.get('/users');
       setUsers(response.data);
     } catch (err) {
-      setError('Failed to load users');
+      setError(err.error || 'Failed to load users');
     } finally {
       setLoading(false);
     }
