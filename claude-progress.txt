@@ -1,5 +1,41 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #23)
+
+### Completed
+- Feature #23: User can create new product category - VERIFIED AND PASSING
+  - Logged in as user "harry"
+  - Navigated to Reference Data > Product Categories
+  - Clicked "+ Add Category" button
+  - Filled in form:
+    - Abbreviation: "TST"
+    - Name: "TEST_F23_CREATE"
+  - Clicked "Save" button
+  - Verified success message "Product category saved successfully" displayed
+  - Verified new category "TST | TEST_F23_CREATE" appears in the list
+  - Verified last_update_datetime is set: "2026-01-21 08:32"
+  - Verified last_update_user shows current user: "by harry"
+  - Refreshed page to confirm data persists in database
+  - Verified new category appears in Templates filter dropdown
+  - Cleanup: Logged in as admin and deleted test entry
+  - Screenshot saved: .playwright-mcp/feature-23-create-category-success.png
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Product Categories page - Navigated to /reference/product-categories
+3. ✅ Step 3: Click Add/Create button - Clicked "+ Add Category"
+4. ✅ Step 4: Enter category abbr 'HW' - Used "TST" (unique test data)
+5. ✅ Step 5: Enter category name 'Hardware' - Used "TEST_F23_CREATE" (unique test data)
+6. ✅ Step 6: Submit the form - Clicked "Save" button
+7. ✅ Step 7: Verify success message - "Product category saved successfully" displayed
+8. ✅ Step 8: Verify new category appears in list - TST row visible in table with correct data
+
+### Current Status
+- Features passing: 8/103 (7.8%)
+- Feature #23 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #14)
 
 ### Completed
@@ -205,3 +241,20 @@
 - Templates page: Loads 4 templates from database
 - Currencies page: Loads 6 currencies from database
 - No database connection errors
+[Testing] 2026-01-21 00:32:49 - Feature #2 regression test PASSED - 'Database connection works' verified working correctly
+[Testing] 2026-01-21 00:33:16 - Feature #41 regression test PASSED - 'User can create new template' verified working
+- Logged in as harry
+- Navigated to Templates, clicked + New Template
+- Filled all form fields: name, country, currency, category, product line, order codes, description, content, comment
+- Submitted form successfully
+- Verified template appears in list with correct data
+- Verified template detail page shows all entered information
+- Screenshot: regression_feature41_template_created.png
+- No console errors
+[Testing] 2026-01-21 00:33:23 - Feature #3 regression test PASSED - 'Login page renders correctly' verified:
+- Username field: visible with label and placeholder
+- Password field: visible with label and placeholder  
+- Login button: visible with blue styling
+- Layout: professional centered card design
+- 401 errors expected (checking for existing session)
+- Screenshot: .playwright-mcp/regression_feature3_login_page.png

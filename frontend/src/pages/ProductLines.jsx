@@ -5,6 +5,7 @@ import api from '../services/api';
 function ProductLines() {
   const { isAdmin } = useAuth();
   const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -18,8 +19,12 @@ function ProductLines() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/product-lines');
-      setItems(response.data);
+      const [linesRes, catsRes] = await Promise.all([
+        api.get('/product-lines'),
+        api.get('/product-categories')
+      ]);
+      setItems(linesRes.data);
+      setCategories(catsRes.data);
     } catch (err) {
       setError('Failed to load product lines');
     } finally {
@@ -68,6 +73,7 @@ function ProductLines() {
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Abbr</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product Category</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Updated</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
               </tr>
@@ -77,6 +83,7 @@ function ProductLines() {
                 <tr key={item.product_line_id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 font-medium">{item.product_line_abbr}</td>
                   <td className="px-6 py-4">{item.product_line_name}</td>
+                  <td className="px-6 py-4">{item.product_cat_name || '-'}</td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {item.last_update_datetime} by {item.last_update_user}
                   </td>
