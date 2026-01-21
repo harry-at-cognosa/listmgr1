@@ -1,5 +1,44 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #65)
+
+### Completed
+- Feature #65: Confirmation dialog for delete operations - VERIFIED AND PASSING
+  - All delete operations require user confirmation before proceeding
+  - Cancel option prevents deletion
+  - Confirm option proceeds with deletion
+  - Dialogs explain what will be deleted
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in as admin user
+2. ✅ Step 2: Click Delete on a currency - Clicked Delete on F65 test currency
+3. ✅ Step 3: Verify confirmation dialog appears - Dialog appeared: "Are you sure you want to delete this currency?"
+4. ✅ Step 4: Verify dialog explains what will be deleted - Dialog clearly states what will be deleted. For templates: "This will also delete all its sections."
+5. ✅ Step 5: Click Cancel - Clicked Cancel on confirmation dialog
+6. ✅ Step 6: Verify item NOT deleted - F65 currency still in list after canceling
+7. ✅ Step 7: Click Delete again, confirm - Clicked Delete and accepted the confirmation dialog
+8. ✅ Step 8: Verify item deleted - F65 currency removed from list after confirming
+
+### Additional Verification
+- Tested confirmation dialogs across multiple entity types:
+  - Currencies: "Are you sure you want to delete this currency?"
+  - Templates: "Are you sure you want to delete this template? This will also delete all its sections."
+  - Users: "Are you sure you want to delete this user?"
+- All dialogs use browser native window.confirm() which provides clear OK/Cancel options
+- No console errors during testing
+
+### Screenshots
+- .playwright-mcp/feature-65-step1-currencies-list.png (currencies page before delete)
+- .playwright-mcp/feature-65-step6-not-deleted-after-cancel.png (currency still exists after cancel)
+- .playwright-mcp/feature-65-step8-item-deleted-after-confirm.png (currency deleted after confirm)
+- .playwright-mcp/feature-65-user-delete-confirmed.png (user delete verification)
+
+### Current Status
+- Features passing: 36/103 (35.0%)
+- Feature #65 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #62)
 
 ### Completed
