@@ -2717,3 +2717,121 @@ All limits match the VARCHAR specifications in the database schema (app_spec.txt
 - Screenshot: regression-feature13-currencies-list-jan21.png
 - All 6 verification steps PASSED
 [Testing] Session complete - Feature #13 regression test passed
+[Testing] 2026-01-21 12:35 - Feature #23 regression test PASSED - 'User can create new product category' verified working
+- Logged in as harry
+- Navigated to Reference Data > Product Categories
+- Step 1: Logged in as any user (harry) ✓
+- Step 2: Navigated to Product Categories page ✓
+- Step 3: Clicked '+ Add Category' button - modal form appeared ✓
+- Step 4: Entered category abbr 'R23' ✓
+- Step 5: Entered category name 'REGRESSION_TEST_F23_JAN21' ✓
+- Step 6: Submitted the form by clicking Save ✓
+- Step 7: Success message 'Product category saved successfully' displayed ✓
+- Step 8: New category 'R23 | REGRESSION_TEST_F23_JAN21' appears in list ✓
+- Last Updated shows '2026-01-21 12:35 by harry'
+- Only expected 401 errors (pre-login auth checks) and Vite HMR errors (not application issues)
+- Screenshot: regression-feature23-category-created.png
+- All 8 verification steps PASSED
+[Testing] Session complete - Feature #23 regression test passed
+[Testing] 2026-01-21 04:36 - Feature #3 regression test PASSED - 'Login page renders correctly' verified working
+- Navigated to /login page
+- Step 1: Navigate to login page ✓
+- Step 2: Username input field visible with placeholder 'Enter your username' ✓
+- Step 3: Password input field visible with placeholder 'Enter your password' ✓
+- Step 4: Login button visible - blue styled button ✓
+- Step 5: Page has appropriate styling - centered card layout, ListMgr branding, clean form fields ✓
+- Default credentials hint shown (admin/admin, harry/harry, clint/clint)
+- Only expected 401 errors (pre-login auth checks on /api/auth/me)
+- Screenshot: regression-feature3-login-page.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #3 regression test passed
+[Testing] 2026-01-21 04:38 - Feature #59 regression test PASSED - 'Forms have consistent styling' verified working
+- Logged in as harry
+- Step 1: Currency create form - modal with consistent styling ✓
+- Step 2: Template create form - full-page form with consistent styling ✓
+- Step 3: Section create form - modal with consistent styling ✓
+- Step 4: Input field styling consistent - borders, padding, rounded corners across all forms ✓
+- Step 5: Button styles consistent - primary blue, secondary outline across all forms ✓
+- Step 6: Spacing and alignment proper - consistent vertical/horizontal spacing ✓
+- Also verified: Country form, Login form for additional consistency checks
+- No console errors during testing
+- Screenshots: regression-feature59-*.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #59 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #91)
+
+### Completed
+- Feature #91: Form fields have associated labels - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Currency create form - Modal opened successfully
+2. ✅ Step 2: Inspect HTML for label-input associations - Used browser_evaluate to verify
+3. ✅ Step 3: Verify each input has a label element - All labels found
+4. ✅ Step 4: Verify labels are properly associated (for/id attributes) - All htmlFor/id match correctly
+5. ✅ Step 5: Check Template create form - All 15 fields verified
+6. ✅ Step 6: Verify all fields labeled - 100% label coverage across all forms
+
+### Implementation Details
+Added proper `htmlFor` attributes to labels and `id` attributes to inputs in:
+
+**Currencies.jsx (2 fields):**
+- currency_symbol, currency_name
+
+**Countries.jsx (3 fields):**
+- country_abbr, country_name, currency_id
+
+**ProductCategories.jsx (2 fields):**
+- product_cat_abbr, product_cat_name
+
+**ProductLines.jsx (3 fields):**
+- product_cat_id, product_line_abbr, product_line_name
+
+**SectionTypes.jsx (7 fields):**
+- plsqtst_name, has_total_price, has_lineitem_prices, plsqtst_comment, extrn_file_ref_section, active, plsqtst_version
+
+**TemplateForm.jsx (15 fields):**
+- plsqt_name, template_country_id, template_currency_id, template_product_cat_id, template_product_line_id
+- plsqt_status, plsqt_order_codes, plsqt_fbo_location, plsqs_as_of_date, plsqt_version
+- plsqt_desc, template_content, plsqt_comment, extrn_file_ref, plsqt_active
+
+**Users.jsx (3 fields):**
+- user_username, user_password, user_role
+
+**Already had proper associations (no changes needed):**
+- Login.jsx: username, password fields already had htmlFor/id
+
+### Technical Notes
+- Labels with htmlFor attributes properly link to inputs with matching id attributes
+- This enables screen readers to announce field labels when inputs receive focus
+- Also enables clicking on labels to focus the associated input
+- Used unique IDs with prefixes (template_, user_, etc.) to avoid conflicts when multiple forms exist
+
+### Screenshots
+- .playwright-mcp/feature-91-template-form-labels.png (Template form with 15 labeled fields)
+- .playwright-mcp/feature-91-country-form-labels.png (Country form modal)
+- .playwright-mcp/feature-91-section-types-form-labels.png (Section Types form modal)
+
+### Verification Method
+Used browser_evaluate to programmatically verify:
+1. Each input element has an id attribute
+2. A corresponding label element exists with matching htmlFor attribute
+3. All form fields across all pages have proper associations
+
+Example verification output for Template form:
+```
+{
+  "all_labels_properly_associated": true,
+  "total_fields": 15,
+  "properly_associated_count": 15
+}
+```
+
+### Current Status
+- Features passing: 57/103 (55.3%)
+- Feature #91 marked as passing
+- No console errors during testing (only expected React Router future flag warnings)
+
+[Testing] Session complete - Feature #91 PASSED
