@@ -1,5 +1,53 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #31)
+
+### Completed
+- Feature #31: User can create new section type - VERIFIED AND PASSING
+  - Issue found: SectionTypes.jsx was using incorrect field names (plsqts_type_* instead of plsqtst_*)
+  - Issue found: Form only had 2 fields (Abbreviation, Name) instead of all required fields
+  - Fix: Updated field names to match backend API (plsqtst_id, plsqtst_name, etc.)
+  - Fix: Added all required form fields: Name, Has Total Price, Has Line Item Prices, Comment, External File Reference, Active, Version
+  - Fix: Updated list view table columns to show all section type properties
+  - All 12 verification steps completed successfully
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Section Types page - Navigated to /reference/section-types
+3. ✅ Step 3: Click Add/Create button - Clicked "+ Add Section Type" button
+4. ✅ Step 4: Enter name 'Standard Quote Section' - Entered "TEST_F31_Standard_Quote_Section"
+5. ✅ Step 5: Set has_total_price checkbox - Checked "Has Total Price"
+6. ✅ Step 6: Set has_lineitem_prices checkbox - Checked "Has Line Item Prices"
+7. ✅ Step 7: Enter comment - Entered test comment
+8. ✅ Step 8: Set active checkbox - Active was checked by default
+9. ✅ Step 9: Enter version - Entered "1.0"
+10. ✅ Step 10: Submit the form - Clicked "Save" button
+11. ✅ Step 11: Verify success message - "Section type saved successfully" displayed
+12. ✅ Step 12: Verify new type appears in list - New section type appeared with all correct data
+
+### Additional Verifications
+- Data persists after page refresh
+- Last update shows correct datetime and username (harry)
+- Admin can see Delete button, regular user cannot
+- Test data cleaned up after verification
+
+### Screenshots
+- .playwright-mcp/feature-31-section-types-page-before.png (before fixes - empty columns)
+- .playwright-mcp/feature-31-section-types-list-fixed.png (after fixes - data visible)
+- .playwright-mcp/feature-31-add-form-modal.png (form with all fields)
+- .playwright-mcp/feature-31-form-filled.png (form filled with test data)
+- .playwright-mcp/feature-31-section-type-created.png (success message)
+- .playwright-mcp/feature-31-data-persisted.png (data after refresh)
+- .playwright-mcp/feature-31-test-data-visible.png (test data in list)
+- .playwright-mcp/feature-31-admin-view-with-delete.png (admin view)
+- .playwright-mcp/feature-31-test-data-deleted.png (after cleanup)
+
+### Current Status
+- Features passing: 12/103 (11.7%)
+- Feature #31 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #42)
 
 ### Completed
