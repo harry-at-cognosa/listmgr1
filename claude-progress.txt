@@ -3048,3 +3048,104 @@ Example verification output for Template form:
 - Feature #93 marked as passing
 
 [Testing] Session complete - Feature #93 PASSED
+[Testing] 2026-01-21 - Feature #84 regression test PASSED - 'Empty search shows all results' verified working
+- Logged in as harry
+- Step 1: Navigated to Templates page, saw 17 templates
+- Step 2: Searched 'Server', list filtered to 1 result
+- Step 3: Cleared search box
+- Step 4: All 17 templates displayed again ✓
+- Step 5: API confirmed total count = 17, UI matches ✓
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression-feature84-empty-search.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #84 regression test passed
+[Testing] 2026-01-21 12:46 - Feature #41 regression test PASSED - 'User can create new template' verified working
+- Logged in as harry
+- Step 1-2: Logged in and navigated to Templates page ✓
+- Step 3: Clicked '+ New Template' button ✓
+- Step 4-8: Filled all dropdown fields (Country: US, Currency: USD, Category: Hardware, Line: Servers) ✓
+- Step 9-10: Filled text fields (Order Codes, Description, Content, Comment) ✓
+- Step 11: Status set to 'not started' (default) ✓
+- Step 12: Submitted form via 'Create Template' button ✓
+- Step 13: Success message 'Template created successfully' displayed ✓
+- Step 14: Template 'TEST_TEMPLATE_001_REGRESSION' appears in list with correct data ✓
+- Verified all data saved correctly in template detail view
+- Only expected 401 errors (pre-login auth checks)
+- Screenshots: regression-feature41-form-filled.png, regression-feature41-success-message.png, regression-feature41-template-in-list.png, regression-feature41-template-detail.png
+- All 14 verification steps PASSED
+[Testing] Session complete - Feature #41 regression test passed
+[Testing] 2026-01-21 - Feature #84 regression test PASSED - 'Empty search shows all results' verified working
+- Logged in as harry
+- Step 1: Navigated to Templates page, saw 18 templates initially
+- Step 2: Searched 'Server', list filtered to 1 result
+- Step 3: Cleared search box
+- Step 4: All 18 templates displayed again ✓
+- Step 5: UI count verified = 18 templates ✓
+- Only expected 401 errors (pre-login auth checks on /api/auth/me)
+- Screenshots: regression-feature84-initial-templates.png, regression-feature84-search-server.png, regression-feature84-cleared-search.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #84 regression test passed
+[Testing] 2026-01-21 12:50 - Feature #31 regression test PASSED - 'User can create new section type' verified working
+- Logged in as harry
+- Step 1-2: Logged in and navigated to Section Types page ✓
+- Step 3: Clicked '+ Add Section Type' button ✓
+- Step 4-9: Filled all fields (Name: 'Standard Quote Section', Has Total Price: checked, Has Line Item Prices: checked, Comment: filled, Active: checked, Version: '1.0') ✓
+- Step 10: Submitted form via 'Save' button ✓
+- Step 11: Success message 'Section type saved successfully' displayed ✓
+- Step 12: New section type 'Standard Quote Section' appears in list with correct data (Yes/Yes/Active/1.0/by harry) ✓
+- Only expected 401 errors (pre-login auth checks)
+- Screenshots: regression-feature31-form-filled.png, regression-feature31-success.png
+- All 12 verification steps PASSED
+[Testing] Session complete - Feature #31 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #95)
+
+### Completed
+- Feature #95: Double-click submit creates only one record - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. Step 1: Navigate to Currency create form - Opened modal at /reference/currencies
+2. Step 2: Fill in form with unique values - Entered Z95 and FINAL_DOUBLECLICK_Z95
+3. Step 3: Rapidly double-click submit button - Used JavaScript to click 10 times rapidly
+4. Step 4: Verify only one currency created - Confirmed Z95 appears once in list (19 total currencies)
+5. Step 5: Check database for duplicates - Verified z95Count: 1 using browser evaluate
+6. Step 6: Verify appropriate feedback shown - Currency saved successfully message displayed
+
+### Implementation
+Added ref-based double-click protection to ALL form submission handlers across the application:
+
+Files Modified:
+- frontend/src/pages/Currencies.jsx - CurrencyFormModal
+- frontend/src/pages/Countries.jsx - CountryFormModal
+- frontend/src/pages/ProductCategories.jsx - ProductCategoryFormModal
+- frontend/src/pages/ProductLines.jsx - ProductLineFormModal
+- frontend/src/pages/SectionTypes.jsx - SectionTypeFormModal
+- frontend/src/pages/Users.jsx - UserFormModal
+- frontend/src/pages/TemplateForm.jsx - Template create/edit form
+- frontend/src/pages/TemplateDetail.jsx - SectionFormModal and SectionTabForm
+
+Pattern Used: useRef for synchronous double-click prevention
+
+Why ref instead of just state:
+- State updates are asynchronous - multiple rapid clicks can all see saving=false
+- Ref updates are synchronous - the first click sets it immediately
+- The ref blocks all subsequent clicks in the same synchronous execution
+
+### Test Results
+- Test 1 (double-click): F95 created - only 1 record
+- Test 2 (10 rapid clicks pre-fix): X95 created - only 1 record (existing disabled button helped)
+- Test 3 (10 rapid clicks with ref fix): Z95 created - only 1 record, NO 400 errors in console
+
+### Screenshots
+- .playwright-mcp/feature-95-double-click-protection.png (currencies list)
+- .playwright-mcp/feature-95-z95-entry.png (Z95 entry at bottom)
+- .playwright-mcp/feature-95-success-message.png (success message shown)
+
+### Console Errors
+- None (only expected React Router future flag warnings)
+
+### Current Status
+- Features passing: 61/103 (59.2%)
+- Feature #95 marked as passing
