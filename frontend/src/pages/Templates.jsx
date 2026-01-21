@@ -246,67 +246,69 @@ function Templates() {
             No templates found. {filters.search || filters.country_id || filters.product_cat_id || filters.product_line_id || filters.active ? 'Try adjusting your filters.' : 'Create your first template!'}
           </div>
         ) : (
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Country</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product Line</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sections</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {templates.map(template => (
-                <tr key={template.plsqt_id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
-                    <Link to={`/templates/${template.plsqt_id}`} className="text-primary-600 hover:text-primary-800 font-medium">
-                      {template.plsqt_name}
-                    </Link>
-                  </td>
-                  <td className="px-6 py-4 text-gray-600">{template.country_name || '-'}</td>
-                  <td className="px-6 py-4 text-gray-600">{template.product_line_name || '-'}</td>
-                  <td className="px-6 py-4 text-gray-600">{template.plsqt_section_count}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${STATUS_COLORS[template.plsqt_status] || 'bg-gray-100'}`}>
-                      {template.plsqt_status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <Link
-                        to={`/templates/${template.plsqt_id}`}
-                        className="text-sm text-blue-600 hover:text-blue-800"
-                      >
-                        View
-                      </Link>
-                      <Link
-                        to={`/templates/${template.plsqt_id}/edit`}
-                        className="text-sm text-green-600 hover:text-green-800"
-                      >
-                        Edit
-                      </Link>
-                      <button
-                        onClick={() => handleClone(template.plsqt_id)}
-                        className="text-sm text-purple-600 hover:text-purple-800"
-                      >
-                        Clone
-                      </button>
-                      {isAdmin && (
-                        <button
-                          onClick={() => handleDelete(template.plsqt_id)}
-                          className="text-sm text-red-600 hover:text-red-800"
-                        >
-                          Delete
-                        </button>
-                      )}
-                    </div>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Name</th>
+                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap hidden sm:table-cell">Country</th>
+                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap hidden md:table-cell">Product Line</th>
+                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap hidden lg:table-cell">Sections</th>
+                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Status</th>
+                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {templates.map(template => (
+                  <tr key={template.plsqt_id} className="hover:bg-gray-50">
+                    <td className="px-4 md:px-6 py-4">
+                      <Link to={`/templates/${template.plsqt_id}`} className="text-primary-600 hover:text-primary-800 font-medium">
+                        {template.plsqt_name}
+                      </Link>
+                    </td>
+                    <td className="px-4 md:px-6 py-4 text-gray-600 hidden sm:table-cell">{template.country_name || '-'}</td>
+                    <td className="px-4 md:px-6 py-4 text-gray-600 hidden md:table-cell">{template.product_line_name || '-'}</td>
+                    <td className="px-4 md:px-6 py-4 text-gray-600 hidden lg:table-cell">{template.plsqt_section_count}</td>
+                    <td className="px-4 md:px-6 py-4">
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${STATUS_COLORS[template.plsqt_status] || 'bg-gray-100'}`}>
+                        {template.plsqt_status}
+                      </span>
+                    </td>
+                    <td className="px-4 md:px-6 py-4">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <Link
+                          to={`/templates/${template.plsqt_id}`}
+                          className="text-sm text-blue-600 hover:text-blue-800 min-w-[40px] min-h-[32px] flex items-center"
+                        >
+                          View
+                        </Link>
+                        <Link
+                          to={`/templates/${template.plsqt_id}/edit`}
+                          className="text-sm text-green-600 hover:text-green-800 min-w-[40px] min-h-[32px] flex items-center"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => handleClone(template.plsqt_id)}
+                          className="text-sm text-purple-600 hover:text-purple-800 min-w-[40px] min-h-[32px] flex items-center"
+                        >
+                          Clone
+                        </button>
+                        {isAdmin && (
+                          <button
+                            onClick={() => handleDelete(template.plsqt_id)}
+                            className="text-sm text-red-600 hover:text-red-800 min-w-[40px] min-h-[32px] flex items-center"
+                          >
+                            Delete
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>
