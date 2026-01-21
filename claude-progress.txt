@@ -4319,3 +4319,37 @@ Why ref instead of just state:
 - Feature #56 marked as passing
 
 [Testing] Session complete - Feature #56 PASSED
+[Testing] 2026-01-21 - Feature #53 regression test PASSED - 'User can clone individual section'
+- Logged in as harry (regular user)
+- Viewed template 'Storage Quote - UK' (ID 2) with 3 sections initially
+- Step 1: Log in as any user ✓
+- Step 2: View template detail - Viewed 'Storage Quote - UK' with 3 sections ✓
+- Step 3: Click Clone on a section - Clicked Clone on section 1 (Standard, ID=1) ✓
+- Step 4: Verify new section created with new ID - New section ID=17 (different from original ID=1) ✓
+- Step 5: Verify new section has status 'cloned' - Section 4 has plsqts_status='cloned' ✓
+- Step 6: Verify template section_count incremented - Count went from 3 to 4 ✓
+- Section IDs in template 2: [1, 2, 16, 17] - confirms new section has unique ID
+- Success message displayed: 'Section cloned successfully'
+- Only expected console errors (pre-login 401 auth checks)
+- Screenshots: regression-f53-step2-template-with-sections.png, regression-f53-step4-clone-success.png, regression-f53-step5-cloned-section-status.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #53 regression test passed
+[Testing] 2026-01-21 - Feature #82 regression test PASSED - 'Direct URL access to template works'
+- Step 1: Logged in as admin, identified template IDs (1: Server Quote - US Standard, 2: Storage Quote - UK) ✓
+- Step 2: Noted template URLs /templates/1 and /templates/2 ✓
+- Step 3: Logged out to test unauthenticated access ✓
+- Step 4: Navigated directly to /templates/1 while unauthenticated ✓
+- Step 5: Verified redirect to /login when not authenticated ✓
+  - Console showed expected 401 Unauthorized errors for /api/auth/me
+- Step 6: Logged in as harry (regular user) ✓
+- Step 7: Verified automatic redirect back to /templates/1 - correct template displayed ✓
+  - Template name: 'Server Quote - US Standard'
+  - All details correct: approved, United States, Servers, 2 sections, USD, Hardware, Active
+- Additional test: Repeated with /templates/2 (Storage Quote - UK) ✓
+  - Same behavior: redirect to login, then redirect to correct template after login
+  - Template: in process, United Kingdom, Storage, 5 sections, GBP, Hardware, Active
+- Deep linking works correctly for both admin and regular users
+- No unexpected console errors
+- Screenshots: regression-f82-step5-redirect-to-login.png, regression-f82-step7-template-displayed-after-login.png, regression-f82-deep-link-template2-success.png
+- All 7 verification steps PASSED
+[Testing] Session complete - Feature #82 regression test passed
