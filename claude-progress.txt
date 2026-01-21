@@ -5107,3 +5107,117 @@ Why ref instead of just state:
 - Screenshots: regression-f38-step2-all-templates.png, regression-f38-step4-active-only.png, regression-f38-step6-inactive-only.png
 - All 7 verification steps PASSED
 [Testing] Session complete - Feature #38 regression test passed
+[Testing] 2026-01-21 - Feature #87 regression test PASSED - 'Filter persists after viewing detail'
+- Step 1: Logged in as harry, navigated to /templates ✓
+- Step 2: Applied country filter (United States) and product category filter (Hardware) ✓
+  * URL updated to: ?country_id=1&product_cat_id=1
+  * Results filtered to 10 templates (all US + Hardware/Servers)
+- Step 3: Clicked View on 'Server Quote - US Standard' template ✓
+  * Navigated to /templates/1
+  * Breadcrumb links preserved filter params: /templates?country_id=1&product_cat_id=1
+- Step 4: Clicked 'Templates' breadcrumb link to navigate back ✓
+- Step 5: Verified filters still applied ✓
+  * Country dropdown shows 'United States' [selected]
+  * Product Category dropdown shows 'Hardware' [selected]
+  * URL preserved: ?country_id=1&product_cat_id=1
+- Step 6: Verified same filtered results shown ✓
+  * Same 10 templates displayed (all US + Servers)
+  * No change in filter state or results
+- Console errors: Only expected 401 pre-login auth checks (normal behavior)
+- Screenshots:
+  * regression-f87-step2-country-filter.png
+  * regression-f87-step2-both-filters.png
+  * regression-f87-step3-template-detail.png
+  * regression-f87-step5-6-filters-persisted.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #87 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #50)
+
+### Completed
+- Feature #50: User can create new section for template - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: View a template detail page - Viewed "Storage Quote - UK" (template ID 2, initially 5 sections)
+3. ✅ Step 3: Click Add Section button - Clicked "+ Add Section" button, form opened
+4. ✅ Step 4: Enter section sequence number - Entered "6"
+5. ✅ Step 5: Select section type from dropdown - Selected "Standard" from populated dropdown
+6. ✅ Step 6: Enter alt name if desired - Entered "TEST_F50_SECTION_CREATION"
+7. ✅ Step 7: Enter content - Entered "This is test content for Feature 50 - verifying section creation functionality works correctly with all fields." (111/500 chars)
+8. ✅ Step 8: Set status - Selected "in process" from status dropdown
+9. ✅ Step 9: Submit form - Clicked "Create" button
+10. ✅ Step 10: Verify section appears in template - New section #6 visible with type "Standard" and status "in process"
+11. ✅ Step 11: Verify template section_count incremented - Count went from 5 to 6 (visible in both detail page and templates list)
+
+### Additional Verifications
+- Success message "Section saved successfully" displayed
+- Section content, type, and status correct when expanded
+- Data persists after page refresh
+- Templates list shows updated section count (6)
+- No JavaScript console errors
+
+### Form Fields Verified
+- Section Type dropdown (populated with: Detail, Header, Product List, Standard, Summary, Terms, etc.)
+- Sequence number field
+- Alternate Name field
+- Use Alternate Name checkbox
+- Status dropdown (not started, in process, in review, approved, cloned)
+- Version field
+- Comment field
+- Content textarea with 0/500 character counter
+- Active checkbox (checked by default)
+- Cancel and Create buttons
+
+### Screenshots
+- feature-50-step2-template-detail.png (Template with 5 sections before adding)
+- feature-50-step3-add-section-form.png (Add Section form opened)
+- feature-50-step7-form-filled.png (Form with all fields filled)
+- feature-50-step10-section-created-success.png (Success message, section count = 6)
+- feature-50-section6-expanded-details.png (New section expanded showing content)
+- feature-50-step11-section-count-verified.png (Templates list showing 6 sections)
+
+### Current Status
+- Feature #50 marked as passing
+- Progress: 95/103 features passing (92.2%)
+
+[Testing] Session complete - Feature #50 PASSED
+
+
+---
+
+## Session 2026-01-21 (Feature #9)
+
+### Completed
+- Feature #9: Navigation sidebar displays correctly - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as regular user - Logged in as harry
+2. ✅ Step 2: Verify sidebar contains Templates link - Templates link visible in navigation (ref=e30)
+3. ✅ Step 3: Verify sidebar contains Reference Data section - Reference Data expandable menu with Currencies, Countries, Product Categories, Product Lines, Section Types
+4. ✅ Step 4: Verify User Management is NOT visible for regular user - Confirmed NO User Management link in sidebar for harry
+5. ✅ Step 5: Log out and log in as admin - Successfully logged out and logged back in as admin
+6. ✅ Step 6: Verify User Management link IS visible for admin - 'User Management' link visible at /admin/users, navigates to full User Management page
+
+### Additional Verification
+- Header correctly displays user role: 'Logged in as harry' (no Admin badge) vs 'Logged in as admin (Admin)'
+- Admin sees additional UI elements like Delete buttons on templates
+- User Management page accessible and functional for admin (shows all users with Edit/Delete actions)
+- Delete button for current user (admin) is correctly disabled (cannot delete yourself)
+
+### Screenshots
+- feature-9-step2-3-regular-user-sidebar.png (Harry's view - Templates, Reference Data only, no User Management)
+- feature-9-step5-6-admin-sidebar-with-user-management.png (Admin's view - User Management link visible)
+- feature-9-admin-user-management-page.png (Admin accessing User Management page)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+- No JavaScript errors
+
+### Current Status
+- Features passing: 96/103 (93.2%)
+- Feature #9 marked as passing
+
+[Testing] Session complete - Feature #9 PASSED
