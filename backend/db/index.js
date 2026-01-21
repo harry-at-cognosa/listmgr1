@@ -99,7 +99,21 @@ function query(sql, params = []) {
             if (trimmedSql.startsWith('update')) {
               // Try to get the updated row - need to know what was updated
               // Since SQLite doesn't return rows on UPDATE, we need to do a separate SELECT
-              // For simplicity, return empty rows but with rowCount
+              const tableName = mainSql.match(/UPDATE\s+(\w+)/i)?.[1];
+              if (tableName && info.changes > 0) {
+                // Extract WHERE clause conditions to find the updated row
+                const whereMatch = mainSql.match(/WHERE\s+(.+?)$/i);
+                if (whereMatch) {
+                  // Find the primary key column and value from WHERE clause
+                  const pkInfo = db.prepare(`SELECT name FROM pragma_table_info('${tableName}') WHERE pk = 1`).get();
+                  const pkColumn = pkInfo?.name || 'rowid';
+                  // Extract the ID value from the original params (usually the last parameter for WHERE id = $N)
+                  const whereParams = convertedParams.slice(-1); // Get last param which is usually the ID
+                  const row = db.prepare(`SELECT * FROM ${tableName} WHERE ${pkColumn} = ?`).get(...whereParams);
+                  resolve({ rows: row ? [row] : [], rowCount: info.changes });
+                  return;
+                }
+              }
               resolve({ rows: [], rowCount: info.changes });
               return;
             }

@@ -1,5 +1,62 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #78)
+
+### Completed
+- Feature #78: Template section_count stays accurate - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Create new template, verify section_count is 0
+   - Created template: TEST_F78_SECTION_COUNT_VERIFY
+   - Templates list correctly shows 0 in Sections column
+   - Template detail page shows "Sections: 0" and "Sections (0)"
+
+2. ✅ Step 2: Add a section, verify count is 1
+   - Added a Standard section with content "TEST_F78_SECTION_1_CONTENT"
+   - Template detail page immediately updated to "Sections: 1" and "Sections (1)"
+   - Section appears in the sections list with tab "1.Standard"
+
+3. ✅ Step 3: Add another section, verify count is 2
+   - Added a Header section with content "TEST_F78_SECTION_2_HEADER_CONTENT"
+   - Template detail page shows "Sections: 2" and "Sections (2)"
+   - Both sections visible in list and tabs: "1.Standard" and "2.Header"
+
+4. ✅ Step 4: Delete a section (as admin), verify count is 1
+   - Logged in as admin
+   - Deleted the Header section (section 2)
+   - Confirmation dialog appeared, accepted
+   - "Section deleted successfully" message displayed
+   - Count correctly decremented to "Sections: 1" and "Sections (1)"
+
+5. ✅ Step 5: Clone a section, verify count is 2
+   - Clicked Clone button on the Standard section
+   - "Section cloned successfully" message displayed
+   - Count correctly incremented to "Sections: 2" and "Sections (2)"
+   - Cloned section appears as "2.Standard" with status "cloned"
+   - Both template list and detail page show accurate section count
+
+### Screenshots
+- .playwright-mcp/feature-78-step1-new-template-sections-0.png (new template with 0 sections)
+- .playwright-mcp/feature-78-step2-sections-1.png (after adding first section)
+- .playwright-mcp/feature-78-step3-sections-2.png (after adding second section)
+- .playwright-mcp/feature-78-step4-after-delete-sections-1.png (after deleting section)
+- .playwright-mcp/feature-78-step5-after-clone-sections-2.png (after cloning section)
+- .playwright-mcp/feature-78-final-list-sections-2.png (templates list showing correct count)
+
+### Technical Notes
+- Section count is dynamically calculated based on actual sections in database
+- Add, delete, and clone operations all correctly update the section_count
+- Both template list view and detail view show consistent counts
+- Confirmation dialog required for delete operations
+- Cloned sections automatically get "cloned" status
+- No console errors during testing (only expected 401 pre-login auth checks and React Router warnings)
+
+### Current Status
+- Features passing: 44/103 (42.7%)
+- Feature #78 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #76)
 
 ### Completed
@@ -2078,3 +2135,83 @@ All limits match the VARCHAR specifications in the database schema (app_spec.txt
 - Screenshots: regression-feature36-hardware-filter.png, regression-feature36-software-filter.png
 - All 6 verification steps PASSED
 [Testing] Session complete - Feature #36 regression test passed
+[Testing] 2026-01-21 - Feature #60 regression test PASSED - 'Tables have readable styling' verified working
+- Logged in as harry
+- Viewed Templates table: 6 columns (NAME, COUNTRY, PRODUCT LINE, SECTIONS, STATUS, ACTIONS), 10 rows displayed
+- Viewed Currencies table: 4 columns (SYMBOL, NAME, LAST UPDATED, ACTIONS), 12 rows displayed  
+- Viewed Countries table: 5 columns (ABBR, NAME, CURRENCY, LAST UPDATED, ACTIONS), 8 rows displayed
+- Consistent table styling across all tables: white background, gray uppercase headers, blue action buttons
+- Header rows clearly distinguished with uppercase text and lighter gray color
+- Hover states working: light gray background on row hover (verified on all 3 tables)
+- Columns properly aligned with consistent padding
+- Only expected 401 errors (pre-login auth checks)
+- Screenshots: regression-feature60-templates-table.png, regression-feature60-currencies-table.png, regression-feature60-countries-table.png, regression-feature60-*-hover.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #60 regression test passed
+[Testing] 2026-01-21 12:17 - Feature #41 regression test PASSED - 'User can create new template' verified working
+- Logged in as harry
+- Navigated to Templates page
+- Clicked '+ New Template' button - form page loaded
+- Entered template name 'TEST_REGRESSION_F41_JAN21_12XX'
+- Selected country 'Germany' from dropdown
+- Selected currency 'EUR - Euro' from dropdown
+- Selected product category 'Software' from dropdown
+- Selected product line 'Operating Systems' from dropdown
+- Status set to 'not started'
+- Entered order codes, description, content (234 chars), comment
+- Submitted form - success message 'Template created successfully' displayed
+- New template appears in list with correct data
+- Verified template view shows all fields correctly saved
+- Only expected 401 errors (pre-login auth checks)
+- Screenshots: regression-feature41-template-created.png, regression-feature41-template-view.png
+- All 14 verification steps PASSED
+[Testing] Session complete - Feature #41 regression test passed
+[Testing] 2026-01-21 - Feature #26 regression test PASSED - 'Product line list page displays all lines' verified working
+- Logged in as harry
+- Navigated to Reference Data > Product Lines
+- Page loaded successfully at /reference/product-lines
+- Table displays 5 columns: ABBR, NAME, PRODUCT CATEGORY, LAST UPDATED, ACTIONS
+- 8 product lines displayed in table
+- Product Category column shows human-readable names (Software, Hardware) not IDs
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression-feature26-product-lines.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #26 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #79)
+
+### Completed
+- Feature #79: All navigation links work correctly - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in as admin user
+2. ✅ Step 2: Click Templates link - Navigates to /templates
+3. ✅ Step 3: Verify Templates page loads - Templates page loads with heading and table
+4. ✅ Step 4: Click Currencies link - Navigates to /reference/currencies
+5. ✅ Step 5: Verify Currencies page loads - Currencies page loads with heading and table
+6. ✅ Step 6: Click each Reference Data submenu item - All 5 items tested:
+   - Currencies → /reference/currencies ✓
+   - Countries → /reference/countries ✓
+   - Product Categories → /reference/product-categories ✓
+   - Product Lines → /reference/product-lines ✓
+   - Section Types → /reference/section-types ✓
+7. ✅ Step 7: Verify each page loads correctly - All pages load with correct heading and data tables
+8. ✅ Step 8: Click User Management link - Navigates to /admin/users
+9. ✅ Step 9: Verify User Management page loads - User Management page loads with user table (admin, clint, harry)
+
+### Additional Verification
+- All links verified via both direct URL navigation AND click navigation
+- No console errors (only expected React warnings about future flags)
+- Active link highlighting works correctly (highlighted in blue)
+- Reference Data submenu expands/collapses properly
+
+### Screenshots
+- .playwright-mcp/feature-79-user-management.png (sidebar with all navigation links visible)
+- .playwright-mcp/feature-79-templates-page.png (templates page view)
+
+### Current Status
+- Features passing: 46/103 (44.7%)
+- Feature #79 marked as passing
+
