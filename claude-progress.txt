@@ -1057,3 +1057,51 @@
 - Screenshot: regression_feature2_database_connection.png
 - All 4 verification steps PASSED
 [Testing] Session complete - Feature #2 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #47)
+
+### Completed
+- Feature #47: Template status can be changed - VERIFIED AND PASSING
+  - Status dropdown allows changing template status through all valid states
+  - status_datetime is properly updated when status changes
+  - Backend correctly tracks status changes vs. other field updates
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Edit a template - Edited "OS License Quote - Germany" template
+3. ✅ Step 3: Change status to 'in process' - Changed from "not started" to "in process"
+4. ✅ Step 4: Save - Saved successfully, template list shows "in process"
+5. ✅ Step 5: Verify status_datetime updated - API confirmed status_datetime changed to "2026-01-21 11:49"
+6. ✅ Step 6: Change status to 'in review' - Changed status and saved successfully
+7. ✅ Step 7: Change status to 'approved' - Changed status and saved successfully, status_datetime updated to "2026-01-21 11:50"
+8. ✅ Step 8: Verify all status transitions work - All transitions work: not started → in process → in review → approved → back to not started
+
+### Technical Details
+- Status dropdown has 5 options: not started, in process, in review, approved, cloned
+- Backend tracks status changes independently - only updates status_datetime when plsqt_status changes
+- Template was reset to original "not started" state after testing
+- API response confirms all fields: plsqt_status, status_datetime, last_update_datetime, last_update_user
+
+### Screenshots
+- .playwright-mcp/feature-47-step1-edit-template-not-started.png (template edit form)
+- .playwright-mcp/feature-47-step4-status-changed-to-in-process.png (status changed to in process)
+- .playwright-mcp/feature-47-step6-status-in-review.png (status changed to in review)
+- .playwright-mcp/feature-47-step7-status-approved.png (status changed to approved)
+- .playwright-mcp/feature-47-step8-verified-approved-status.png (template detail showing approved)
+
+### Current Status
+- Features passing: 25/103 (24.3%)
+- Feature #47 marked as passing
+[Testing] 2026-01-21 03:51:37 - Feature #36 regression test PASSED - 'User can filter templates by product category' verified working
+- Logged in as harry
+- Product Category dropdown present with Hardware, Services, Software options
+- Hardware filter: 3 templates (Servers, Storage product lines)
+- Software filter: 3 templates (Operating Systems product line)
+- Services filter: 'No templates found' (correct - no Services templates)
+- Clear Filters resets to 'All Categories' showing all 6 templates
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression-feature36-product-category-filter.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #36 regression test passed
