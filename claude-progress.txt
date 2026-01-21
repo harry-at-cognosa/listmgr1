@@ -1,5 +1,51 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #42)
+
+### Completed
+- Feature #42: User can view template detail page - VERIFIED AND PASSING
+  - Logged in as user "harry"
+  - Navigated to Templates list page
+  - Clicked View on "Storage Quote - UK" template (has 1 section)
+  - Verified detail page loads at /templates/2
+  - Verified all template fields displayed:
+    - Template Name: "Storage Quote - UK"
+    - Description: "Quote template for UK storage products"
+    - Currency: "GBP"
+    - Category: "Hardware"
+    - Active: "Yes"
+    - Last updated: "2026-01-21 08:19 by system"
+    - Sections count: 1
+  - Verified foreign keys show names not IDs:
+    - Country: "United Kingdom" (not country_id)
+    - Product Line: "Storage" (not product_line_id)
+    - Currency: "GBP" (symbol, not currency_id)
+    - Category: "Hardware" (not product_cat_id)
+  - Verified status badge displays correctly ("in process" in blue)
+  - Verified section list area is visible with Expand All, Collapse All, + Add Section buttons
+  - Expanded section to verify detail view works
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Templates - On Templates page
+3. ✅ Step 3: Click View on a template - Clicked View on "Storage Quote - UK"
+4. ✅ Step 4: Verify detail page loads - Page loaded at /templates/2
+5. ✅ Step 5: Verify all template fields displayed - All fields shown correctly
+6. ✅ Step 6: Verify foreign keys show names not IDs - All FK fields display names
+7. ✅ Step 7: Verify status badge displays correctly - "in process" badge in blue
+8. ✅ Step 8: Verify section list area is visible - Sections panel with controls visible
+
+### Screenshots
+- .playwright-mcp/feature-42-template-detail-initial.png (initial detail view)
+- .playwright-mcp/feature-42-template-with-section.png (template with section)
+- .playwright-mcp/feature-42-section-expanded.png (expanded section view)
+
+### Current Status
+- Features passing: 13/103 (12.6%)
+- Feature #42 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #26)
 
 ### Completed
@@ -384,3 +430,11 @@
 ### Current Status
 - Features passing: 12/103 (11.7%)
 - Feature #18 marked as passing
+[Testing] 2026-01-21 00:43:20 - Feature #4 regression test PASSED - 'User can log in with valid credentials' verified working
+- Logged in as admin with valid credentials
+- Verified redirect to /templates
+- Verified header shows 'Logged in as admin (Admin)'
+- Verified session persists across page navigation (tested with Currencies page)
+- No console errors after login
+- Screenshot: regression_feature4_login_success.png
+[Testing] 2026-01-21 00:44:21 - Feature #22 regression test PASSED - 'Product category list page displays all categories' verified working
