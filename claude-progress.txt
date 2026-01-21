@@ -3811,3 +3811,36 @@ Why ref instead of just state:
 - Screenshots: regression-f57-templates-list-status-badges.png, regression-f57-scroll-more-badges.png, regression-f57-template-detail-with-sections.png
 - All 7 verification steps PASSED
 [Testing] Session complete - Feature #57 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #37)
+
+### Completed
+- Feature #37: User can filter templates by product line - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Navigated to /templates page
+3. ✅ Step 3: Locate product line filter dropdown - Found dropdown with options (All Lines, Operating Systems, Servers, Storage, etc.)
+4. ✅ Step 4: Select a specific line - Tested multiple filters:
+   - Servers: Filtered to 7 templates, all with Product Line = "Servers"
+   - Storage: Filtered to 1 template with Product Line = "Storage"
+   - Operating Systems: Filtered to 10 templates, all with Product Line = "Operating Systems"
+5. ✅ Step 5: Verify list updates correctly - List updates immediately when filter changes
+
+### Additional Testing
+- URL query parameter updates correctly (e.g., ?product_line_id=1 for Servers)
+- Clear Filters button resets filter to "All Lines"
+- No console errors (only expected pre-login 401 auth checks)
+
+### Screenshots
+- .playwright-mcp/feature-37-step3-product-line-dropdown.png (All templates with dropdown visible)
+- .playwright-mcp/feature-37-step4-servers-filtered.png (Filtered by Servers)
+- .playwright-mcp/feature-37-step5-operating-systems-filtered.png (Filtered by Operating Systems)
+
+### Current Status
+- Features passing: 75/103 (72.8%)
+- Feature #37 marked as passing
+
+[Testing] Session complete - Feature #37 PASSED
