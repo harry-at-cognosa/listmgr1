@@ -11,6 +11,8 @@ const STATUS_COLORS = {
   'cloned': 'bg-purple-100 text-purple-800'
 };
 
+const STATUS_OPTIONS = ['not started', 'in process', 'in review', 'approved', 'cloned'];
+
 function TemplateDetail() {
   const { id } = useParams();
   const { isAdmin } = useAuth();
@@ -31,6 +33,10 @@ function TemplateDetail() {
   const [showSectionForm, setShowSectionForm] = useState(false);
   const [editingSection, setEditingSection] = useState(null);
   const [activeTabId, setActiveTabId] = useState(null); // For tabbed section editor
+  const [showStatusChange, setShowStatusChange] = useState(false);
+  const [newStatus, setNewStatus] = useState('');
+  const [cascadeToSections, setCascadeToSections] = useState(false);
+  const [statusChanging, setStatusChanging] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -107,6 +113,44 @@ function TemplateDetail() {
     setTimeout(() => setSuccess(''), 3000);
   };
 
+  // Handle status change with optional cascade to sections
+  const handleStatusChange = async (e) => {
+    e.preventDefault();
+    if (!newStatus || newStatus === template.plsqt_status) {
+      setShowStatusChange(false);
+      return;
+    }
+
+    setStatusChanging(true);
+    setError('');
+
+    try {
+      await api.put(`/templates/${id}/status`, {
+        plsqt_status: newStatus,
+        cascade: cascadeToSections
+      });
+      const message = cascadeToSections
+        ? 'Template and all section statuses updated successfully'
+        : 'Template status updated successfully';
+      setSuccess(message);
+      setShowStatusChange(false);
+      setCascadeToSections(false);
+      loadData();
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err) {
+      setError(err.error || 'Failed to update status');
+      setTimeout(() => setError(''), 3000);
+    } finally {
+      setStatusChanging(false);
+    }
+  };
+
+  const openStatusChangeForm = () => {
+    setNewStatus(template.plsqt_status);
+    setCascadeToSections(false);
+    setShowStatusChange(true);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -143,6 +187,12 @@ function TemplateDetail() {
               <span className={`px-2 py-1 text-xs font-medium rounded-full ${STATUS_COLORS[template.plsqt_status]}`}>
                 {template.plsqt_status}
               </span>
+              <button
+                onClick={openStatusChangeForm}
+                className="text-xs text-primary-600 hover:text-primary-800 underline"
+              >
+                Change Status
+              </button>
               {template.country_name && <span>Country: {template.country_name}</span>}
               {template.product_line_name && <span>Product Line: {template.product_line_name}</span>}
               <span>Sections: {template.plsqt_section_count}</span>
@@ -346,6 +396,68 @@ function TemplateDetail() {
           onClose={() => { setShowSectionForm(false); setEditingSection(null); }}
           onSave={() => { setShowSectionForm(false); setEditingSection(null); loadData(); setSuccess('Section saved successfully'); setTimeout(() => setSuccess(''), 3000); }}
         />
+      )}
+
+      {/* Status Change Modal */}
+      {showStatusChange && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full m-4">
+            <div className="p-6">
+              <h3 className="text-lg font-semibold mb-4">Change Template Status</h3>
+
+              <form onSubmit={handleStatusChange} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">New Status</label>
+                  <select
+                    value={newStatus}
+                    onChange={(e) => setNewStatus(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  >
+                    {STATUS_OPTIONS.map(s => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {sections.length > 0 && (
+                  <div className="p-3 bg-blue-50 rounded-md">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={cascadeToSections}
+                        onChange={(e) => setCascadeToSections(e.target.checked)}
+                        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">
+                        Apply status to all {sections.length} section{sections.length !== 1 ? 's' : ''}
+                      </span>
+                    </label>
+                    <p className="mt-1 ml-6 text-xs text-gray-500">
+                      When checked, all sections will also be updated to "{newStatus}"
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex justify-end gap-3 pt-4 border-t">
+                  <button
+                    type="button"
+                    onClick={() => setShowStatusChange(false)}
+                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={statusChanging || newStatus === template.plsqt_status}
+                    className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-colors disabled:opacity-50"
+                  >
+                    {statusChanging ? 'Updating...' : 'Update Status'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

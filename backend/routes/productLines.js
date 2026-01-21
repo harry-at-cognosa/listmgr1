@@ -100,7 +100,7 @@ router.delete('/:id', async (req, res) => {
       [req.params.id]
     );
 
-    if (result.rows.length === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Product line not found' });
     }
     res.json({ message: 'Product line deleted successfully' });

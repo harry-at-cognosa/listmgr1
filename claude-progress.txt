@@ -5368,3 +5368,75 @@ Why ref instead of just state:
 - Progress: 99/103 features passing (96.1%)
 
 [Testing] Session complete - Feature #20 PASSED
+[Testing] Session complete - Feature #96 regression test PASSED - Submit button disabled during submission verified
+[Testing] 2026-01-21 - Feature #36 regression test PASSED - 'User can filter templates by product category'
+- Step 1: Logged in as harry (regular user) ✓
+- Step 2: Navigated to Templates page (/templates) ✓
+- Step 3: Located product category filter dropdown ✓
+- Step 4: Selected 'Hardware' filter ✓
+  * URL changed to ?product_cat_id=1
+  * Only templates with Servers/Storage (Hardware lines) shown
+- Step 5: Verified list shows only Hardware category templates ✓
+- Step 6: Clicked 'Clear Filters' button ✓
+  * URL returned to /templates (no params)
+  * All templates now visible again
+  * Software templates (Operating Systems) visible
+- Additional verification: Tested Software filter ✓
+  * URL changed to ?product_cat_id=2
+  * Only Operating Systems templates shown
+- Console errors: Only expected 401 pre-login auth checks (normal behavior)
+- Screenshots: regression-f36-*.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #36 regression test passed
+[Testing] 2026-01-21 - Feature #36 regression test PASSED - 'User can filter templates by product category'
+- Step 1: Logged in as harry (regular user) ✓
+- Step 2: Navigated to Templates page (/templates) ✓
+- Step 3: Located product category filter dropdown ✓
+- Step 4: Selected 'Hardware' filter ✓
+  * URL changed to ?product_cat_id=1
+  * Only templates with Servers/Storage (Hardware lines) shown
+- Step 5: Verified list shows only Hardware category templates ✓
+- Step 6: Clicked 'Clear Filters' button ✓
+  * URL returned to /templates (no params)
+  * All templates now visible again
+  * Software templates (Operating Systems) visible
+- Additional verification: Tested Software filter ✓
+  * URL changed to ?product_cat_id=2
+  * Only Operating Systems templates shown
+- Console errors: Only expected 401 pre-login auth checks (normal behavior)
+- Screenshots: regression-f36-*.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #36 regression test passed
+[Testing] 2026-01-21 - Feature #22 regression test PASSED - 'Product category list page displays all categories'
+- Step 1: Logged in as harry (regular user) ✓
+- Step 2: Navigated to Reference Data > Product Categories ✓
+- Step 3: Page loaded without errors ✓
+  * URL: /reference/product-categories
+  * 11 categories displayed
+- Step 4: Table displays required columns ✓
+  * ABBR column: HW, R23, F23, SVC, SW, P97, T23, TST
+  * NAME column: Hardware, Services, Software, test categories
+- Step 5: Last update info shown ✓
+  * Format: '2026-01-21 HH:MM by username'
+  * Both system and user entries visible
+- Console errors: Only expected 401 pre-login auth checks (normal behavior)
+- Screenshot: regression-f22-product-categories-list.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #22 regression test passed
+
+---
+
+[Testing] 2026-01-21 - Feature #37 regression test PASSED - 'User can filter templates by product line'
+- Step 1: Logged in as harry (regular user) ✓
+- Step 2: Navigated to Templates page ✓
+- Step 3: Located Product Line filter dropdown ✓
+- Step 4: Selected 'Storage' product line ✓
+- Step 5: Verified list updates correctly ✓
+  * Only 2 templates with 'Storage' product line displayed
+  * URL updated to include ?product_line_id=2
+  * Also tested 'Servers' filter - 11 templates displayed correctly
+- Console errors: Only expected 401 pre-login auth checks (normal behavior)
+- Screenshots: regression-f37-before-filter.png, regression-f37-storage-filter.png, regression-f37-servers-filter.png, regression-f37-final-storage-filter.png
+- Note: Backend server was down at start of session, restarted it
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #37 regression test passed
