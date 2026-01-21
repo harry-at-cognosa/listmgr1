@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 function Login() {
@@ -9,6 +9,10 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the redirect URL from location state, default to /templates
+  const from = location.state?.from?.pathname || '/templates';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +21,8 @@ function Login() {
 
     try {
       await login(username, password);
-      navigate('/templates');
+      // Navigate to the page user was trying to access, or templates by default
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.error || 'Login failed. Please try again.');
     } finally {

@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import Layout from './components/Layout'
 import Login from './pages/Login'
@@ -11,9 +11,11 @@ import ProductCategories from './pages/ProductCategories'
 import ProductLines from './pages/ProductLines'
 import SectionTypes from './pages/SectionTypes'
 import Users from './pages/Users'
+import NotFound from './pages/NotFound'
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
+  const location = useLocation()
 
   if (loading) {
     return (
@@ -23,11 +25,14 @@ function PrivateRoute({ children }) {
     )
   }
 
-  return user ? children : <Navigate to="/login" />
+  // If not authenticated, redirect to login with the current location as state
+  // so we can redirect back after login
+  return user ? children : <Navigate to="/login" state={{ from: location }} replace />
 }
 
 function AdminRoute({ children }) {
   const { user, loading } = useAuth()
+  const location = useLocation()
 
   if (loading) {
     return (
@@ -37,7 +42,7 @@ function AdminRoute({ children }) {
     )
   }
 
-  if (!user) return <Navigate to="/login" />
+  if (!user) return <Navigate to="/login" state={{ from: location }} replace />
   if (user.role !== 'admin') return <Navigate to="/templates" />
 
   return children
@@ -60,7 +65,9 @@ function App() {
           <Route path="reference/product-lines" element={<ProductLines />} />
           <Route path="reference/section-types" element={<SectionTypes />} />
           <Route path="admin/users" element={<AdminRoute><Users /></AdminRoute>} />
+          <Route path="*" element={<NotFound />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
   )

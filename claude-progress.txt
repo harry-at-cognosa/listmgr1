@@ -2253,3 +2253,76 @@ All limits match the VARCHAR specifications in the database schema (app_spec.txt
 - Features passing: 46/103 (44.7%)
 - Feature #79 marked as passing
 
+[Testing] 2026-01-21 04:22 - Feature #3 regression test PASSED - 'Login page renders correctly' verified working
+- Navigated to /login page
+- Username input field visible with label and placeholder 'Enter your username'
+- Password input field visible with label and placeholder 'Enter your password'
+- Login button visible (blue, prominent) with cursor pointer
+- Page styling: clean centered card, ListMgr heading in blue, subtitle, rounded form fields, gray background
+- Form is interactive (tested username field accepts text input)
+- Only expected 401 errors (pre-login auth checks on /api/auth/me)
+- Screenshot: regression-feature3-login-page.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #3 regression test passed
+[Testing] 2026-01-21 - Feature #11 regression test PASSED - 'Regular user cannot access admin routes' verified working
+- Logged in as harry (regular user)
+- Attempted to navigate directly to /admin/users
+- User was redirected to /templates (access denied via redirect)
+- Sidebar navigation shows NO 'User Management' link for regular users
+- Only Templates and Reference Data (Currencies, Countries, Product Categories, Product Lines, Section Types) visible
+- Backend API /api/users also protected (returns 'Authentication required')
+- No console errors
+- Screenshots: regression-feature11-admin-access-denied.png, regression-feature11-no-admin-menu.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #11 regression test passed
+[Testing] 2026-01-21 12:22 - Feature #67 regression test PASSED - 'Required fields prevent form submission' verified working
+- Logged in as harry
+- Navigated to Reference Data > Currencies
+- Clicked '+ Add Currency' button - modal form opened
+- Step 1: Opened Currency create form ✓
+- Step 2: Left symbol field empty ✓
+- Step 3: Clicked Save button to submit ✓
+- Step 4: Browser HTML5 validation displayed 'Please fill out this field.' tooltip ✓
+- Step 5: Form was not submitted, modal stayed open ✓
+- Step 6: Entered 'R67' in symbol field, 'REGRESSION_TEST_F67' in name field ✓
+- Step 7: Clicked Save - form submitted successfully with 'Currency saved successfully' message ✓
+- New currency 'R67 | REGRESSION_TEST_F67' appears in table with correct timestamp
+- Only expected 401 errors (pre-login auth checks)
+- Screenshots: regression-feature67-required-field-empty.png, regression-feature67-form-submitted.png
+- All 7 verification steps PASSED
+[Testing] Session complete - Feature #67 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #80)
+
+### Completed
+- Feature #80: Back button works after navigation - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. Step 1: Start on Templates page - Logged in as harry, at /templates
+2. Step 2: Click to view a template detail - Clicked View on "Server Quote - US Standard", navigated to /templates/1
+3. Step 3: Click browser back button - Used browser back navigation
+4. Step 4: Verify return to Templates list - Returned to /templates, Templates page displayed correctly
+5. Step 5: Navigate to Currencies - Clicked Reference Data > Currencies, navigated to /reference/currencies
+6. Step 6: Edit a currency - Clicked Edit on EUR, modal appeared (Currency edit uses inline modal)
+7. Step 7: Click back button - Tested back button navigation
+8. Step 8: Verify return to Currencies list - Returned to /reference/currencies, Currencies page displayed correctly
+
+### Additional Testing
+- Also tested Currencies to Countries to Back to Currencies navigation flow
+- Confirmed back button correctly returns to previous page in browser history
+- Modal-based editing (Currency edit) does not create history entries (correct browser behavior)
+
+### Screenshots
+- .playwright-mcp/feature-80-step4-back-to-templates.png (Templates list after back navigation)
+- .playwright-mcp/feature-80-step8-back-to-currencies.png (Currencies list after back navigation)
+
+### Technical Notes
+- Browser back button works correctly across all page transitions
+- React Router handles history correctly
+- No console errors during testing (only expected React Router future flag warnings)
+
+### Current Status
+- Features passing: 48/103 (46.6%)
+- Feature #80 marked as passing
