@@ -101,3 +101,4 @@
 - Verified login as regular user harry (Delete button NOT visible)
 - All 6 verification steps passed
 - No console errors after login
+[Testing] 2026-01-21 00:30:22 - Feature #13 regression test PASSED - 'Currency list page displays all currencies' verified working
