@@ -5291,3 +5291,80 @@ Why ref instead of just state:
 - Screenshot: regression-f30-section-types-page.png
 - All 5 verification steps PASSED
 [Testing] Session complete - Feature #30 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #28)
+
+### Completed
+- Feature #28: User can edit existing product line - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Product Lines page - Accessed via Reference Data > Product Lines (/reference/product-lines)
+3. ✅ Step 3: Click Edit on existing line - Clicked Edit on "TEST_F27_FINAL_VERIFY" (TST), modal opened with pre-filled data
+4. ✅ Step 4: Change the product category - Changed from "Software" to "Hardware" using dropdown
+5. ✅ Step 5: Submit form - Clicked Save, received "Product line saved successfully" message
+6. ✅ Step 6: Verify changes saved:
+   - Product Category updated from "Software" to "Hardware" ✓
+   - Last Updated timestamp changed to "2026-01-21 13:42 by harry" ✓
+   - Data persists after page refresh ✓
+
+### Additional Verification
+- Product Category dropdown properly populated from database (Hardware, Software, Services, etc.)
+- Edit form pre-populates all existing fields (Product Category, Abbreviation, Name)
+- last_update_datetime and last_update_user fields auto-track correctly
+- No JavaScript console errors
+
+### Technical Implementation (Already Existed)
+- Frontend: ProductLines.jsx - ProductLineFormModal component handles both create and edit
+- Backend: productLines.js - PUT /:id endpoint updates record with audit fields
+- Product Category dropdown populated from /api/product-categories endpoint
+
+### Screenshots
+- feature-28-step3-edit-form-opened.png (Edit modal with "TEST_F27_FINAL_VERIFY" data, category = Software)
+- feature-28-step4-category-changed.png (Category dropdown changed to Hardware)
+- feature-28-step5-6-save-success-changes-verified.png (Success message shown, category = Hardware)
+- feature-28-final-persisted-after-refresh.png (Data persists after page refresh)
+
+### Console Errors
+- None (only React dev warnings, no actual errors)
+
+### Current Status
+- Feature #28 marked as passing
+
+[Testing] Session complete - Feature #28 PASSED
+
+---
+
+## Session 2026-01-21 (Feature #20)
+
+### Completed
+- Feature #20: User can edit existing country - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry (regular user)
+2. ✅ Step 2: Navigate to Countries page - Accessed via Reference Data > Countries (/reference/countries)
+3. ✅ Step 3: Click Edit on existing country - Clicked Edit on "TEST_FEATURE_19_COUNTRY" (F19) - modal opened with pre-filled data (Abbr: F19, Name: TEST_FEATURE_19_COUNTRY, Currency: USD - US Dollar)
+4. ✅ Step 4: Change the currency selection - Changed from "USD - US Dollar" to "EUR - Euro"
+5. ✅ Step 5: Submit form - Clicked Save, received "Country saved successfully" message
+6. ✅ Step 6: Verify changes saved - Currency updated from USD to EUR, timestamp updated to "2026-01-21 13:41 by harry"
+7. ✅ Step 7: Verify updated currency displays correctly - EUR - Euro displays in the list after refresh
+
+### Additional Verifications
+- Currency dropdown populated from currency table (verified multiple currencies available: EUR, GBP, USD, JPY, etc.)
+- Edit form pre-populates with existing data correctly
+- Data persists after page refresh
+- No console errors
+- All API calls return 200 OK
+
+### Screenshots
+- feature-20-step4-currency-changed.png (Edit modal with EUR selected)
+- feature-20-step6-saved-success.png (Success message, updated currency in list)
+- feature-20-step7-persisted-after-refresh.png (Data persists after page refresh)
+
+### Current Status
+- Feature #20 marked as passing
+- Progress: 99/103 features passing (96.1%)
+
+[Testing] Session complete - Feature #20 PASSED
