@@ -3993,3 +3993,37 @@ Why ref instead of just state:
 - Screenshot: regression-f78-section-count-verified.png
 - All 5 verification steps PASSED
 [Testing] Session complete - Feature #78 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #45)
+
+### Completed
+- Feature #45: Regular user cannot delete template - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as regular user 'harry' - Logged in successfully
+2. ✅ Step 2: Navigate to Templates - Accessed /templates page
+3. ✅ Step 3: Verify Delete button is hidden or disabled - Delete button NOT visible for regular user harry
+   - Regular user sees: View, Edit, Clone
+   - Admin user sees: View, Edit, Clone, Delete
+4. ✅ Step 4: Attempt API DELETE directly - Made DELETE request to /api/templates/1 while logged in as harry
+5. ✅ Step 5: Verify 403 response - Received HTTP 403 Forbidden with message "Admin access required"
+
+### Technical Verification
+- Backend: /backend/routes/templates.js line 293-295 checks user.role !== 'admin' and returns 403
+- Frontend: Templates.jsx conditionally renders Delete button only when isAdmin is true
+- Template detail page also hides Delete button for non-admin users
+
+### Screenshots
+- .playwright-mcp/feature-45-step3-no-delete-button-harry.png (Templates list as harry - no Delete button)
+- .playwright-mcp/feature-45-detail-no-delete-harry.png (Template detail as harry - no Delete button)
+- .playwright-mcp/feature-45-admin-has-delete-button.png (Templates list as admin - Delete button visible)
+
+### Console Errors
+- None (only expected React Router future flag warnings)
+
+### Current Status
+- Feature #45 marked as passing
+
+[Testing] Session complete - Feature #45 PASSED
