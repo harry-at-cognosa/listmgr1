@@ -258,3 +258,11 @@
 - Layout: professional centered card design
 - 401 errors expected (checking for existing session)
 - Screenshot: .playwright-mcp/regression_feature3_login_page.png
+[Testing] 2026-01-21 00:35:02 - Feature #22 regression test PASSED - 'Product category list page displays all categories' verified working
+- Logged in as harry
+- Navigated to Reference Data > Product Categories
+- Table displays ABBR, NAME, LAST UPDATED, ACTIONS columns
+- All categories visible: HW/Hardware, SVC/Services, SW/Software
+- Last update info showing datetime and user
+- Screenshot: regression_feature22_product_categories.png
+- No console errors after login

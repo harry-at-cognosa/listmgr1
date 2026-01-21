@@ -113,6 +113,7 @@ function ProductLines() {
       {showForm && (
         <ProductLineFormModal
           item={editingItem}
+          categories={categories}
           onClose={() => { setShowForm(false); setEditingItem(null); }}
           onSave={() => { setShowForm(false); setEditingItem(null); loadData(); setSuccess('Product line saved successfully'); setTimeout(() => setSuccess(''), 3000); }}
         />
@@ -121,11 +122,12 @@ function ProductLines() {
   );
 }
 
-function ProductLineFormModal({ item, onClose, onSave }) {
+function ProductLineFormModal({ item, categories, onClose, onSave }) {
   const isEditing = !!item;
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
+    product_cat_id: item?.product_cat_id || '',
     product_line_abbr: item?.product_line_abbr || '',
     product_line_name: item?.product_line_name || ''
   });
@@ -156,6 +158,22 @@ function ProductLineFormModal({ item, onClose, onSave }) {
           <h3 className="text-lg font-semibold mb-4">{isEditing ? 'Edit Product Line' : 'Add Product Line'}</h3>
           {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md text-sm">{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Product Category *</label>
+              <select
+                value={formData.product_cat_id}
+                onChange={(e) => setFormData(prev => ({ ...prev, product_cat_id: e.target.value }))}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              >
+                <option value="">Select a category</option>
+                {categories.map(cat => (
+                  <option key={cat.product_cat_id} value={cat.product_cat_id}>
+                    {cat.product_cat_name}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Abbreviation</label>
               <input
