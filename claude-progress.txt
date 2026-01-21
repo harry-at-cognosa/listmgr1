@@ -1,5 +1,39 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #26)
+
+### Completed
+- Feature #26: Product line list page displays all lines - VERIFIED AND PASSING
+  - Issue found: Product Category column was missing from the table
+  - Fix: Added Product Category column to the Product Lines table display
+  - Fix: Added Product Category dropdown to the Add/Edit Product Line form
+  - Backend already returned product_cat_name via SQL JOIN - just needed frontend update
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Reference Data > Product Lines - Successfully navigated to /reference/product-lines
+3. ✅ Step 3: Verify page loads without errors - Page loaded, no JS errors
+4. ✅ Step 4: Verify table displays line abbr, name, and product category - All three columns visible
+5. ✅ Step 5: Verify product category shows name not just ID - Shows "Software", "Hardware", "Services"
+
+### Additional Verifications
+- Created test data "TST | TEST_F26_VERIFY | Services" - verified it persisted
+- Product Category dropdown in form populated from database
+- Role-based access control verified (regular user: Edit only, admin: Edit + Delete)
+- Deleted test data as admin - confirmed removal
+
+### Screenshots
+- .playwright-mcp/feature-26-product-lines-with-category.png (table with category column)
+- .playwright-mcp/feature-26-add-form-with-category.png (form with category dropdown)
+- .playwright-mcp/feature-26-verified-with-test-data.png (test data created)
+- .playwright-mcp/feature-26-admin-view-with-delete.png (admin view with Delete buttons)
+
+### Current Status
+- Features passing: 8/103 (7.8%)
+- Feature #26 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #4)
 
 ### Completed
