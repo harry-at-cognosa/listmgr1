@@ -4027,3 +4027,66 @@ Why ref instead of just state:
 - Feature #45 marked as passing
 
 [Testing] Session complete - Feature #45 PASSED
+
+---
+
+## Session 2026-01-21 (Feature #44)
+
+### Completed
+- Feature #44: Admin can delete template (cascades to sections) - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in as admin user
+2. ✅ Step 2: Create a test template with sections - Created 'TEST_DELETE_F44_WITH_SECTIONS' (ID 29) with 2 sections:
+   - Section 1: Header type
+   - Section 2: Detail type
+3. ✅ Step 3: Navigate to Templates list - Navigated to /templates and verified template visible with "2" sections
+4. ✅ Step 4: Click Delete on test template - Clicked Delete button for the test template
+5. ✅ Step 5: Verify confirmation dialog mentions cascade - Confirmation dialog shows:
+   "Are you sure you want to delete this template? **This will also delete all its sections.**"
+6. ✅ Step 6: Confirm deletion - Accepted the confirmation dialog
+7. ✅ Step 7: Verify template removed from list - Template no longer appears in list, success message shown
+8. ✅ Step 8: Verify sections were also deleted - Navigating to /templates/29 returns 404 "Template not found"
+   - CASCADE delete confirmed by database schema: plsqt_sections table has ON DELETE CASCADE foreign key
+
+### Security Verification
+- Admin user: Delete button visible and functional
+- Regular user (harry): Delete button NOT visible in UI
+- Backend: DELETE endpoint checks user.role === 'admin' and returns 403 for non-admins
+
+### Technical Details
+- Frontend: Templates.jsx line 306-313 conditionally renders Delete button only for isAdmin
+- Frontend: handleDelete() shows confirmation mentioning section cascade
+- Backend: /routes/templates.js line 290-310 handles DELETE with admin check
+- Database: plsqt_sections has `ON DELETE CASCADE` foreign key to plsq_templates
+
+### Screenshots
+- .playwright-mcp/feature-44-template-with-sections-before-delete.png (Template detail showing 2 sections)
+- .playwright-mcp/feature-44-step3-template-in-list-before-delete.png (Template in list with 2 sections)
+- .playwright-mcp/feature-44-step5-confirmation-dialog-with-cascade.png (Dialog mentions cascade)
+- .playwright-mcp/feature-44-step7-template-deleted-success.png (Success message, template gone)
+- .playwright-mcp/feature-44-step8-template-not-found-after-delete.png (404 when accessing deleted template)
+- .playwright-mcp/feature-44-security-no-delete-for-regular-user.png (harry sees no Delete button)
+
+### Console Errors
+- Only expected 401 errors (pre-login auth checks)
+- No JavaScript errors
+
+### Current Status
+- Features passing: 79/103 (76.7%)
+- Feature #44 marked as passing
+
+[Testing] Session complete - Feature #44 PASSED
+[Testing] 2026-01-21 - Feature #93 regression test PASSED - 'Application displays correctly on tablet (768px)'
+- Set browser to 768px width
+- Tested pages: Login, Templates list, Currencies, Section Types, Template detail, Template edit
+- Step 1: Browser resized to 768x1024 ✓
+- Step 2: Navigated through 6+ pages ✓
+- Step 3: Layout adapts appropriately - filters wrap, sidebar shrinks ✓
+- Step 4: All content accessible - buttons/links clickable even when visually truncated ✓
+- Step 5: Tables scroll horizontally - Templates table has overflow-x-auto ✓
+- Step 6: No content functionally cut off - all actions accessible ✓
+- Only expected console errors (pre-login 401s)
+- Screenshots: regression-f93-step1-login-768px.png, regression-f93-step2-templates-768px.png, etc.
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #93 regression test passed
