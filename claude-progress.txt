@@ -4757,3 +4757,47 @@ Why ref instead of just state:
 - Feature #17 marked as passing
 
 [Testing] Session complete - Feature #17 PASSED
+
+---
+
+## Session 2026-01-21 (Feature #24)
+
+### Completed
+- Feature #24: User can edit existing product category - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Product Categories page - Navigated to /reference/product-categories
+3. ✅ Step 3: Click Edit on existing category - Clicked Edit on "Test Category Regression" (TST) - modal opened with pre-filled data
+4. ✅ Step 4: Modify the name - Changed name from "Test Category Regression" to "TEST_F24_EDITED_CATEGORY"
+5. ✅ Step 5: Submit form - Clicked Save, received "Product category saved successfully" message
+6. ✅ Step 6: Verify changes saved:
+   - Name updated to "TEST_F24_EDITED_CATEGORY" ✓
+   - Last updated timestamp changed to "2026-01-21 13:33 by harry" ✓
+   - Data persists after page refresh ✓
+
+### Additional Verification
+- Backend PUT endpoint at /api/product-categories/:id works correctly
+- Edit form properly pre-populates existing abbreviation and name fields
+- Last_update_datetime and last_update_user fields auto-track correctly
+
+### Technical Implementation (Already Existed)
+- Frontend: ProductCategories.jsx - ProductCategoryFormModal component handles both create and edit
+- Backend: productCategories.js - PUT /:id endpoint updates record with audit fields
+- Form properly validates required fields (name is required)
+
+### Screenshots
+- feature-24-step2-product-categories-list.png (Initial list view)
+- feature-24-step3-edit-form-opened.png (Edit modal with "Test Category Regression" data)
+- feature-24-step4-modified-name.png (Form with modified name)
+- feature-24-step5-6-saved-success.png (Success message shown)
+- feature-24-step6-verified-edit.png (Updated record in list)
+- feature-24-final-persisted-after-refresh.png (Data persists after page refresh)
+
+### Console Errors
+- None (only expected pre-login 401 auth checks)
+
+### Current Status
+- Feature #24 marked as passing
+
+[Testing] Session complete - Feature #24 PASSED
