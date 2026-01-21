@@ -246,9 +246,10 @@ function UserFormModal({ user, onClose, onSave }) {
           {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md text-sm">{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Username *</label>
+              <label htmlFor="user_username" className="block text-sm font-medium text-gray-700 mb-1">Username *</label>
               <input
                 type="text"
+                id="user_username"
                 value={formData.username}
                 onChange={(e) => handleFieldChange('username', e.target.value)}
                 maxLength={50}
@@ -259,11 +260,12 @@ function UserFormModal({ user, onClose, onSave }) {
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="user_password" className="block text-sm font-medium text-gray-700 mb-1">
                 Password {isEditing ? '(leave blank to keep current)' : '*'}
               </label>
               <input
                 type="password"
+                id="user_password"
                 value={formData.password}
                 onChange={(e) => handleFieldChange('password', e.target.value)}
                 className={getInputClass('password')}
@@ -273,8 +275,9 @@ function UserFormModal({ user, onClose, onSave }) {
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Role *</label>
+              <label htmlFor="user_role" className="block text-sm font-medium text-gray-700 mb-1">Role *</label>
               <select
+                id="user_role"
                 value={formData.role}
                 onChange={(e) => handleFieldChange('role', e.target.value)}
                 className={getInputClass('role')}

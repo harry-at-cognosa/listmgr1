@@ -179,9 +179,10 @@ function SectionTypeFormModal({ item, onClose, onSave }) {
           {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md text-sm">{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+              <label htmlFor="plsqtst_name" className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
               <input
                 type="text"
+                id="plsqtst_name"
                 value={formData.plsqtst_name}
                 onChange={(e) => setFormData(prev => ({ ...prev, plsqtst_name: e.target.value }))}
                 required
@@ -219,8 +220,9 @@ function SectionTypeFormModal({ item, onClose, onSave }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Comment</label>
+              <label htmlFor="plsqtst_comment" className="block text-sm font-medium text-gray-700 mb-1">Comment</label>
               <textarea
+                id="plsqtst_comment"
                 value={formData.plsqtst_comment}
                 onChange={(e) => setFormData(prev => ({ ...prev, plsqtst_comment: e.target.value }))}
                 maxLength={100}
@@ -231,9 +233,10 @@ function SectionTypeFormModal({ item, onClose, onSave }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">External File Reference</label>
+              <label htmlFor="extrn_file_ref_section" className="block text-sm font-medium text-gray-700 mb-1">External File Reference</label>
               <input
                 type="text"
+                id="extrn_file_ref_section"
                 value={formData.extrn_file_ref}
                 onChange={(e) => setFormData(prev => ({ ...prev, extrn_file_ref: e.target.value }))}
                 maxLength={500}
@@ -256,9 +259,10 @@ function SectionTypeFormModal({ item, onClose, onSave }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Version</label>
+              <label htmlFor="plsqtst_version" className="block text-sm font-medium text-gray-700 mb-1">Version</label>
               <input
                 type="text"
+                id="plsqtst_version"
                 value={formData.plsqtst_version}
                 onChange={(e) => setFormData(prev => ({ ...prev, plsqtst_version: e.target.value }))}
                 maxLength={25}

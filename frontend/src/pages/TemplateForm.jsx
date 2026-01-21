@@ -160,11 +160,12 @@ function TemplateForm() {
           {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="plsqt_name" className="block text-sm font-medium text-gray-700 mb-1">
                 Template Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
+                id="plsqt_name"
                 name="plsqt_name"
                 value={formData.plsqt_name}
                 onChange={handleChange}
@@ -175,8 +176,9 @@ function TemplateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
+              <label htmlFor="template_country_id" className="block text-sm font-medium text-gray-700 mb-1">Country</label>
               <select
+                id="template_country_id"
                 name="country_id"
                 value={formData.country_id}
                 onChange={handleChange}
@@ -190,8 +192,9 @@ function TemplateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
+              <label htmlFor="template_currency_id" className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
               <select
+                id="template_currency_id"
                 name="currency_id"
                 value={formData.currency_id}
                 onChange={handleChange}
@@ -205,8 +208,9 @@ function TemplateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Product Category</label>
+              <label htmlFor="template_product_cat_id" className="block text-sm font-medium text-gray-700 mb-1">Product Category</label>
               <select
+                id="template_product_cat_id"
                 name="product_cat_id"
                 value={formData.product_cat_id}
                 onChange={handleChange}
@@ -220,8 +224,9 @@ function TemplateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Product Line</label>
+              <label htmlFor="template_product_line_id" className="block text-sm font-medium text-gray-700 mb-1">Product Line</label>
               <select
+                id="template_product_line_id"
                 name="product_line_id"
                 value={formData.product_line_id}
                 onChange={handleChange}
@@ -235,8 +240,9 @@ function TemplateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <label htmlFor="plsqt_status" className="block text-sm font-medium text-gray-700 mb-1">Status</label>
               <select
+                id="plsqt_status"
                 name="plsqt_status"
                 value={formData.plsqt_status}
                 onChange={handleChange}
@@ -249,9 +255,10 @@ function TemplateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Order Codes</label>
+              <label htmlFor="plsqt_order_codes" className="block text-sm font-medium text-gray-700 mb-1">Order Codes</label>
               <input
                 type="text"
+                id="plsqt_order_codes"
                 name="plsqt_order_codes"
                 value={formData.plsqt_order_codes}
                 onChange={handleChange}
@@ -261,9 +268,10 @@ function TemplateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">FBO Location</label>
+              <label htmlFor="plsqt_fbo_location" className="block text-sm font-medium text-gray-700 mb-1">FBO Location</label>
               <input
                 type="text"
+                id="plsqt_fbo_location"
                 name="plsqt_fbo_location"
                 value={formData.plsqt_fbo_location}
                 onChange={handleChange}
@@ -273,9 +281,10 @@ function TemplateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">As Of Date</label>
+              <label htmlFor="plsqs_as_of_date" className="block text-sm font-medium text-gray-700 mb-1">As Of Date</label>
               <input
                 type="date"
+                id="plsqs_as_of_date"
                 name="plsqs_as_of_date"
                 value={formData.plsqs_as_of_date}
                 onChange={handleChange}
@@ -284,9 +293,10 @@ function TemplateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Version</label>
+              <label htmlFor="plsqt_version" className="block text-sm font-medium text-gray-700 mb-1">Version</label>
               <input
                 type="text"
+                id="plsqt_version"
                 name="plsqt_version"
                 value={formData.plsqt_version}
                 onChange={handleChange}
@@ -296,8 +306,9 @@ function TemplateForm() {
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label htmlFor="plsqt_desc" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
               <textarea
+                id="plsqt_desc"
                 name="plsqt_desc"
                 value={formData.plsqt_desc}
                 onChange={handleChange}
@@ -308,8 +319,9 @@ function TemplateForm() {
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
+              <label htmlFor="template_content" className="block text-sm font-medium text-gray-700 mb-1">Content</label>
               <textarea
+                id="template_content"
                 name="content"
                 value={formData.content}
                 onChange={handleChange}
@@ -321,9 +333,10 @@ function TemplateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Comment</label>
+              <label htmlFor="plsqt_comment" className="block text-sm font-medium text-gray-700 mb-1">Comment</label>
               <input
                 type="text"
+                id="plsqt_comment"
                 name="plsqt_comment"
                 value={formData.plsqt_comment}
                 onChange={handleChange}
@@ -333,9 +346,10 @@ function TemplateForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">External File Reference</label>
+              <label htmlFor="extrn_file_ref" className="block text-sm font-medium text-gray-700 mb-1">External File Reference</label>
               <input
                 type="text"
+                id="extrn_file_ref"
                 name="extrn_file_ref"
                 value={formData.extrn_file_ref}
                 onChange={handleChange}

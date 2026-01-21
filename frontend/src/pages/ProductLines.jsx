@@ -159,8 +159,9 @@ function ProductLineFormModal({ item, categories, onClose, onSave }) {
           {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md text-sm">{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Product Category *</label>
+              <label htmlFor="product_cat_id" className="block text-sm font-medium text-gray-700 mb-1">Product Category *</label>
               <select
+                id="product_cat_id"
                 value={formData.product_cat_id}
                 onChange={(e) => setFormData(prev => ({ ...prev, product_cat_id: e.target.value }))}
                 required
@@ -175,9 +176,10 @@ function ProductLineFormModal({ item, categories, onClose, onSave }) {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Abbreviation</label>
+              <label htmlFor="product_line_abbr" className="block text-sm font-medium text-gray-700 mb-1">Abbreviation</label>
               <input
                 type="text"
+                id="product_line_abbr"
                 value={formData.product_line_abbr}
                 onChange={(e) => setFormData(prev => ({ ...prev, product_line_abbr: e.target.value }))}
                 maxLength={3}
@@ -185,9 +187,10 @@ function ProductLineFormModal({ item, categories, onClose, onSave }) {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+              <label htmlFor="product_line_name" className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
               <input
                 type="text"
+                id="product_line_name"
                 value={formData.product_line_name}
                 onChange={(e) => setFormData(prev => ({ ...prev, product_line_name: e.target.value }))}
                 required

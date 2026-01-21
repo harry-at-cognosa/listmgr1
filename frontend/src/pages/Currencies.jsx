@@ -150,9 +150,10 @@ function CurrencyFormModal({ item, onClose, onSave }) {
           {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md text-sm">{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Symbol *</label>
+              <label htmlFor="currency_symbol" className="block text-sm font-medium text-gray-700 mb-1">Symbol *</label>
               <input
                 type="text"
+                id="currency_symbol"
                 value={formData.currency_symbol}
                 onChange={(e) => setFormData(prev => ({ ...prev, currency_symbol: e.target.value }))}
                 required
@@ -161,9 +162,10 @@ function CurrencyFormModal({ item, onClose, onSave }) {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <label htmlFor="currency_name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
               <input
                 type="text"
+                id="currency_name"
                 value={formData.currency_name}
                 onChange={(e) => setFormData(prev => ({ ...prev, currency_name: e.target.value }))}
                 maxLength={20}
