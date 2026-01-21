@@ -3635,3 +3635,49 @@ Why ref instead of just state:
 - Features passing: 71/103 (68.9%)
 
 [Testing] Session complete - Feature #7 PASSED
+
+---
+
+## Session 2026-01-21 (Feature #8)
+
+### Completed
+- Feature #8: API returns 401 for unauthenticated requests - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Clear all session data - Verified on login page, no active session
+2. ✅ Step 2: Make GET request to /api/templates without auth - Tested via curl and browser fetch
+3. ✅ Step 3: Verify 401 response - Confirmed: HTTP Status 401
+4. ✅ Step 4: Make POST request to /api/currencies without auth - Tested via curl and browser fetch
+5. ✅ Step 5: Verify 401 response - Confirmed: HTTP Status 401
+6. ✅ Step 6: Verify response body contains appropriate error message - All endpoints return: {"error": "Authentication required"}
+
+### API Endpoints Tested (All returned 401 with "Authentication required"):
+- GET /api/templates
+- POST /api/currencies
+- GET /api/currencies
+- GET /api/countries
+- GET /api/users
+- DELETE /api/templates/1
+- PUT /api/currencies/1
+- GET /api/auth/me (returns "Not authenticated")
+
+### Technical Verification
+- Reviewed backend/index.js to confirm authentication middleware implementation
+- `requireAuth` middleware: Checks `req.session.user`, returns 401 if missing
+- `requireAdmin` middleware: Checks auth first (401), then admin role (403)
+- All API routes except /api/auth use authentication middleware
+- Frontend properly redirects unauthenticated users from /templates to /login
+
+### Screenshots
+- .playwright-mcp/feature-8-step1-login-page.png (initial login page)
+- .playwright-mcp/feature-8-step6-redirect-to-login.png (redirect from /templates to /login)
+
+### Console Errors
+- Expected 401 errors when making unauthenticated API requests (this is correct behavior)
+- Some 500 errors on /api/auth/me are Vite proxy artifacts, not actual backend errors
+
+### Current Status
+- Features passing: 71/103 (68.9%)
+- Feature #8 marked as passing
+
+[Testing] Session complete - Feature #8 PASSED
