@@ -836,3 +836,37 @@
 - Features passing: 17/103 (16.5%)
 - Feature #63 marked as passing
 
+
+---
+
+## Session 2026-01-21 (Feature #36)
+
+### Completed
+- Feature #36: User can filter templates by product category - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Templates - Successfully navigated to /templates page
+3. ✅ Step 3: Locate product category filter dropdown - Found dropdown labeled "Product Category" with options: All Categories, Hardware, Services, Software
+4. ✅ Step 4: Select a specific category - Tested all three categories:
+   - Hardware: Shows 3 templates (Servers + Storage product lines)
+   - Software: Shows 3 templates (Operating Systems product line)
+   - Services: Shows "No templates found" (correct - no Services templates exist)
+5. ✅ Step 5: Verify list updates correctly - List filtered properly for each category selection
+6. ✅ Step 6: Clear filter - Clear Filters button resets dropdown to "All Categories" and shows all 6 templates
+
+### Screenshots
+- .playwright-mcp/feature-36-hardware-filter.png (Hardware category selected - 3 templates shown)
+- .playwright-mcp/feature-36-software-filter.png (Software category selected - 3 templates shown)
+- .playwright-mcp/feature-36-services-filter-empty.png (Services category selected - no templates found)
+- .playwright-mcp/feature-36-clear-filters.png (After clearing filters - all 6 templates shown)
+
+### Technical Notes
+- Product Category dropdown correctly filters templates by product_cat_id
+- Filter works in conjunction with other filters (Country, Product Line, Status)
+- Clear Filters button properly resets all filters including Product Category
+- No console errors (only expected 401 auth checks before login)
+
+### Current Status
+- Features passing: 22/103 (21.4%)
+- Feature #36 marked as passing
