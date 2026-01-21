@@ -1,5 +1,41 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #71)
+
+### Completed
+- Feature #71: Admin can view user list - VERIFIED AND PASSING
+  - Fixed field name mismatch in Users.jsx: user_name -> username (to match backend API)
+  - Fixed currentUser comparison: user_id -> id (to match auth context structure)
+  - Removed non-existent 'active' column functionality (users table doesn't have this field)
+  - Simplified table to match feature spec: Username, Role, Last Updated, Actions
+  - Verified all seeded users appear: admin, harry, clint
+  - Added "(you)" indicator for logged-in user
+  - Delete button properly disabled for self-deletion prevention
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in as admin user
+2. ✅ Step 2: Navigate to User Management - Successfully navigated to /admin/users
+3. ✅ Step 3: Verify page loads - Page loads without errors
+4. ✅ Step 4: Verify table shows all users - Table displays 3 users
+5. ✅ Step 5: Verify columns: username, role, last update - Shows USERNAME, ROLE, LAST UPDATED, ACTIONS
+6. ✅ Step 6: Verify seeded users appear (admin, harry, clint) - All three visible
+
+### Bugs Fixed
+- Backend returns `username` but frontend was looking for `user_name`
+- Auth context returns `user.id` but frontend was comparing with `user_id`
+- Status column/Activate/Deactivate buttons were removed (no `active` column in users table)
+
+### Screenshots
+- .playwright-mcp/feature-71-user-management-initial.png (before fixes - data not displaying correctly)
+- .playwright-mcp/feature-71-user-management-fixed.png (after fixes - data displayed correctly)
+- .playwright-mcp/feature-71-user-management-final.png (final verified state)
+
+### Current Status
+- Features passing: 18/103 (17.5%)
+- Feature #71 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #54)
 
 ### Completed
