@@ -1,5 +1,56 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #61)
+
+### Completed
+- Feature #61: Loading states displayed during async operations - VERIFIED AND PASSING
+  - Verified loading spinners and indicators are shown during async API calls
+  - All pages use consistent loading state pattern
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user
+   - Logged in as "harry" successfully
+   - Login button shows "Logging in..." with spinner during authentication
+2. ✅ Step 2: Navigate to Templates page
+   - Successfully navigated to /templates
+   - Page displays data correctly after loading
+3. ✅ Step 3: Observe loading state while data fetches
+   - Templates.jsx shows animated spinner (`animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600`)
+   - Loading state controlled by `loading` state variable
+   - Pattern: `{loading ? <spinner/> : <data/>}`
+4. ✅ Step 4: Submit a form
+   - Created template "TEST_FEATURE61_LOADING_STATE" successfully
+   - Form has `saving` state for form submission
+5. ✅ Step 5: Observe loading state during submission
+   - Button shows "Saving..." text and is disabled during submission
+   - Button has `disabled:opacity-50` styling while saving
+6. ✅ Step 6: Verify loading indicators disappear when complete
+   - After data loads, spinner replaced with actual content
+   - Templates page shows table instead of spinner once loaded
+
+### Loading States Implementation Summary
+All pages consistently implement loading states:
+- **App.jsx**: Auth loading spinner in PrivateRoute and AdminRoute
+- **Login.jsx**: "Logging in..." button with spinner during login
+- **Templates.jsx**: Spinner during template list fetch
+- **TemplateForm.jsx**: Spinner for edit mode loading, "Saving..." during submission
+- **TemplateDetail.jsx**: Spinner during detail fetch
+- **Reference Data pages** (Currencies, Countries, ProductCategories, ProductLines, SectionTypes): All show loading indicator
+- **Users.jsx**: Loading indicator for user list
+
+### Screenshots
+- feature-61-templates-loaded.png
+- feature-61-form-filled.png
+- feature-61-currencies-page.png
+- feature-61-templates-data-loaded.png
+- feature-61-verified-complete.png
+
+### Current Status
+- Features passing: 33/103 (32.0%)
+- Feature #61 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #59)
 
 ### Completed
@@ -1483,3 +1534,16 @@
 - Screenshot: regression-feature54-tabbed-interface.png
 - All 6 verification steps PASSED
 [Testing] Session complete - Feature #54 regression test passed
+[Testing] 2026-01-21 04:02:21 - Feature #13 regression test PASSED - 'Currency list page displays all currencies' verified working
+- Logged in as harry
+- Navigated to Reference Data > Currencies
+- Page loaded without errors (401s were pre-login auth checks)
+- Table displays with columns: SYMBOL, NAME, LAST UPDATED, ACTIONS
+- Currencies visible: EUR (Euro), GBP (British Pound), USD (US Dollar), JPY (TEST_14_Japanese_Yen)
+- Last update info shows datetime and username correctly
+- + Add Currency button present
+- Edit buttons available for each row
+- Note: Some duplicate currency entries in DB (from testing), but feature works correctly
+- Screenshot: regression-feature13-currencies-list.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #13 regression test passed
