@@ -1,5 +1,47 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #38)
+
+### Completed
+- Feature #38: User can filter templates by active status - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Navigated to Templates page, saw 24 templates (all active initially)
+3. ✅ Step 3: Locate active status filter - Found "Status" dropdown filter with options: All, Active, Inactive
+4. ✅ Step 4: Toggle to show only active - Selected "Active" filter, URL changed to ?active=true
+5. ✅ Step 5: Verify list shows only active templates - 22 active templates shown, inactive template excluded
+6. ✅ Step 6: Toggle to show inactive - Selected "Inactive" filter, URL changed to ?active=false
+7. ✅ Step 7: Verify list shows only inactive templates - Only 1 inactive template shown (INACTIVE_F38_TEST_TEMPLATE)
+
+### Test Setup
+- Created test data: Modified template #5 (originally TEST_TEMPLATE_REGRESSION_41) to be inactive
+- Renamed to "INACTIVE_F38_TEST_TEMPLATE" and set plsqt_active = 0
+- Database verified: 22 active templates, 1 inactive template
+
+### Technical Details
+- Frontend: Status filter in Templates.jsx (line 217-229) with "All", "Active", "Inactive" options
+- Backend: templates.js route handler filters by plsqt_active column (lines 46-50)
+- API query parameter: `active=true` for active only, `active=false` for inactive only
+- Filter persists in URL for bookmarking and navigation
+
+### Screenshots
+- .playwright-mcp/feature-38-step2-all-templates-with-inactive.png (All templates showing)
+- .playwright-mcp/feature-38-step5-active-only-filter.png (Active filter - 22 templates, no inactive)
+- .playwright-mcp/feature-38-step7-inactive-only-filter.png (Inactive filter - only 1 inactive template)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks
+- No JavaScript errors or crashes
+
+### Current Status
+- Features passing: 75/103 (72.8%)
+- Feature #38 marked as passing
+
+[Testing] Session complete - Feature #38 PASSED
+
+---
+
 ## Session 2026-01-21 (Feature #102)
 
 ### Completed
@@ -3926,3 +3968,28 @@ Why ref instead of just state:
 
 [Testing] Session complete - Feature #33 PASSED
 
+[Testing] 2026-01-21 - Feature #98 regression test PASSED - 'Deleting parent doesn't orphan children relationships'
+- Logged in as admin
+- Step 1: Created template 'TEST_F98_CASCADE_DELETE' with 2 sections (Header, Detail) ✓
+- Step 2: Deleted template as admin - confirmation dialog warned 'This will also delete all its sections' ✓
+- Step 3: Verified sections deleted (cascade) - template returns 404, no orphaned sections ✓
+- Step 4: N/A - cascade is used, not FK block (schema uses ON DELETE CASCADE) ✓
+- Step 5: Checked database - template 28 gone, no sections referencing it remain ✓
+- Verified other templates (ID 2 'Storage Quote - UK') still have their 3 sections intact
+- Database schema confirmed: plsqt_sections.plsqt_id has ON DELETE CASCADE
+- No console errors
+- Screenshots: regression-f98-step1-template-with-sections.png, regression-f98-step2-template-deleted-success.png, regression-f98-step3-template-not-found.png, regression-f98-step5-other-templates-sections-intact.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #98 regression test passed
+[Testing] 2026-01-21 - Feature #78 regression test PASSED - 'Template section_count stays accurate'
+- Logged in as admin
+- Step 1: Created new template 'REGRESSION_TEST_F78_SECTION_COUNT', verified section_count = 0 ✓
+- Step 2: Added Header section, verified section_count = 1 ✓
+- Step 3: Added Detail section, verified section_count = 2 ✓
+- Step 4: Deleted Detail section (admin), verified section_count = 1 ✓
+- Step 5: Cloned Header section, verified section_count = 2 ✓
+- Section count also correctly reflected in templates list table
+- Only expected pre-login 401 errors in console
+- Screenshot: regression-f78-section-count-verified.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #78 regression test passed
