@@ -1,5 +1,45 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #72)
+
+### Completed
+- Feature #72: Admin can create new user - VERIFIED AND PASSING
+  - Admin can add users with username, password, and role selection
+  - New user appears in users list with correct role and last_update info
+  - Newly created user can successfully log in with the credentials
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in as "admin"
+2. ✅ Step 2: Navigate to User Management - Navigated to /admin/users
+3. ✅ Step 3: Click Add User - Clicked "+ Add User" button, form appeared
+4. ✅ Step 4: Enter username 'testuser' - Entered "testuser_f72"
+5. ✅ Step 5: Enter password 'testpass' - Entered "testpass123"
+6. ✅ Step 6: Select role 'user' - Selected "User" from dropdown
+7. ✅ Step 7: Submit form - Clicked "Save" button
+8. ✅ Step 8: Verify success message - Saw "User saved successfully"
+9. ✅ Step 9: Verify new user in list - "testuser_f72" appeared in users table
+   - Role: user
+   - Last Updated: "2026-01-21 11:46 by admin"
+10. ✅ Step 10: Log out - Clicked Logout, redirected to login page
+11. ✅ Step 11: Log in as testuser - Logged in as "testuser_f72" / "testpass123"
+12. ✅ Step 12: Verify login works - Successfully redirected to /templates
+    - Header shows "Logged in as testuser_f72" (no Admin role)
+    - User Management link NOT visible (regular user access control)
+    - Delete buttons NOT visible in templates (regular user)
+
+### Cleanup
+- Test user deleted after verification
+
+### Screenshots
+- .playwright-mcp/feature-72-user-created-success.png (new user in list)
+- .playwright-mcp/feature-72-testuser-login-success.png (login as new user)
+
+### Current Status
+- Features passing: 22/103 (21.4%)
+- Feature #72 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #39)
 
 ### Completed
