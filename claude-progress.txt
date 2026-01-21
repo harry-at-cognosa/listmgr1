@@ -1,5 +1,50 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #97)
+
+### Completed
+- Feature #97: Foreign key dropdowns populated from real data - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Create a unique country 'TESTCOUNTRY' - Created "TESTCOUNTRY_F97_DROPDOWN_VERIFY" (abbr: T97) with USD currency
+2. ✅ Step 2: Navigate to Template create form - Navigated to /templates/new
+3. ✅ Step 3: Open country dropdown - Country dropdown shows all database countries
+4. ✅ Step 4: Verify 'TESTCOUNTRY' appears in options - Confirmed "TESTCOUNTRY_F97_DROPDOWN_VERIFY" in Country dropdown
+5. ✅ Step 5: Create a unique product category - Created "TESTCAT_F97_DROPDOWN_VERIFY" (abbr: P97)
+6. ✅ Step 6: Verify it appears in product category dropdown - Confirmed "TESTCAT_F97_DROPDOWN_VERIFY" in Product Category dropdown
+
+### Technical Verification
+Used JavaScript evaluation to programmatically verify dropdown contents:
+```json
+{
+  "country": {
+    "hasTestCountry": true,
+    "options": ["Select Country", "Canada", "Germany", ..., "TESTCOUNTRY_F97_DROPDOWN_VERIFY", ...]
+  },
+  "productCategory": {
+    "hasTestCategory": true,
+    "options": ["Select Category", "Hardware", ..., "TESTCAT_F97_DROPDOWN_VERIFY", ...]
+  }
+}
+```
+
+### Screenshots
+- .playwright-mcp/feature-97-step1-country-created.png (Countries page showing new T97 country)
+- .playwright-mcp/feature-97-step4-country-dropdown-verify.png (Template form with Country dropdown)
+- .playwright-mcp/feature-97-step5-category-created.png (Product Categories page showing new P97 category)
+- .playwright-mcp/feature-97-step6-template-form-dropdowns.png (Template form showing both dropdowns)
+
+### Console Errors
+- None (only expected React Router future flag warnings)
+
+### Current Status
+- Features passing: 64/103 (62.1%)
+- Feature #97 marked as passing
+
+[Testing] Session complete - Feature #97 PASSED
+
+---
+
 ## Session 2026-01-21 (Feature #96)
 
 ### Completed
@@ -3246,3 +3291,14 @@ Why ref instead of just state:
 - Screenshots: regression-feature41-form-filled.png, regression-feature41-success.png, regression-feature41-detail.png
 - All 14 verification steps PASSED
 [Testing] Session complete - Feature #41 regression test passed
+[Testing] 2026-01-21 - Feature #84 regression test PASSED - 'Empty search shows all results' verified working
+- Logged in as harry
+- Step 1: Navigated to Templates page, saw 23 templates initially
+- Step 2: Searched 'Server', list filtered to 1 result (Server Quote - US Standard)
+- Step 3: Cleared search box using fill('')
+- Step 4: All 23 templates displayed again ✓
+- Step 5: API count (23) matches UI count (23) ✓
+- Only expected 401 errors (pre-login auth checks on /api/auth/me)
+- Screenshots: regression-f84-initial-templates.png, regression-f84-search-server.png, regression-f84-cleared-search.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #84 regression test passed
