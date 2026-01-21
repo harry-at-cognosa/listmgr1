@@ -43,6 +43,15 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Currency symbol is required' });
     }
 
+    // Check for duplicate symbol
+    const existing = await db.query(
+      'SELECT currency_id FROM currency WHERE UPPER(currency_symbol) = UPPER($1)',
+      [currency_symbol]
+    );
+    if (existing.rows.length > 0) {
+      return res.status(400).json({ error: 'A currency with this symbol already exists' });
+    }
+
     const now = getDateTime();
     const result = await db.query(
       `INSERT INTO currency (currency_symbol, currency_name, last_update_datetime, last_update_user)
