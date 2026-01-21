@@ -1,5 +1,39 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #41)
+
+### Completed
+- Feature #41: User can create new template - VERIFIED AND PASSING
+  - Logged in as admin user
+  - Navigated to Templates page
+  - Clicked "+ New Template" button
+  - Filled in template form:
+    - Template Name: "Test Template for Feature 41"
+    - Country: United States
+    - Currency: USD
+    - Product Category: Hardware
+    - Product Line: Servers
+    - Description: "This is a test template created to verify Feature #41"
+    - Status: not started
+    - Active: Yes
+  - Submitted form successfully
+  - Verified template appears in list with correct data
+  - Verified template detail page shows all entered information
+
+### Current Status
+- Features passing: 4/103 (3.9%)
+- Feature #41 marked as passing
+
+### Notes
+- Full application stack is working:
+  - Backend: Express with SQLite, session authentication
+  - Frontend: React with Vite, Tailwind CSS
+  - All reference data pages implemented (Currencies, Countries, Product Categories, Product Lines, Section Types, Users)
+  - Templates CRUD fully working
+  - Template sections functionality available
+
+---
+
 ## Session 2026-01-21 (Feature #13)
 
 ### Completed
