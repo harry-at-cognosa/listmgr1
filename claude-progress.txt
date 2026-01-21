@@ -1,5 +1,41 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #70)
+
+### Completed
+- Feature #70: Invalid form input shows field-level errors - VERIFIED AND PASSING
+  - User creation form shows field-level validation errors
+  - Invalid fields are highlighted with red borders
+  - Error messages appear below each invalid field
+  - Errors clear when user corrects the input
+
+### Verification Steps Completed
+1. ✅ Step 1: Open user creation form (as admin) - Logged in as admin, clicked "+ Add User"
+2. ✅ Step 2: Enter very short username - Entered "ab" (2 characters)
+3. ✅ Step 3: Leave password empty - Left password field blank
+4. ✅ Step 4: Try to submit - Clicked Save button
+5. ✅ Step 5: Verify each invalid field has error message:
+   - Username: "Username must be at least 3 characters" (red border)
+   - Password: "Password is required" (red border)
+6. ✅ Step 6: Fix errors - Entered valid username "testuser70" and password "password123"
+7. ✅ Step 7: Verify errors clear - Both errors cleared when valid input provided
+
+### Additional Tests
+- ✅ Password too short: "Password must be at least 3 characters" error shown
+- ✅ Duplicate username: "Username already exists" shown as field-level error (server-side validation)
+
+### Screenshots
+- .playwright-mcp/feature-70-field-level-errors.png (username and password errors)
+- .playwright-mcp/feature-70-errors-cleared.png (form with no errors after fixing)
+- .playwright-mcp/feature-70-password-too-short.png (password validation error)
+- .playwright-mcp/feature-70-duplicate-username-error.png (duplicate username error)
+
+### Current Status
+- Features passing: 40/103 (38.8%)
+- Feature #70 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #66)
 
 ### Completed
@@ -1918,3 +1954,27 @@ All limits match the VARCHAR specifications in the database schema (app_spec.txt
 - Screenshots: feature63-duplicate-error-fixed.png, feature63-foreign-key-error.png
 - All 5 verification steps PASSED
 [Testing] Session complete - Feature #63 regression test passed
+[Testing] 2026-01-21 12:13 - Feature #23 regression test PASSED - 'User can create new product category' verified working
+- Logged in as harry
+- Navigated to Reference Data > Product Categories
+- Clicked '+ Add Category' button - modal form appeared
+- Entered abbreviation 'F23' and name 'REGRESSION_TEST_FEATURE_23'
+- Clicked Save - form submitted successfully
+- Success message 'Product category saved successfully' displayed
+- New product category appears in list: F23 | REGRESSION_TEST_FEATURE_23 | 2026-01-21 12:13 by harry
+- Last Updated shows datetime and username correctly
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression-feature23-product-category-created.png
+- All 8 verification steps PASSED
+[Testing] Session complete - Feature #23 regression test passed
+[Testing] 2026-01-21 - Feature #36 regression test PASSED - 'User can filter templates by product category' verified working
+- Logged in as harry
+- Navigated to Templates page
+- Product Category dropdown present with options: All Categories, Hardware, Services, Software, Test Category Regression
+- Hardware filter: showed 3 templates (Server Quote - US Standard, Storage Quote - UK, Test Template for Feature 41) - all with Hardware product lines (Servers, Storage)
+- Software filter: showed 5 templates - all with Software product line (Operating Systems)
+- Clear Filters: reset to 'All Categories' and showed all 8 templates
+- Only expected 401 errors (pre-login auth checks)
+- Screenshots: regression-feature36-hardware-filter.png, regression-feature36-software-filter.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #36 regression test passed
