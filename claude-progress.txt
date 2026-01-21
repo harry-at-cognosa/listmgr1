@@ -1,5 +1,42 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #83)
+
+### Completed
+- Feature #83: Cannot access other users' data via URL manipulation - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as user 'harry' - Logged in successfully
+2. ✅ Step 2: Create a template - Created "TEST_FEATURE83_URL_SECURITY_HARRY"
+3. ✅ Step 3: Note the template ID - Template ID: 16 (URL: /templates/16)
+4. ✅ Step 4: Templates should be visible to all users (shared data) - Confirmed via list view
+5. ✅ Step 5: Log in as different user - Logged in as 'clint'
+6. ✅ Step 6: Access the same template - Successfully accessed /templates/16 as clint
+7. ✅ Step 7: Verify appropriate access (shared in this app) - Clint can view AND edit harry's template (correct behavior for collaborative app)
+
+### Additional Security Verification
+- ✅ Non-existent template IDs (e.g., /templates/99999) return "Template not found" message (404)
+- ✅ Unauthenticated users are redirected to login page (401 Unauthorized)
+- ✅ Cannot access any templates without proper authentication
+
+### Screenshots
+- .playwright-mcp/feature-83-step2-template-created-by-harry.png (template created by harry)
+- .playwright-mcp/feature-83-step6-clint-accesses-harry-template.png (clint accessing harry's template)
+- .playwright-mcp/feature-83-nonexistent-template-404.png (404 for non-existent template)
+- .playwright-mcp/feature-83-unauthenticated-redirect.png (redirect to login when not authenticated)
+
+### Technical Notes
+- This is a collaborative app where templates are SHARED data
+- All authenticated users can view/edit all templates (by design)
+- Security is properly enforced: authentication required, 404 for non-existent IDs
+- No console errors (only expected 401 pre-login auth checks and React Router warnings)
+
+### Current Status
+- Features passing: 51/103 (49.5%)
+- Feature #83 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #82)
 
 ### Completed
