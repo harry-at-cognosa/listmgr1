@@ -126,3 +126,40 @@
 - All 6 verification steps passed
 - No console errors after login
 [Testing] 2026-01-21 00:30:22 - Feature #13 regression test PASSED - 'Currency list page displays all currencies' verified working
+
+---
+
+## Session 2026-01-21 (Feature #22)
+
+### Completed
+- Feature #22: Product category list page displays all categories - VERIFIED AND PASSING
+  - Logged in as user "harry"
+  - Navigated to Reference Data > Product Categories
+  - Page loaded without errors (no JS errors in console after login)
+  - Table displays columns: ABBR, NAME, LAST UPDATED, ACTIONS
+  - Data displayed correctly: HW/Hardware, SVC/Services, SW/Software
+  - Last update info shows datetime and user (e.g., "2026-01-21 08:19 by system")
+  - Regular user "harry" sees Edit button only (no Delete)
+  - Admin user sees both Edit and Delete buttons
+  - Real data verification: Created test entry "TST/TEST_F22_VERIFY", verified it appeared with correct timestamp and username, then deleted it
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Reference Data > Product Categories - Successfully navigated to /reference/product-categories
+3. ✅ Step 3: Verify page loads without errors - Page loaded, no JS errors
+4. ✅ Step 4: Verify table displays category abbr and name - ABBR and NAME columns visible with data
+5. ✅ Step 5: Verify last update info shown - LAST UPDATED column shows datetime and user
+
+### Screenshots
+- .playwright-mcp/feature-22-product-categories-list.png (regular user view)
+- .playwright-mcp/feature-22-product-categories-verified.png (with test data added)
+- .playwright-mcp/feature-22-admin-view-with-delete.png (admin view with Delete buttons)
+
+### Current Status
+- Features passing: 7/103 (6.8%)
+- Feature #22 marked as passing
+
+### Notes
+- Product Categories page was already fully implemented
+- Observed duplicate entries in seed data (each category appears twice) - doesn't affect feature
+- Role-based access control working correctly (Delete only for admins)
