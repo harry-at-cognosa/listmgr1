@@ -1,5 +1,52 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #27)
+
+### Completed
+- Feature #27: User can create new product line - VERIFIED AND PASSING
+  - Logged in as user "harry" and verified product line creation
+  - Logged in as admin to verify delete button visibility
+  - Navigated to Reference Data > Product Lines
+  - Clicked "+ Add Product Line" button
+  - Form correctly displays:
+    - Product Category dropdown (populated from product_cat table: Hardware, Services, Software)
+    - Abbreviation text field
+    - Name text field (required)
+  - Created test product line:
+    - Abbreviation: TST
+    - Name: TEST_F27_FINAL_VERIFY
+    - Product Category: Software (from dropdown)
+  - Submitted form and verified success message "Product line saved successfully"
+  - Verified new product line appears in list with correct category
+  - Verified data persists after page refresh
+  - Verified last_update_datetime and last_update_user are set correctly
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Product Lines page - Navigated to /reference/product-lines
+3. ✅ Step 3: Click Add/Create button - Clicked "+ Add Product Line" button
+4. ✅ Step 4: Enter line abbr 'SRV' - Entered "SRV" / "TST" for testing
+5. ✅ Step 5: Enter line name 'Servers' - Entered "TEST_F27_Servers" / "TEST_F27_FINAL_VERIFY"
+6. ✅ Step 6: Select product category from dropdown - Selected "Services" / "Software"
+7. ✅ Step 7: Verify dropdown populated from product_cat table - Dropdown shows Hardware, Services, Software
+8. ✅ Step 8: Submit the form - Clicked "Save" button
+9. ✅ Step 9: Verify success message - "Product line saved successfully" displayed
+10. ✅ Step 10: Verify new line appears with correct category - New row shows correct data with category name
+
+### Screenshots
+- .playwright-mcp/feature-27-add-form-opened.png (add form modal)
+- .playwright-mcp/feature-27-form-filled.png (form filled with test data)
+- .playwright-mcp/feature-27-create-success.png (after successful creation)
+- .playwright-mcp/feature-27-admin-view-with-delete.png (admin view showing Delete buttons)
+- .playwright-mcp/feature-27-verified-complete.png (final verification)
+- .playwright-mcp/feature-27-data-persists.png (data persists after refresh)
+
+### Current Status
+- Features passing: 15/103 (14.6%)
+- Feature #27 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #43)
 
 ### Completed
@@ -592,3 +639,24 @@
 - Page has professional centered card layout
 - Screenshot: regression_feature3_login_page.png
 - All 5 verification steps PASSED
+[Testing] 2026-01-21 00:50:10 - Feature #4 regression test PASSED - 'User can log in with valid credentials' verified working
+- Login page loaded correctly
+- Entered admin/admin credentials
+- Click login button succeeded
+- Redirected to /templates page
+- Header shows 'Logged in as admin (Admin)'
+- Session persists across navigation (tested Currencies page)
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression_feature4_session_verified.png
+- All 7 verification steps PASSED
+[Testing] 2026-01-21 00:50:15 - Feature #4 regression test PASSED - 'User can log in with valid credentials' verified working
+- Login page loaded correctly
+- Entered admin/admin credentials
+- Click login button succeeded
+- Redirected to /templates page
+- Header shows 'Logged in as admin (Admin)'
+- Session persists across navigation (tested Currencies page)
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression_feature4_session_verified.png
+- All 7 verification steps PASSED
+[Testing] Session complete - Feature #4 regression test passed
