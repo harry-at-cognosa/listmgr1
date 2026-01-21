@@ -1,5 +1,40 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #6)
+
+### Completed
+- Feature #6: User can log out - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry successfully
+2. ✅ Step 2: Verify logout button is visible in header - "Logout" button visible in top-right header
+3. ✅ Step 3: Click logout button - Clicked successfully, POST /api/auth/logout returned 200 OK
+4. ✅ Step 4: Verify redirect to login page - Redirected to /login immediately
+5. ✅ Step 5: Verify session is cleared - API /api/auth/me returns 401 Unauthorized
+6. ✅ Step 6: Verify attempting to access protected page redirects to login - /templates redirects to /login
+
+### Technical Details
+- Frontend: Logout button in Layout.jsx header triggers handleLogout() function
+- Backend: POST /api/auth/logout endpoint destroys session
+- Session-based authentication properly cleared on logout
+- Protected routes redirect unauthenticated users to login page
+
+### Screenshots
+- .playwright-mcp/feature-6-step2-logout-button-visible.png (Logged in as harry, Logout button visible)
+- .playwright-mcp/feature-6-step4-redirected-to-login.png (Login page after logout)
+- .playwright-mcp/feature-6-step6-protected-page-redirects-to-login.png (Protected page redirect)
+
+### Console Errors
+- Only expected 401 errors from authentication checks (normal behavior)
+
+### Current Status
+- Features passing: 96/103 (93.2%)
+- Feature #6 marked as passing
+
+[Testing] Session complete - Feature #6 PASSED
+
+---
+
 ## Session 2026-01-21 (Feature #15)
 
 ### Completed
@@ -5035,3 +5070,40 @@ Why ref instead of just state:
 - Feature #49 marked as passing
 
 [Testing] Session complete - Feature #49 PASSED
+[Testing] 2026-01-21 - Feature #11 regression test PASSED - 'Regular user cannot access admin routes'
+- Step 1: Logged in as regular user 'harry' ✓
+- Step 2: Attempted to navigate to /admin/users ✓
+- Step 3: Verified access denied - user was REDIRECTED to /templates ✓
+- Step 4: Verified no admin content visible in navigation ✓
+  * harry's sidebar shows only: Templates, Reference Data
+  * NO 'User Management' link visible
+- Step 5: Verified redirect behavior (no error message, just redirect to safe page) ✓
+- Additional verification:
+  * Logged in as admin to compare ✓
+  * Admin sees 'User Management' link in sidebar ✓
+  * Admin can access /admin/users and see user list ✓
+- Console errors: None (only React dev warnings)
+- Screenshots:
+  * regression-f11-harry-redirected.png (harry redirected to /templates)
+  * regression-f11-admin-has-usermgmt.png (admin sees User Management link)
+  * regression-f11-admin-usermgmt-page.png (admin can access user list)
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #11 regression test passed
+[Testing] 2026-01-21 - Feature #38 regression test PASSED - 'User can filter templates by active status'
+- Step 1: Logged in as harry (regular user) ✓
+- Step 2: Navigated to Templates page (/templates) ✓
+- Step 3: Located active status filter dropdown ✓
+- Step 4: Selected 'Active' filter ✓
+  * URL changed to ?active=true
+  * INACTIVE_F38_TEST_TEMPLATE was filtered out
+  * Only active templates shown (27 templates)
+- Step 5: Verified list shows only active templates ✓
+- Step 6: Selected 'Inactive' filter ✓
+  * URL changed to ?active=false
+  * Only INACTIVE_F38_TEST_TEMPLATE shown (1 template)
+- Step 7: Verified list shows only inactive templates ✓
+- Additional: Clear Filters button properly resets status to 'All' ✓
+- Console errors: Only expected 401 pre-login auth checks (normal behavior)
+- Screenshots: regression-f38-step2-all-templates.png, regression-f38-step4-active-only.png, regression-f38-step6-inactive-only.png
+- All 7 verification steps PASSED
+[Testing] Session complete - Feature #38 regression test passed
