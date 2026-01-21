@@ -1,5 +1,40 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #51)
+
+### Completed
+- Feature #51: User can edit existing section - VERIFIED AND PASSING
+  - Tested section edit form on Template #2 (Storage Quote - UK)
+  - Modified multiple fields: Alternate Name, Version, Comment, Content, Status
+  - All changes persisted correctly to database
+  - last_update_datetime and last_update_user fields updated properly
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: View template detail - Navigated to Template #2 (Storage Quote - UK)
+3. ✅ Step 3: Select a section tab or click edit - Clicked Edit button on section
+4. ✅ Step 4: Modify section fields - Updated:
+   - Alternate Name: "VERIFY_F51_EDIT_12345"
+   - Version: "3.0-F51"
+   - Comment: "Feature 51 verification comment - UPDATED"
+   - Content: Updated content text
+   - Status: Changed from "in process" to "in review"
+5. ✅ Step 5: Submit form - Clicked Update button
+6. ✅ Step 6: Verify changes saved - Page refresh confirmed all data persisted
+7. ✅ Step 7: Verify last_update fields updated - Shows "2026-01-21 08:45 by harry"
+
+### Screenshots
+- .playwright-mcp/feature-51-edit-form-before.png (form before editing)
+- .playwright-mcp/feature-51-edit-form-filled.png (form with updated values)
+- .playwright-mcp/feature-51-edit-verified.png (section expanded showing saved data)
+- .playwright-mcp/feature-51-edit-form-persisted.png (form re-opened showing persisted values)
+
+### Current Status
+- Features passing: 13/103 (12.6%)
+- Feature #51 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #31)
 
 ### Completed
