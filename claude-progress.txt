@@ -1,5 +1,39 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #4)
+
+### Completed
+- Feature #4: User can log in with valid credentials - VERIFIED AND PASSING
+  - Navigated to http://localhost:5173/login
+  - Entered username "admin" in the username field
+  - Entered password "admin" in the password field
+  - Clicked Login button
+  - Verified redirect to main dashboard/templates page (URL: /templates)
+  - Verified user info displayed in header: "Logged in as **admin** (Admin)"
+  - Verified session persists after page refresh (user stays logged in)
+  - No console errors during authentication
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to login page - Successfully loaded /login
+2. ✅ Step 2: Enter valid username ('admin') - Entered in username field
+3. ✅ Step 3: Enter valid password ('admin') - Entered in password field
+4. ✅ Step 4: Click login button - Clicked Login button
+5. ✅ Step 5: Verify redirect to main dashboard/templates page - Redirected to /templates
+6. ✅ Step 6: Verify user info displayed in header - Shows "Logged in as admin (Admin)"
+7. ✅ Step 7: Verify session is established - Session persists after refresh, HTTP-only cookies used
+
+### Screenshots
+- .playwright-mcp/feature-4-step1-login-page.png (login page before credentials)
+- .playwright-mcp/feature-4-step2-credentials-entered.png (credentials filled in)
+- .playwright-mcp/feature-4-step3-login-success-templates-page.png (after login, templates page)
+- .playwright-mcp/feature-4-step4-session-persists-after-refresh.png (session still active after refresh)
+
+### Current Status
+- Features passing: 10/103 (9.7%)
+- Feature #4 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #23)
 
 ### Completed
