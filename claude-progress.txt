@@ -1,5 +1,55 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #98)
+
+### Completed
+- Feature #98: Deleting parent doesn't orphan children relationships - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Test FK constraint protection - Verified deleting currency used by country/templates is blocked
+2. ✅ Step 2: Test FK constraint on product_cat → product_line - Verified delete blocked with proper error
+3. ✅ Step 3: Test FK constraint on plsqts_type → sections - Verified delete blocked with proper error
+4. ✅ Step 4: Test cascade delete template → sections - Deleted template with 2 sections, cascade worked
+5. ✅ Step 5: Check no orphaned records - Template and all its sections were properly deleted
+
+### Bug Fixed
+- **Issue**: When deleting records with foreign key constraints, SQLite was returning 500 errors instead of 400
+- **Root Cause**: The error handling was only checking for PostgreSQL error code '23503' and the specific message 'FOREIGN KEY constraint failed', but better-sqlite3 uses different error codes
+- **Fix**: Updated error handling in 5 route files to also check for:
+  - `error.code === 'SQLITE_CONSTRAINT'`
+  - `error.code === 'SQLITE_CONSTRAINT_FOREIGNKEY'`
+  - `error.message.includes('FOREIGN KEY')`
+  - `error.message.includes('constraint')`
+
+### Files Modified
+- backend/routes/currencies.js - Enhanced FK error handling
+- backend/routes/countries.js - Enhanced FK error handling
+- backend/routes/productCategories.js - Enhanced FK error handling
+- backend/routes/productLines.js - Enhanced FK error handling
+- backend/routes/sectionTypes.js - Enhanced FK error handling
+
+### Test Results
+- ✅ Currency delete blocked when referenced by country/template (returns 400 with user-friendly message)
+- ✅ Product category delete blocked when referenced by product line/template (returns 400)
+- ✅ Section type delete blocked when referenced by section (returns 400)
+- ✅ Template cascade delete works (sections automatically deleted with template)
+
+### Screenshots
+- .playwright-mcp/feature-98-currency-delete-blocked.png (Currency delete protection)
+- .playwright-mcp/feature-98-product-category-delete-blocked.png (Product category delete protection)
+- .playwright-mcp/feature-98-section-type-delete-blocked.png (Section type delete protection)
+- .playwright-mcp/feature98_cascade_delete_success.png (Template cascade delete success)
+
+### Console Errors
+- None (FK errors now handled properly with 400 responses)
+
+### Current Status
+- Feature #98 marked as passing
+
+[Testing] Session complete - Feature #98 PASSED
+
+---
+
 ## Session 2026-01-21 (Feature #99)
 
 ### Completed
