@@ -1,5 +1,38 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #66)
+
+### Completed
+- Feature #66: Breadcrumb navigation works correctly - VERIFIED AND PASSING
+  - Updated breadcrumbs to show "Home > Templates > [Template Name]" format
+  - Changed separator from "/" to ">" for better visual hierarchy
+  - Added "Home" as clickable link to Templates list
+  - Breadcrumbs update correctly on navigation between pages
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Templates > Template Detail - Navigated to /templates/1 (Server Quote - US Standard)
+2. ✅ Step 2: Verify breadcrumb shows: Home > Templates > [Template Name] - Shows "Home > Templates > Server Quote - US Standard"
+3. ✅ Step 3: Click Templates in breadcrumb - Clicked Templates link
+4. ✅ Step 4: Verify navigation to Templates list - Navigated to /templates successfully
+5. ✅ Step 5: Verify breadcrumbs update on navigation - Navigated to Storage Quote - UK, breadcrumb updated to "Home > Templates > Storage Quote - UK"
+
+### Files Modified
+- frontend/src/pages/TemplateDetail.jsx - Updated breadcrumb format
+- frontend/src/pages/TemplateForm.jsx - Updated breadcrumb format
+
+### Screenshots
+- .playwright-mcp/feature-66-step2-breadcrumb-updated.png (breadcrumb with Home > Templates > Template Name)
+- .playwright-mcp/feature-66-step4-templates-list.png (templates list after clicking breadcrumb)
+- .playwright-mcp/feature-66-step5-breadcrumb-updates.png (breadcrumb updated for different template)
+- .playwright-mcp/feature-66-edit-template-breadcrumb.png (edit template breadcrumb)
+- .playwright-mcp/feature-66-new-template-breadcrumb.png (new template breadcrumb)
+
+### Current Status
+- Features passing: 37/103 (35.9%)
+- Feature #66 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #65)
 
 ### Completed
