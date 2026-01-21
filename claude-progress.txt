@@ -334,3 +334,53 @@
 - Last update info showing datetime and user
 - Screenshot: regression_feature22_product_categories.png
 - No console errors after login
+[Testing] 2026-01-21 00:38:22 - Feature #1 regression test PASSED - 'App loads without errors' verified:
+- Navigate to localhost:5173: Loaded and redirected to login
+- Console errors: Only expected 401 from auth check before login
+- Login page: Rendered correctly with username, password, and Login button
+- Main layout after login: Header, sidebar, Templates table all rendered
+- Network requests: All API calls returned 200 OK after login
+- Screenshots: regression_feature1_app_loads.png, regression_feature1_main_layout.png
+[Testing] 2026-01-21 00:38:32 - Feature #26 regression test PASSED - 'Product line list page displays all lines' verified working
+- Logged in as harry
+- Navigated to Reference Data > Product Lines
+- Table displays ABBR, NAME, PRODUCT CATEGORY, LAST UPDATED, ACTIONS columns
+- All product lines visible: OS/Operating Systems, SRV/Servers, STR/Storage, STG/Storage
+- Product category shows names (Software, Hardware) not IDs
+- Last update info showing datetime and user
+- Screenshot: regression_feature26_product_lines.png
+- No console errors after login
+[Testing] Session complete - Feature #26 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #18)
+
+### Completed
+- Feature #18: Country list page displays all countries - VERIFIED AND PASSING
+  - Logged in as user "harry"
+  - Navigated to Reference Data > Countries
+  - Page loaded without errors (no JS errors in console after login)
+  - Table displays columns: ABBR, NAME, CURRENCY, LAST UPDATED, ACTIONS
+  - Data displayed correctly: DEU/Germany, GBR/United Kingdom, USA/United States
+  - Currency shows name format "EUR - Euro", "GBP - British Pound", "USD - US Dollar" (not just ID)
+  - Last update info shows datetime and user (e.g., "2026-01-21 08:19 by system")
+  - Regular user "harry" sees Edit button only (no Delete)
+  - Admin user sees both Edit and Delete buttons
+  - Real data verification: Created test entry "TST/TEST_F18_VERIFY", verified it appeared with correct timestamp and username
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Reference Data > Countries - Successfully navigated to /reference/countries
+3. ✅ Step 3: Verify page loads without errors - Page loaded, no JS errors
+4. ✅ Step 4: Verify table displays country abbr, name, currency - All columns visible with correct data
+5. ✅ Step 5: Verify currency shows name not just ID - Shows "EUR - Euro", "GBP - British Pound", etc.
+
+### Screenshots
+- .playwright-mcp/feature-18-countries-list.png (countries list page)
+- .playwright-mcp/feature-18-verified-with-test-data.png (with test data created)
+- .playwright-mcp/feature-18-admin-with-delete-buttons.png (admin view with Delete buttons)
+
+### Current Status
+- Features passing: 12/103 (11.7%)
+- Feature #18 marked as passing
