@@ -3844,3 +3844,85 @@ Why ref instead of just state:
 - Feature #37 marked as passing
 
 [Testing] Session complete - Feature #37 PASSED
+
+---
+
+## Session 2026-01-21 (Feature #72)
+
+### Completed
+- Feature #72: Admin can create new user - VERIFIED AND PASSING (Regression Test)
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in successfully
+2. ✅ Step 2: Navigate to User Management - Navigated to /admin/users
+3. ✅ Step 3: Click Add User - Form appeared with Username, Password, Role fields
+4. ✅ Step 4: Enter username 'testuser' - Entered successfully
+5. ✅ Step 5: Enter password 'testpass' - Entered successfully
+6. ✅ Step 6: Select role 'user' - User role selected (default)
+7. ✅ Step 7: Submit form - Clicked Save button
+8. ✅ Step 8: Verify success message - 'User saved successfully' displayed
+9. ✅ Step 9: Verify new user in list - 'testuser' appeared with role 'user', timestamp '2026-01-21 13:11 by admin'
+10. ✅ Step 10: Log out - Returned to login page
+11. ✅ Step 11: Log in as testuser - Used credentials testuser/testpass
+12. ✅ Step 12: Verify login works - Successfully logged in, redirected to /templates, header showed 'Logged in as testuser'
+
+### Additional Verification
+- testuser had correct role (user) - no 'User Management' link visible in navigation
+- testuser could view templates and access Reference Data
+- Cleanup: Deleted testuser after verification
+
+### Screenshots
+- .playwright-mcp/regression-f72-user-created.png (User created with success message)
+- .playwright-mcp/regression-f72-testuser-login.png (Logged in as testuser)
+
+### Console Errors
+- Only expected 401 errors for initial auth checks (pre-login)
+- React Router future flag warnings (expected)
+
+### Current Status
+- Feature #72 still passing - no regression found
+
+[Testing] Session complete - Feature #72 regression test PASSED
+
+---
+
+## Session 2026-01-21 (Feature #33)
+
+### Completed
+- Feature #33: Admin can delete section type - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. Step 1: Log in as admin - Successfully logged in as admin user
+2. Step 2: Navigate to Section Types page - Accessed /reference/section-types
+3. Step 3: Create a test section type - Created TEST_F33_DELETE_ME, TEST_F33_DELETE_VERIFY, TEST_F33_FINAL_CHECK
+4. Step 4: Click Delete - Clicked Delete button on test section type
+5. Step 5: Confirm deletion - Accepted the confirmation dialog
+6. Step 6: Verify removed from list - Test section types were removed from the list after deletion
+
+### Additional Verification
+- Verified role-based access control:
+  - Admin user: Delete button IS visible in Actions column
+  - Regular user (harry): Delete button NOT visible, only Edit button
+- Backend API properly enforces admin-only deletion (returns 403 for non-admin users)
+- Delete confirmation dialog works correctly
+- List refreshes after deletion to show updated data
+
+### Technical Details
+- Frontend: SectionTypes.jsx - Delete button conditionally rendered with isAdmin check
+- Backend: sectionTypes.js - DELETE endpoint checks req.session.user.role for admin returns 403 if not
+- Confirmation dialog uses browser native window.confirm()
+
+### Screenshots
+- .playwright-mcp/feature-33-before-delete.png (section types list before deletion)
+- .playwright-mcp/feature-33-step3-created.png (test section type created)
+- .playwright-mcp/feature-33-no-delete-for-regular-user.png (regular user harry - no delete button)
+- .playwright-mcp/feature-33-admin-delete-visible.png (admin user - delete button visible)
+
+### Console Errors
+- None (only expected React Router future flag warnings)
+
+### Current Status
+- Feature #33 marked as passing
+
+[Testing] Session complete - Feature #33 PASSED
+
