@@ -1,5 +1,37 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #30)
+
+### Completed
+- Feature #30: Section type list page displays all types - VERIFIED AND PASSING
+  - Section Types page at /reference/section-types loads correctly
+  - Table displays all required columns: Name, Total Price, Line Prices, Active, Version, Last Updated, Actions
+  - Boolean fields (has_total_price, has_lineitem_prices, active) displayed correctly with Yes/No text and Active badge
+  - 7 section types displayed from database: Detail, Header, Product List, Standard, Summary (x2), Terms
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as "harry"
+2. ✅ Step 2: Navigate to Reference Data > Section Types - Successfully navigated to /reference/section-types
+3. ✅ Step 3: Verify page loads without errors - No JavaScript errors (only expected 401 from pre-login)
+4. ✅ Step 4: Verify table displays name, has_total_price, has_lineitem_prices, active, version - All columns displayed correctly
+5. ✅ Step 5: Verify boolean fields display correctly - Yes/No for Total Price and Line Prices, Active badge for active status
+
+### Additional Verifications
+- ✅ Data fetched from real API via api.get('/section-types')
+- ✅ Page refreshes correctly with same data (database persistence)
+- ✅ No mock data patterns found in codebase
+- ✅ Boolean fields styled appropriately (green for Yes/Active, gray for No/Inactive)
+- ✅ Last Updated timestamp and user shown
+
+### Screenshots
+- .playwright-mcp/.playwright-mcp/feature-30-section-types-list.png (section types list page)
+
+### Current Status
+- Features passing: 28/103 (27.2%)
+- Feature #30 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #11)
 
 ### Completed
@@ -1105,3 +1137,42 @@
 - Screenshot: regression-feature36-product-category-filter.png
 - All 6 verification steps PASSED
 [Testing] Session complete - Feature #36 regression test passed
+[Testing] 2026-01-21 11:52 - Feature #23 regression test PASSED - 'User can create new product category' verified working
+- Logged in as harry
+- Navigated to Reference Data > Product Categories
+- Clicked '+ Add Category' button - modal form appeared
+- Entered abbreviation 'TST' and name 'Test Category Regression'
+- Clicked Save - form submitted successfully
+- Success message 'Product category saved successfully' displayed
+- New category appears in list with correct data (TST/Test Category Regression)
+- Last Updated shows '2026-01-21 11:52 by harry'
+- Only expected 401 errors (pre-login auth checks)
+- Screenshot: regression_feature23_product_category_created.png
+- All 8 verification steps PASSED
+[Testing] Session complete - Feature #23 regression test passed
+[Testing] 2026-01-21 03:53:XX - Feature #41 regression test PASSED - 'User can create new template' verified working
+- Logged in as harry
+- Navigated to Templates, clicked + New Template
+- Filled form: name (TEST_REGRESSION_FEATURE41_JAN21), country (Germany), currency (EUR), category (Software), product line (Operating Systems)
+- Filled: order codes, description, content (139 chars), comment
+- Status: not started (default)
+- Submitted form successfully
+- Template appears in list with correct data (Germany, Operating Systems, 0 sections, not started)
+- Template detail page shows all entered information correctly
+- Screenshot: regression-feature41-template-created.png
+- No console errors (only expected 401 pre-login auth checks)
+- All 14 verification steps PASSED
+[Testing] Session complete - Feature #41 regression test passed
+[Testing] 2026-01-21 03:53:XX - Feature #41 regression test PASSED - 'User can create new template' verified working
+- Logged in as harry
+- Navigated to Templates, clicked + New Template
+- Filled form: name (TEST_REGRESSION_FEATURE41_JAN21), country (Germany), currency (EUR), category (Software), product line (Operating Systems)
+- Filled: order codes, description, content (139 chars), comment
+- Status: not started (default)
+- Submitted form successfully
+- Template appears in list with correct data (Germany, Operating Systems, 0 sections, not started)
+- Template detail page shows all entered information correctly
+- Screenshot: regression-feature41-template-created.png
+- No console errors (only expected 401 pre-login auth checks)
+- All 14 verification steps PASSED
+[Testing] Session complete - Feature #41 regression test passed
