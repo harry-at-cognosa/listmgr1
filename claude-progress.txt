@@ -3799,3 +3799,15 @@ Why ref instead of just state:
 - Feature #32 marked as passing
 
 [Testing] Session complete - Feature #32 PASSED
+[Testing] 2026-01-21 - Feature #57 regression test PASSED - 'Status badges display correct colors' verified working
+- Logged in as harry
+- Verified all 5 status badge colors in Templates list and Template detail pages:
+  * 'not started' → gray (bg-gray-100 text-gray-800) ✓
+  * 'in process' → blue (bg-blue-100 text-blue-800) ✓
+  * 'in review' → yellow (bg-yellow-100 text-yellow-800) ✓
+  * 'approved' → green (bg-green-100 text-green-800) ✓
+  * 'cloned' → purple (bg-purple-100 text-purple-800) ✓
+- No console errors
+- Screenshots: regression-f57-templates-list-status-badges.png, regression-f57-scroll-more-badges.png, regression-f57-template-detail-with-sections.png
+- All 7 verification steps PASSED
+[Testing] Session complete - Feature #57 regression test passed
