@@ -57,7 +57,8 @@ router.post('/', async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    if (error.code === '23505') {
+    // Handle unique constraint errors (PostgreSQL code 23505 or SQLite UNIQUE constraint message)
+    if (error.code === '23505' || (error.message && error.message.includes('UNIQUE constraint failed'))) {
       return res.status(400).json({ error: 'Username already exists' });
     }
     console.error('Error creating user:', error);
@@ -91,7 +92,8 @@ router.put('/:id', async (req, res) => {
     }
     res.json(result.rows[0]);
   } catch (error) {
-    if (error.code === '23505') {
+    // Handle unique constraint errors (PostgreSQL code 23505 or SQLite UNIQUE constraint message)
+    if (error.code === '23505' || (error.message && error.message.includes('UNIQUE constraint failed'))) {
       return res.status(400).json({ error: 'Username already exists' });
     }
     console.error('Error updating user:', error);
