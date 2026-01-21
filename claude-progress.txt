@@ -2835,3 +2835,43 @@ Example verification output for Template form:
 - No console errors during testing (only expected React Router future flag warnings)
 
 [Testing] Session complete - Feature #91 PASSED
+
+---
+
+## Session 2026-01-21 (Feature #90)
+
+### Completed
+- Feature #90: Focus indicators visible on focused elements - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to any form page - Tested Login page and Currencies form modal
+2. ✅ Step 2: Tab through form fields - Tabbed through Username, Password fields and Symbol, Name fields
+3. ✅ Step 3: Verify each focused field has visible outline/ring - All form fields have visible blue focus rings
+4. ✅ Step 4: Verify buttons have visible focus state - Login button, Logout button, + Add Currency button, Cancel button, Save button all have visible blue focus rings
+5. ✅ Step 5: Verify focus visible in both light/default mode - Tested in default mode (app only has light mode)
+
+### Technical Implementation
+- Added global CSS focus styles in frontend/src/index.css
+- Used :focus-visible pseudo-class (shows focus ring only on keyboard navigation, not mouse clicks)
+- Applied to: button, a (links), and [role="button"] elements
+- Focus style: 2px solid blue (#3b82f6) outline with 2px offset
+- This is the modern accessibility-friendly approach recommended by WCAG
+
+### Screenshots
+- feature-90-username-focus.png (form field focus)
+- feature-90-password-focus.png (form field focus)
+- feature-90-button-focus.png (BEFORE fix - no focus ring on Login button)
+- feature-90-button-focus-fixed.png (AFTER fix - visible focus ring on Login button)
+- feature-90-logout-button-focus.png (Logout button with focus ring)
+- feature-90-templates-link-focus.png (Navigation link with focus ring)
+- feature-90-add-currency-button-focus.png (+ Add Currency button with focus ring)
+- feature-90-modal-symbol-focus.png (Modal form field focus)
+- feature-90-modal-cancel-button-focus.png (Cancel button with focus ring)
+- feature-90-modal-save-button-focus.png (Save button with focus ring)
+
+### Current Status
+- Features passing: 57/103 (55.3%)
+- Feature #90 marked as passing
+- No console errors during testing
+[Testing] Session complete - Feature #90 PASSED
+
