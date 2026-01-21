@@ -1,5 +1,39 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #11)
+
+### Completed
+- Feature #11: Regular user cannot access admin routes - VERIFIED AND PASSING
+  - Non-admin users are correctly blocked from admin-only pages
+  - Frontend AdminRoute component redirects non-admin users to /templates
+  - Backend requireAdmin middleware returns 403 Forbidden on /api/users
+  - "User Management" sidebar link only visible to admin users
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as regular user 'harry' - Logged in successfully
+2. ✅ Step 2: Attempt to navigate to /admin/users - Navigated directly via URL
+3. ✅ Step 3: Verify access is denied (403 or redirect) - Redirected to /templates
+4. ✅ Step 4: Verify no admin content is visible - "User Management" link not in sidebar
+5. ✅ Step 5: Verify appropriate error message or redirect - Clean redirect, API returns 403
+
+### Additional Verifications
+- ✅ Frontend protection: AdminRoute component checks user.role and redirects non-admins
+- ✅ Backend protection: requireAdmin middleware on /api/users returns 403 Forbidden
+- ✅ UI protection: User Management link hidden from non-admin users in sidebar
+- ✅ Admin user CAN access /admin/users successfully
+- ✅ No unexpected console errors (403 from API test is expected)
+
+### Screenshots
+- .playwright-mcp/.playwright-mcp/feature-11-step1-logged-in-as-harry.png (regular user logged in)
+- .playwright-mcp/.playwright-mcp/feature-11-step2-redirect-after-admin-access-attempt.png (redirect to /templates)
+- .playwright-mcp/.playwright-mcp/feature-11-step3-admin-can-access-users-page.png (admin can access)
+
+### Current Status
+- Features passing: 26/103 (25.2%)
+- Feature #11 marked as passing
+
+---
+
 ## Session 2026-01-21 (Feature #19)
 
 ### Completed
