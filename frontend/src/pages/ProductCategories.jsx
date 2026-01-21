@@ -21,7 +21,7 @@ function ProductCategories() {
       const response = await api.get('/product-categories');
       setItems(response.data);
     } catch (err) {
-      setError('Failed to load product categories');
+      setError(err.error || 'Failed to load product categories');
     } finally {
       setLoading(false);
     }

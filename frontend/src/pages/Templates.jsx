@@ -69,6 +69,9 @@ function Templates() {
       setProductLines(linesRes.data);
     } catch (err) {
       console.error('Error loading reference data:', err);
+      if (err.isNetworkError) {
+        setError(err.error);
+      }
     }
   };
 
@@ -84,7 +87,7 @@ function Templates() {
       const response = await api.get(`/templates?${params.toString()}`);
       setTemplates(response.data);
     } catch (err) {
-      setError('Failed to load templates');
+      setError(err.error || 'Failed to load templates');
     } finally {
       setLoading(false);
     }

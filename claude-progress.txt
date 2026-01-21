@@ -3469,3 +3469,112 @@ Why ref instead of just state:
 - Screenshots: regression-f87-FAILED-filters-lost.png, regression-f87-FIXED-filters-preserved.png
 - Commit: Fix regression: Filter persists after viewing template detail
 [Testing] Session complete - Feature #87 regression FIXED and marked passing
+[Testing] 2026-01-21 - Feature #64 regression test PASSED - 'Empty states shown when no data exists' verified working
+- Logged in as harry
+- Step 1: Filtered templates with non-existent search term 'XYZNONEXISTENT12345'
+- Step 2: 'No templates found. Try adjusting your filters.' message displayed ✓
+- Step 3: Viewed template 'OS License Quote - Germany' (ID 3) with 0 sections
+- Step 4: 'No sections yet. Add your first section!' message displayed ✓
+- Step 5: Both empty states suggest next actions ('Try adjusting filters', 'Add your first section') ✓
+- No console errors
+- Screenshots: regression-f64-no-templates-found.png, regression-f64-no-sections-empty-state.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #64 regression test passed
+[Testing] 2026-01-21 13:02 - Feature #95 regression test PASSED - 'Double-click submit creates only one record'
+- Logged in as harry
+- Step 1: Navigated to Currencies page ✓
+- Step 2: Opened Add Currency form, filled with R95 and REGRESSION_TEST_DOUBLECLICK ✓
+- Step 3: Double-clicked Save button using browser automation ✓
+- Step 4: Verified only one currency created - R95 appears once in list ✓
+- Step 5: Checked database - r95Count: 1 (no duplicates) ✓
+- Step 6: Success message 'Currency saved successfully' displayed ✓
+- No console errors (only expected pre-login 401 and React Router warnings)
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #95 regression test passed
+
+
+---
+
+## Session 2026-01-21 (Feature #103)
+
+### Completed
+- Feature #103: Page loads in reasonable time - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to login page - Loaded at http://localhost:5173/login
+2. ✅ Step 2: Verify loads in <3 seconds - Login page loads in 17ms (well under 3 seconds)
+3. ✅ Step 3: Log in - Successfully logged in as harry
+4. ✅ Step 4: Verify Templates page loads in <3 seconds - Templates page loads in 73ms
+5. ✅ Step 5: Verify form pages load quickly - Template create form loads in 16ms
+6. ✅ Step 6: No excessive loading delays - All tested pages load in under 100ms
+
+### Performance Test Results
+
+| Page | Load Time | First Contentful Paint | Under 3s? |
+|------|-----------|------------------------|-----------|
+| Login page | 17ms | 104ms | ✓ Yes |
+| Templates list | 73ms | 816ms | ✓ Yes |
+| Template form (new) | 16ms | 124ms | ✓ Yes |
+| Currencies page | 21ms | 140ms | ✓ Yes |
+| Template detail | 16ms | 172ms | ✓ Yes |
+
+### Technical Details
+- Used browser Performance API to measure page load times
+- Measured: loadEventEnd - startTime (total page load time)
+- Also verified First Contentful Paint (FCP) times
+- All pages consistently load in under 100ms
+- First Contentful Paint occurs within ~100-800ms depending on page complexity
+- No console errors on fresh page loads (only expected React Router future flag warnings)
+
+### Screenshots
+- .playwright-mcp/feature-103-step1-login-page.png (login page)
+- .playwright-mcp/feature-103-step4-templates-page.png (templates list)
+- .playwright-mcp/feature-103-step5-template-form.png (template create form)
+- .playwright-mcp/feature-103-step6-template-detail.png (template detail)
+- .playwright-mcp/feature-103-final-login-performance.png (final verification)
+
+### Current Status
+- Features passing: 69/103 (67.0%)
+- Feature #103 marked as passing
+
+[Testing] Session complete - Feature #103 PASSED
+
+
+---
+
+## Session 2026-01-21 (Feature #101)
+
+### Completed
+- Feature #101: Logout clears all session data - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as harry - Successfully logged in and saw Templates page
+2. ✅ Step 2: Navigate around, create some data - Navigated to Currencies page, verified logged-in state
+3. ✅ Step 3: Click logout - Clicked Logout button, redirected to login page
+4. ✅ Step 4: Check cookies/local storage cleared - All client-side storage empty after logout:
+   - document.cookie: ""
+   - localStorage: empty
+   - sessionStorage: empty
+5. ✅ Step 5: Try to access protected API directly - Called /api/auth/me, /api/currencies, /api/templates
+6. ✅ Step 6: Verify 401 returned - All protected endpoints return 401 with {"error":"Authentication required"}
+7. ✅ Step 7: Verify redirect to login on protected pages - Navigating to /templates or /reference/currencies redirects to /login
+
+### Technical Details
+- Session management is server-side (HTTP-only cookies not visible to JavaScript)
+- Logout properly invalidates the server session
+- Frontend properly redirects unauthenticated users to /login
+- API endpoints properly return 401 for unauthenticated requests
+
+### Screenshots
+- .playwright-mcp/feature-101-logged-in-as-harry.png (logged in state)
+- .playwright-mcp/feature-101-after-logout.png (after logout - login page)
+- .playwright-mcp/feature-101-redirect-to-login.png (protected page redirect)
+
+### Console Errors
+- None (only expected 401 responses when not authenticated, and React Router future flag warnings)
+
+### Current Status
+- Feature #101 marked as passing
+
+[Testing] Session complete - Feature #101 PASSED
+

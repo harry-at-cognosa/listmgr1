@@ -21,7 +21,7 @@ function SectionTypes() {
       const response = await api.get('/section-types');
       setItems(response.data);
     } catch (err) {
-      setError('Failed to load section types');
+      setError(err.error || 'Failed to load section types');
     } finally {
       setLoading(false);
     }

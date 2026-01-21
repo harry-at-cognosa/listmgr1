@@ -21,7 +21,7 @@ function Currencies() {
       const response = await api.get('/currencies');
       setCurrencies(response.data);
     } catch (err) {
-      setError('Failed to load currencies');
+      setError(err.error || 'Failed to load currencies');
     } finally {
       setLoading(false);
     }

@@ -26,7 +26,7 @@ function Countries() {
       setCountries(countriesRes.data);
       setCurrencies(currenciesRes.data);
     } catch (err) {
-      setError('Failed to load data');
+      setError(err.error || 'Failed to load data');
     } finally {
       setLoading(false);
     }
