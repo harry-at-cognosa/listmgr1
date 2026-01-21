@@ -4432,3 +4432,21 @@ Why ref instead of just state:
 - Feature #69 marked as passing
 
 [Testing] Session complete - Feature #69 PASSED
+[Testing] 2026-01-21 - Feature #103 regression test PASSED - 'Page loads in reasonable time'
+- Step 1: Navigate to login page - Loaded instantly (<1 second) ✓
+- Step 2: Verify loads in <3 seconds - Login page loaded well under 3 seconds ✓
+- Step 3: Log in - Login successful, redirected to Templates page ✓
+- Step 4: Verify Templates page loads in <3 seconds - Loaded instantly with all data ✓
+- Step 5: Verify form pages load quickly - Tested:
+  * New Template form - instant load with all dropdowns populated
+  * Reference Data > Currencies - instant load with 22 records
+- Step 6: No excessive loading delays - All navigation between pages is instant ✓
+- Console errors: Only expected 401 errors from pre-login auth checks (normal behavior)
+- Screenshots:
+  * regression-f103-step1-login-page.png
+  * regression-f103-step4-templates-page.png
+  * regression-f103-step5-new-template-form.png
+  * regression-f103-step5-currencies-page.png
+  * regression-f103-step6-user-management.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #103 regression test passed
