@@ -1,5 +1,43 @@
 # ListMgr Progress Notes
 
+## Session 2026-01-21 (Feature #55)
+
+### Completed
+- Feature #55: Section type dropdown populated from database - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Create a new section type - Created "TEST_F55_SECTION_TYPE_DROPDOWN" via Section Types page
+2. ✅ Step 2: Navigate to template section creation - Went to Storage Quote - UK (template ID 2)
+3. ✅ Step 3: Open section type dropdown - Clicked "+ Add Section" to open form with dropdown
+4. ✅ Step 4: Verify new section type appears in options - "TEST_F55_SECTION_TYPE_DROPDOWN" appears in dropdown
+5. ✅ Step 5: Select it and save - Selected the new section type and clicked Create
+6. ✅ Step 6: Verify correct type associated - Section #5 created with correct type, persists after refresh
+
+### Technical Details
+- Section type dropdown populated from /api/section-types endpoint
+- Data comes from plsqts_type table in PostgreSQL database
+- Dropdown shows all active section types including newly created ones
+- Section correctly associates with the selected section type ID
+
+### Screenshots
+- .playwright-mcp/feature-55-step1-section-type-created.png (New section type in list)
+- .playwright-mcp/feature-55-step1-new-type-visible.png (Section type visible after scroll)
+- .playwright-mcp/feature-55-step4-dropdown-with-new-type.png (Add Section form)
+- .playwright-mcp/feature-55-step5-type-selected.png (Type selected in dropdown)
+- .playwright-mcp/feature-55-step5-section-created-success.png (Section created with new type)
+- .playwright-mcp/feature-55-step6-type-verified.png (Section Editor showing correct type)
+- .playwright-mcp/feature-55-step6-persistence-verified.png (Data persists after refresh)
+
+### Console Errors
+- None (only expected React Router future flag warnings)
+
+### Current Status
+- Feature #55 marked as passing
+
+[Testing] Session complete - Feature #55 PASSED
+
+---
+
 ## Session 2026-01-21 (Feature #38)
 
 ### Completed
@@ -4353,3 +4391,44 @@ Why ref instead of just state:
 - Screenshots: regression-f82-step5-redirect-to-login.png, regression-f82-step7-template-displayed-after-login.png, regression-f82-deep-link-template2-success.png
 - All 7 verification steps PASSED
 [Testing] Session complete - Feature #82 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #69)
+
+### Completed
+- Feature #69: Duplicate unique values rejected - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Create currency with symbol 'USD' - USD already existed in database
+2. ✅ Step 2: Try to create another currency with 'USD' - Attempted to create duplicate
+3. ✅ Step 3: Verify error about duplicate value - Clear error message: "A currency with this symbol already exists"
+4. ✅ Step 4: Change to unique symbol - Changed to 'F69'
+5. ✅ Step 5: Verify form submits - Successfully saved with "Currency saved successfully" message
+
+### Additional Testing
+- Case-insensitive duplicate detection verified ('usd' lowercase also rejected)
+- Backend returns 400 Bad Request for duplicates (proper HTTP status)
+- Frontend displays clear, user-friendly error in red
+- Form remains open after error for correction
+- No JavaScript console errors (only expected 401/400 responses)
+
+### Technical Implementation
+- Backend: currencies.js lines 46-53 - checks for duplicate using `UPPER(currency_symbol) = UPPER($1)`
+- Frontend: Currencies.jsx line 143 - catches error and displays in modal
+- Error message: "A currency with this symbol already exists"
+
+### Screenshots
+- feature-69-step3-duplicate-error.png (Error message for duplicate USD)
+- feature-69-step5-unique-saved.png (Success with unique symbol F69)
+- feature-69-case-insensitive-check.png (Case-insensitive check with lowercase 'usd')
+
+### Console Errors
+- 401 errors from pre-login auth checks (expected)
+- 400 errors from duplicate validation tests (expected - this is the feature working correctly)
+
+### Current Status
+- Features passing: 83/103 (80.6%)
+- Feature #69 marked as passing
+
+[Testing] Session complete - Feature #69 PASSED
