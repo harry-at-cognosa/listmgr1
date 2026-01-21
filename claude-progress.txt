@@ -4844,3 +4844,56 @@ Why ref instead of just state:
 - Feature #16 marked as passing
 
 [Testing] Session complete - Feature #16 PASSED
+[Testing] 2026-01-21 - Feature #76 regression test PASSED - 'Data persists after logout/login'
+- Step 1: Logged in as harry, created template 'REGRESSION_F76_PERSIST_TEST_JAN21' (ID 34) ✓
+  * Country: United States, Category: Hardware, Product Line: Servers
+  * Description: 'Regression test for Feature 76 - data persistence after logout/login'
+- Step 2: Logged out successfully ✓
+- Step 3: Logged back in as harry ✓
+- Step 4: Verified all created data still exists ✓
+  * Template found via search
+  * All fields preserved: name, country, product line, category, description, status
+  * Last updated timestamp recorded: 2026-01-21 13:34 by harry
+- Console errors: Only expected 401 errors from pre-login auth checks (normal behavior)
+- Screenshots: regression-f76-step1-template-created.png, regression-f76-step4-data-persisted.png
+- All 4 verification steps PASSED
+[Testing] Session complete - Feature #76 regression test passed
+
+---
+
+## Session 2026-01-21 (Feature #25)
+
+### Completed
+- Feature #25: Admin can delete product category - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in as admin user
+2. ✅ Step 2: Navigate to Product Categories page - Accessed via Reference Data > Product Categories
+3. ✅ Step 3: Create a test category - Created "TEST_FEATURE_25_DELETE_ME" (abbr: F25)
+4. ✅ Step 4: Click Delete - Clicked Delete button on the test category row
+5. ✅ Step 5: Confirm deletion - Accepted browser confirmation dialog "Are you sure you want to delete this product category?"
+6. ✅ Step 6: Verify removed from list - Test category no longer appears in the list after page refresh
+
+### Additional Verification
+- Role-based access control verified:
+  * Admin user sees Delete buttons for all categories
+  * Regular user (harry) does NOT see Delete buttons - only Edit button visible
+- Backend enforces admin-only deletion (returns 403 for non-admin users)
+- Deletion is permanent and immediate
+
+### Technical Implementation
+- Frontend: ProductCategories.jsx lines 90-97 - isAdmin conditional renders Delete button
+- Backend: productCategories.js lines 86-115 - DELETE /:id with admin role check
+
+### Screenshots
+- .playwright-mcp/feature-25-step3-category-created.png (Product Categories list with test category visible)
+- .playwright-mcp/feature-25-step6-category-deleted.png (List after deletion - test category removed)
+- .playwright-mcp/feature-25-regular-user-no-delete.png (Regular user view - no Delete buttons)
+
+### Console Errors
+- None (only expected 401 errors from pre-login auth checks)
+
+### Current Status
+- Feature #25 marked as passing
+
+[Testing] Session complete - Feature #25 PASSED

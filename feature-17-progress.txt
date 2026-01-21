@@ -1,0 +1,36 @@
+
+---
+
+## Session 2026-01-21 (Feature #17)
+
+### Completed
+- Feature #17: Regular user cannot delete currency - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. Step 1: Log in as regular user 'harry' - Logged in successfully
+2. Step 2: Navigate to Currencies page - Accessed via Reference Data > Currencies
+3. Step 3: Verify Delete button is hidden - Only "Edit" buttons visible, NO Delete buttons for harry
+4. Step 4: Attempt API DELETE directly - Executed: curl -X DELETE http://localhost:3001/api/currencies/1
+5. Step 5: Verify 403 response - Received HTTP 403 with error message "Admin access required"
+6. Step 6: Verify currency still exists - Currency ID 1 (USD) still retrievable via API
+
+### Additional Verification
+- Admin comparison: Logged in as admin and confirmed Delete buttons ARE visible for admin users
+- Both UI and API enforce the admin-only restriction
+
+### Technical Implementation
+- Frontend: Currencies.jsx line 90-97 - isAdmin conditional renders Delete button
+- Backend: currencies.js line 98-100 - checks user.role !== 'admin' and returns 403
+
+### Screenshots
+- .playwright-mcp/feature-17-step3-no-delete-button-harry.png (Currencies page as harry - no Delete button)
+- .playwright-mcp/feature-17-admin-has-delete-button.png (Currencies page as admin - Delete button visible)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks
+- No JavaScript errors
+
+### Current Status
+- Feature #17 marked as passing
+
+[Testing] Session complete - Feature #17 PASSED
