@@ -46,7 +46,7 @@ router.get('/', async (req, res) => {
     if (active !== undefined && active !== '') {
       paramCount++;
       query += ` AND t.plsqt_active = $${paramCount}`;
-      params.push(active === 'true' ? 1 : 0);
+      params.push(active === 'true');
     }
 
     if (search) {
@@ -107,27 +107,22 @@ router.post('/', async (req, res) => {
     }
 
     const now = getDateTime();
-    const insertResult = await db.query(
+    const result = await db.query(
       `INSERT INTO plsq_templates
         (country_id, currency_id, product_cat_id, product_line_id,
          plsqt_name, plsqt_order_codes, plsqt_desc, plsqt_comment,
          plsqt_section_count, plsqt_fbo_location, plsqs_as_of_date, extrn_file_ref,
          plsqt_active, plsqt_version, content, plsqt_status, status_datetime,
          last_update_datetime, last_update_user)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 0, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`,
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 0, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+       RETURNING *`,
       [
         country_id || null, currency_id || null, product_cat_id || null, product_line_id || null,
         plsqt_name, plsqt_order_codes, plsqt_desc, plsqt_comment,
         plsqt_fbo_location, plsqs_as_of_date || null, extrn_file_ref,
-        plsqt_active !== false ? 1 : 0, plsqt_version, content, plsqt_status || 'not started', now,
+        plsqt_active !== false, plsqt_version, content, plsqt_status || 'not started', now,
         now, req.session.user.username
       ]
-    );
-
-    // Get the inserted row
-    const result = await db.query(
-      'SELECT * FROM plsq_templates WHERE plsqt_id = $1',
-      [insertResult.lastInsertRowid]
     );
 
     res.status(201).json(result.rows[0]);
@@ -170,7 +165,7 @@ router.put('/:id', async (req, res) => {
         country_id || null, currency_id || null, product_cat_id || null, product_line_id || null,
         plsqt_name, plsqt_order_codes, plsqt_desc, plsqt_comment,
         plsqt_fbo_location, plsqs_as_of_date || null, extrn_file_ref,
-        plsqt_active ? 1 : 0, plsqt_version, content, plsqt_status,
+        plsqt_active === true || plsqt_active === 'true', plsqt_version, content, plsqt_status,
         statusDatetime, now, req.session.user.username,
         req.params.id
       ]
@@ -247,7 +242,8 @@ router.post('/:id/clone', async (req, res) => {
          plsqt_section_count, plsqt_fbo_location, plsqs_as_of_date, extrn_file_ref,
          plsqt_active, plsqt_version, content, plsqt_status, status_datetime,
          last_update_datetime, last_update_user)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, 'cloned', $16, $17, $18)`,
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, 'cloned', $16, $17, $18)
+       RETURNING plsqt_id`,
       [
         t.country_id, t.currency_id, t.product_cat_id, t.product_line_id,
         t.plsqt_name + ' (Clone)', t.plsqt_order_codes, t.plsqt_desc, t.plsqt_comment,
@@ -257,7 +253,7 @@ router.post('/:id/clone', async (req, res) => {
       ]
     );
 
-    const newTemplateId = insertResult.lastInsertRowid;
+    const newTemplateId = insertResult.rows[0].plsqt_id;
 
     // Clone all sections
     const sections = await db.query('SELECT * FROM plsqt_sections WHERE plsqt_id = $1', [req.params.id]);
