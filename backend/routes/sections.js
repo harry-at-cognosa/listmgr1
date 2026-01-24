@@ -12,7 +12,7 @@ router.get('/template/:templateId', async (req, res) => {
        FROM plsqt_sections s
        LEFT JOIN plsqts_type st ON s.section_type_id = st.plsqtst_id
        WHERE s.plsqt_id = $1
-       ORDER BY s.plsqt_seqn`,
+       ORDER BY s.plsqts_seqn`,
       [req.params.templateId]
     );
     res.json(result.rows);
@@ -46,9 +46,9 @@ router.get('/:id', async (req, res) => {
 router.post('/template/:templateId', async (req, res) => {
   try {
     const {
-      section_type_id, plsqt_seqn, plsqt_alt_name, plsqt_comment,
-      plsqt_use_alt_name, plsqts_subsection_count, plsqts_active,
-      plsqts_version, extrn_file_ref, content, plsqts_status
+      section_type_id, plsqts_seqn, plsqts_alt_name, plsqts_comment,
+      plsqts_use_alt_name, plsqts_subsection_count, plsqts_active,
+      plsqts_version, plsqts_extrn_file_ref, plsqts_content, plsqts_status
     } = req.body;
 
     if (!section_type_id) {
@@ -59,23 +59,23 @@ router.post('/template/:templateId', async (req, res) => {
 
     // Get max sequence number
     const maxSeq = await db.query(
-      'SELECT COALESCE(MAX(plsqt_seqn), 0) as max_seqn FROM plsqt_sections WHERE plsqt_id = $1',
+      'SELECT COALESCE(MAX(plsqts_seqn), 0) as max_seqn FROM plsqt_sections WHERE plsqt_id = $1',
       [req.params.templateId]
     );
-    const nextSeqn = plsqt_seqn || (maxSeq.rows[0].max_seqn + 1);
+    const nextSeqn = plsqts_seqn || (maxSeq.rows[0].max_seqn + 1);
 
     const result = await db.query(
       `INSERT INTO plsqt_sections
-        (plsqt_id, section_type_id, plsqt_seqn, plsqt_alt_name, plsqt_comment,
-         plsqt_use_alt_name, plsqts_subsection_count, plsqts_active, plsqts_version,
-         extrn_file_ref, content, plsqts_status, status_datetime,
+        (plsqt_id, section_type_id, plsqts_seqn, plsqts_alt_name, plsqts_comment,
+         plsqts_use_alt_name, plsqts_subsection_count, plsqts_active, plsqts_version,
+         plsqts_extrn_file_ref, plsqts_content, plsqts_status, status_datetime,
          last_update_datetime, last_update_user)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
        RETURNING *`,
       [
-        req.params.templateId, section_type_id, nextSeqn, plsqt_alt_name || null, plsqt_comment || null,
-        plsqt_use_alt_name || false, plsqts_subsection_count || 0, plsqts_active !== false, plsqts_version || null,
-        extrn_file_ref || null, content || null, plsqts_status || 'not started', now,
+        req.params.templateId, section_type_id, nextSeqn, plsqts_alt_name || null, plsqts_comment || null,
+        plsqts_use_alt_name || false, plsqts_subsection_count || 0, plsqts_active !== false, plsqts_version || null,
+        plsqts_extrn_file_ref || null, plsqts_content || null, plsqts_status || 'not started', now,
         now, req.session.user.username
       ]
     );
@@ -100,9 +100,9 @@ router.post('/template/:templateId', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const {
-      section_type_id, plsqt_seqn, plsqt_alt_name, plsqt_comment,
-      plsqt_use_alt_name, plsqts_subsection_count, plsqts_active,
-      plsqts_version, extrn_file_ref, content, plsqts_status
+      section_type_id, plsqts_seqn, plsqts_alt_name, plsqts_comment,
+      plsqts_use_alt_name, plsqts_subsection_count, plsqts_active,
+      plsqts_version, plsqts_extrn_file_ref, plsqts_content, plsqts_status
     } = req.body;
 
     const now = getDateTime();
@@ -118,16 +118,16 @@ router.put('/:id', async (req, res) => {
 
     const result = await db.query(
       `UPDATE plsqt_sections SET
-        section_type_id = $1, plsqt_seqn = $2, plsqt_alt_name = $3, plsqt_comment = $4,
-        plsqt_use_alt_name = $5, plsqts_subsection_count = $6, plsqts_active = $7,
-        plsqts_version = $8, extrn_file_ref = $9, content = $10, plsqts_status = $11,
+        section_type_id = $1, plsqts_seqn = $2, plsqts_alt_name = $3, plsqts_comment = $4,
+        plsqts_use_alt_name = $5, plsqts_subsection_count = $6, plsqts_active = $7,
+        plsqts_version = $8, plsqts_extrn_file_ref = $9, plsqts_content = $10, plsqts_status = $11,
         status_datetime = $12, last_update_datetime = $13, last_update_user = $14
        WHERE plsqts_id = $15
        RETURNING *`,
       [
-        section_type_id, plsqt_seqn, plsqt_alt_name || null, plsqt_comment || null,
-        plsqt_use_alt_name || false, plsqts_subsection_count || 0, plsqts_active,
-        plsqts_version || null, extrn_file_ref || null, content || null, plsqts_status,
+        section_type_id, plsqts_seqn, plsqts_alt_name || null, plsqts_comment || null,
+        plsqts_use_alt_name || false, plsqts_subsection_count || 0, plsqts_active,
+        plsqts_version || null, plsqts_extrn_file_ref || null, plsqts_content || null, plsqts_status,
         statusDatetime || null, now, req.session.user.username,
         req.params.id
       ]
@@ -158,7 +158,7 @@ router.post('/:id/clone', async (req, res) => {
 
     // Get max sequence number
     const maxSeq = await db.query(
-      'SELECT COALESCE(MAX(plsqt_seqn), 0) as max_seqn FROM plsqt_sections WHERE plsqt_id = $1',
+      'SELECT COALESCE(MAX(plsqts_seqn), 0) as max_seqn FROM plsqt_sections WHERE plsqt_id = $1',
       [s.plsqt_id]
     );
     const nextSeqn = maxSeq.rows[0].max_seqn + 1;
@@ -166,16 +166,16 @@ router.post('/:id/clone', async (req, res) => {
     // Create cloned section
     const cloned = await db.query(
       `INSERT INTO plsqt_sections
-        (plsqt_id, section_type_id, plsqt_seqn, plsqt_alt_name, plsqt_comment,
-         plsqt_use_alt_name, plsqts_subsection_count, plsqts_active, plsqts_version,
-         extrn_file_ref, content, plsqts_status, status_datetime,
+        (plsqt_id, section_type_id, plsqts_seqn, plsqts_alt_name, plsqts_comment,
+         plsqts_use_alt_name, plsqts_subsection_count, plsqts_active, plsqts_version,
+         plsqts_extrn_file_ref, plsqts_content, plsqts_status, status_datetime,
          last_update_datetime, last_update_user)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'cloned', $12, $13, $14)
        RETURNING *`,
       [
-        s.plsqt_id, s.section_type_id, nextSeqn, s.plsqt_alt_name, s.plsqt_comment,
-        s.plsqt_use_alt_name, s.plsqts_subsection_count, s.plsqts_active, s.plsqts_version,
-        s.extrn_file_ref, s.content, now,
+        s.plsqt_id, s.section_type_id, nextSeqn, s.plsqts_alt_name, s.plsqts_comment,
+        s.plsqts_use_alt_name, s.plsqts_subsection_count, s.plsqts_active, s.plsqts_version,
+        s.plsqts_extrn_file_ref, s.plsqts_content, now,
         now, req.session.user.username
       ]
     );

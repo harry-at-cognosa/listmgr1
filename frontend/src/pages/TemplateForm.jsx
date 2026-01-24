@@ -4,6 +4,18 @@ import api from '../services/api';
 
 const STATUS_OPTIONS = ['not started', 'in process', 'in review', 'approved', 'cloned'];
 
+// Character limits for TEXT fields (enforced in UI only)
+const CHAR_LIMITS = {
+  plsqt_name: 250,
+  plsqt_order_codes: 250,
+  plsqt_desc: 2000,
+  plsqt_comment: 2000,
+  plsqt_fbo_location: 250,
+  plsqt_extrn_file_ref: 1000,
+  plsqt_version: 200,
+  plsqt_content: 10000
+};
+
 function TemplateForm() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -25,7 +37,7 @@ function TemplateForm() {
   const [productCategories, setProductCategories] = useState([]);
   const [productLines, setProductLines] = useState([]);
 
-  // Form data
+  // Form data - using new column names
   const [formData, setFormData] = useState({
     plsqt_name: '',
     country_id: '',
@@ -36,11 +48,11 @@ function TemplateForm() {
     plsqt_desc: '',
     plsqt_comment: '',
     plsqt_fbo_location: '',
-    plsqs_as_of_date: '',
-    extrn_file_ref: '',
+    plsqt_as_of_date: '',  // renamed from plsqs_as_of_date
+    plsqt_extrn_file_ref: '',  // renamed from extrn_file_ref
     plsqt_active: true,
     plsqt_version: '',
-    content: '',
+    plsqt_content: '',  // renamed from content
     plsqt_status: 'not started'
   });
 
@@ -83,11 +95,11 @@ function TemplateForm() {
         plsqt_desc: template.plsqt_desc || '',
         plsqt_comment: template.plsqt_comment || '',
         plsqt_fbo_location: template.plsqt_fbo_location || '',
-        plsqs_as_of_date: template.plsqs_as_of_date ? template.plsqs_as_of_date.split('T')[0] : '',
-        extrn_file_ref: template.extrn_file_ref || '',
+        plsqt_as_of_date: template.plsqt_as_of_date ? template.plsqt_as_of_date.split('T')[0] : '',
+        plsqt_extrn_file_ref: template.plsqt_extrn_file_ref || '',
         plsqt_active: template.plsqt_active !== false,
         plsqt_version: template.plsqt_version || '',
-        content: template.content || '',
+        plsqt_content: template.plsqt_content || '',
         plsqt_status: template.plsqt_status || 'not started'
       });
     } catch (err) {
@@ -120,7 +132,7 @@ function TemplateForm() {
         currency_id: formData.currency_id || null,
         product_cat_id: formData.product_cat_id || null,
         product_line_id: formData.product_line_id || null,
-        plsqs_as_of_date: formData.plsqs_as_of_date || null
+        plsqt_as_of_date: formData.plsqt_as_of_date || null
       };
 
       if (isEditing) {
@@ -180,9 +192,10 @@ function TemplateForm() {
                 value={formData.plsqt_name}
                 onChange={handleChange}
                 required
-                maxLength={100}
+                maxLength={CHAR_LIMITS.plsqt_name}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
+              <p className="mt-1 text-sm text-gray-500">{formData.plsqt_name.length}/{CHAR_LIMITS.plsqt_name} characters</p>
             </div>
 
             <div>
@@ -272,9 +285,10 @@ function TemplateForm() {
                 name="plsqt_order_codes"
                 value={formData.plsqt_order_codes}
                 onChange={handleChange}
-                maxLength={200}
+                maxLength={CHAR_LIMITS.plsqt_order_codes}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
+              <p className="mt-1 text-sm text-gray-500">{formData.plsqt_order_codes.length}/{CHAR_LIMITS.plsqt_order_codes} characters</p>
             </div>
 
             <div>
@@ -285,18 +299,19 @@ function TemplateForm() {
                 name="plsqt_fbo_location"
                 value={formData.plsqt_fbo_location}
                 onChange={handleChange}
-                maxLength={50}
+                maxLength={CHAR_LIMITS.plsqt_fbo_location}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
+              <p className="mt-1 text-sm text-gray-500">{formData.plsqt_fbo_location.length}/{CHAR_LIMITS.plsqt_fbo_location} characters</p>
             </div>
 
             <div>
-              <label htmlFor="plsqs_as_of_date" className="block text-sm font-medium text-gray-700 mb-1">As Of Date</label>
+              <label htmlFor="plsqt_as_of_date" className="block text-sm font-medium text-gray-700 mb-1">As Of Date</label>
               <input
                 type="date"
-                id="plsqs_as_of_date"
-                name="plsqs_as_of_date"
-                value={formData.plsqs_as_of_date}
+                id="plsqt_as_of_date"
+                name="plsqt_as_of_date"
+                value={formData.plsqt_as_of_date}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
@@ -310,9 +325,10 @@ function TemplateForm() {
                 name="plsqt_version"
                 value={formData.plsqt_version}
                 onChange={handleChange}
-                maxLength={25}
+                maxLength={CHAR_LIMITS.plsqt_version}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
+              <p className="mt-1 text-sm text-gray-500">{formData.plsqt_version.length}/{CHAR_LIMITS.plsqt_version} characters</p>
             </div>
 
             <div className="md:col-span-2">
@@ -322,50 +338,53 @@ function TemplateForm() {
                 name="plsqt_desc"
                 value={formData.plsqt_desc}
                 onChange={handleChange}
-                rows={3}
-                maxLength={800}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                rows={4}
+                maxLength={CHAR_LIMITS.plsqt_desc}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
               />
+              <p className="mt-1 text-sm text-gray-500">{formData.plsqt_desc.length}/{CHAR_LIMITS.plsqt_desc} characters</p>
             </div>
 
             <div className="md:col-span-2">
-              <label htmlFor="template_content" className="block text-sm font-medium text-gray-700 mb-1">Content</label>
+              <label htmlFor="plsqt_content" className="block text-sm font-medium text-gray-700 mb-1">Content</label>
               <textarea
-                id="template_content"
-                name="content"
-                value={formData.content}
+                id="plsqt_content"
+                name="plsqt_content"
+                value={formData.plsqt_content}
                 onChange={handleChange}
-                rows={4}
-                maxLength={500}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                rows={8}
+                maxLength={CHAR_LIMITS.plsqt_content}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
               />
-              <p className="mt-1 text-sm text-gray-500">{formData.content.length}/500 characters</p>
+              <p className="mt-1 text-sm text-gray-500">{formData.plsqt_content.length}/{CHAR_LIMITS.plsqt_content} characters</p>
             </div>
 
-            <div>
+            <div className="md:col-span-2">
               <label htmlFor="plsqt_comment" className="block text-sm font-medium text-gray-700 mb-1">Comment</label>
-              <input
-                type="text"
+              <textarea
                 id="plsqt_comment"
                 name="plsqt_comment"
                 value={formData.plsqt_comment}
                 onChange={handleChange}
-                maxLength={100}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                rows={3}
+                maxLength={CHAR_LIMITS.plsqt_comment}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
               />
+              <p className="mt-1 text-sm text-gray-500">{formData.plsqt_comment.length}/{CHAR_LIMITS.plsqt_comment} characters</p>
             </div>
 
-            <div>
-              <label htmlFor="extrn_file_ref" className="block text-sm font-medium text-gray-700 mb-1">External File Reference</label>
-              <input
-                type="text"
-                id="extrn_file_ref"
-                name="extrn_file_ref"
-                value={formData.extrn_file_ref}
+            <div className="md:col-span-2">
+              <label htmlFor="plsqt_extrn_file_ref" className="block text-sm font-medium text-gray-700 mb-1">External File Reference</label>
+              <textarea
+                id="plsqt_extrn_file_ref"
+                name="plsqt_extrn_file_ref"
+                value={formData.plsqt_extrn_file_ref}
                 onChange={handleChange}
-                maxLength={500}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                rows={2}
+                maxLength={CHAR_LIMITS.plsqt_extrn_file_ref}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
               />
+              <p className="mt-1 text-sm text-gray-500">{formData.plsqt_extrn_file_ref.length}/{CHAR_LIMITS.plsqt_extrn_file_ref} characters</p>
             </div>
 
             <div className="flex items-center">

@@ -13,6 +13,15 @@ const STATUS_COLORS = {
 
 const STATUS_OPTIONS = ['not started', 'in process', 'in review', 'approved', 'cloned'];
 
+// Character limits for section TEXT fields (enforced in UI only)
+const SECTION_CHAR_LIMITS = {
+  plsqts_alt_name: 200,
+  plsqts_comment: 2000,
+  plsqts_version: 200,
+  plsqts_extrn_file_ref: 1000,
+  plsqts_content: 10000
+};
+
 function TemplateDetail() {
   const { id } = useParams();
   const { isAdmin } = useAuth();
@@ -223,10 +232,10 @@ function TemplateDetail() {
           <div><span className="text-gray-500">Active:</span> {template.plsqt_active ? 'Yes' : 'No'}</div>
         </div>
 
-        {template.content && (
+        {template.plsqt_content && (
           <div className="mt-4 p-3 bg-gray-50 rounded-md">
             <span className="text-sm text-gray-500">Content:</span>
-            <p className="mt-1 text-gray-700">{template.content}</p>
+            <p className="mt-1 text-gray-700 whitespace-pre-wrap">{template.plsqt_content}</p>
           </div>
         )}
 
@@ -274,10 +283,10 @@ function TemplateDetail() {
                   onClick={() => toggleSection(section.plsqts_id)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-gray-400 w-6">{section.plsqt_seqn}</span>
+                    <span className="text-gray-400 w-6">{section.plsqts_seqn}</span>
                     <span className="font-medium">
-                      {section.plsqt_use_alt_name && section.plsqt_alt_name
-                        ? section.plsqt_alt_name
+                      {section.plsqts_use_alt_name && section.plsqts_alt_name
+                        ? section.plsqts_alt_name
                         : section.section_type_name}
                     </span>
                     <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${STATUS_COLORS[section.plsqts_status]}`}>
@@ -321,12 +330,18 @@ function TemplateDetail() {
                       <div><span className="text-gray-500">Type:</span> {section.section_type_name}</div>
                       <div><span className="text-gray-500">Active:</span> {section.plsqts_active ? 'Yes' : 'No'}</div>
                       {section.plsqts_version && <div><span className="text-gray-500">Version:</span> {section.plsqts_version}</div>}
-                      {section.plsqt_comment && <div><span className="text-gray-500">Comment:</span> {section.plsqt_comment}</div>}
+                      {section.plsqts_comment && <div className="md:col-span-2"><span className="text-gray-500">Comment:</span> {section.plsqts_comment}</div>}
                     </div>
-                    {section.content && (
+                    {section.plsqts_extrn_file_ref && (
+                      <div className="mt-3 text-sm">
+                        <span className="text-gray-500">External File Reference:</span>
+                        <p className="text-gray-700">{section.plsqts_extrn_file_ref}</p>
+                      </div>
+                    )}
+                    {section.plsqts_content && (
                       <div className="mt-3 p-2 bg-white rounded border">
                         <span className="text-xs text-gray-500">Content:</span>
-                        <p className="text-gray-700">{section.content}</p>
+                        <p className="text-gray-700 whitespace-pre-wrap">{section.plsqts_content}</p>
                       </div>
                     )}
                     <div className="mt-2 text-xs text-gray-400">
@@ -360,9 +375,9 @@ function TemplateDetail() {
                     }
                   `}
                 >
-                  <span className="mr-2 text-gray-400">{section.plsqt_seqn}.</span>
-                  {section.plsqt_use_alt_name && section.plsqt_alt_name
-                    ? section.plsqt_alt_name
+                  <span className="mr-2 text-gray-400">{section.plsqts_seqn}.</span>
+                  {section.plsqts_use_alt_name && section.plsqts_alt_name
+                    ? section.plsqts_alt_name
                     : section.section_type_name}
                 </button>
               ))}
@@ -470,13 +485,14 @@ function SectionFormModal({ templateId, section, sectionTypes, onClose, onSave }
   const isSubmittingRef = useRef(false);
   const [formData, setFormData] = useState({
     section_type_id: section?.section_type_id || '',
-    plsqt_seqn: section?.plsqt_seqn || '',
-    plsqt_alt_name: section?.plsqt_alt_name || '',
-    plsqt_comment: section?.plsqt_comment || '',
-    plsqt_use_alt_name: section?.plsqt_use_alt_name || false,
+    plsqts_seqn: section?.plsqts_seqn || '',
+    plsqts_alt_name: section?.plsqts_alt_name || '',
+    plsqts_comment: section?.plsqts_comment || '',
+    plsqts_use_alt_name: section?.plsqts_use_alt_name || false,
     plsqts_active: section?.plsqts_active !== false,
     plsqts_version: section?.plsqts_version || '',
-    content: section?.content || '',
+    plsqts_extrn_file_ref: section?.plsqts_extrn_file_ref || '',
+    plsqts_content: section?.plsqts_content || '',
     plsqts_status: section?.plsqts_status || 'not started'
   });
 
@@ -540,8 +556,8 @@ function SectionFormModal({ templateId, section, sectionTypes, onClose, onSave }
                 <label className="block text-sm font-medium text-gray-700 mb-1">Sequence</label>
                 <input
                   type="number"
-                  name="plsqt_seqn"
-                  value={formData.plsqt_seqn}
+                  name="plsqts_seqn"
+                  value={formData.plsqts_seqn}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
@@ -550,19 +566,20 @@ function SectionFormModal({ templateId, section, sectionTypes, onClose, onSave }
                 <label className="block text-sm font-medium text-gray-700 mb-1">Alternate Name</label>
                 <input
                   type="text"
-                  name="plsqt_alt_name"
-                  value={formData.plsqt_alt_name}
+                  name="plsqts_alt_name"
+                  value={formData.plsqts_alt_name}
                   onChange={handleChange}
-                  maxLength={50}
+                  maxLength={SECTION_CHAR_LIMITS.plsqts_alt_name}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
+                <p className="mt-1 text-xs text-gray-500">{formData.plsqts_alt_name.length}/{SECTION_CHAR_LIMITS.plsqts_alt_name}</p>
               </div>
               <div className="flex items-end">
                 <label className="flex items-center">
                   <input
                     type="checkbox"
-                    name="plsqt_use_alt_name"
-                    checked={formData.plsqt_use_alt_name}
+                    name="plsqts_use_alt_name"
+                    checked={formData.plsqts_use_alt_name}
                     onChange={handleChange}
                     className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                   />
@@ -577,7 +594,7 @@ function SectionFormModal({ templateId, section, sectionTypes, onClose, onSave }
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 >
-                  {['not started', 'in process', 'in review', 'approved', 'cloned'].map(s => (
+                  {STATUS_OPTIONS.map(s => (
                     <option key={s} value={s}>{s}</option>
                   ))}
                 </select>
@@ -589,35 +606,50 @@ function SectionFormModal({ templateId, section, sectionTypes, onClose, onSave }
                   name="plsqts_version"
                   value={formData.plsqts_version}
                   onChange={handleChange}
-                  maxLength={25}
+                  maxLength={SECTION_CHAR_LIMITS.plsqts_version}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
+                <p className="mt-1 text-xs text-gray-500">{formData.plsqts_version.length}/{SECTION_CHAR_LIMITS.plsqts_version}</p>
               </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Comment</label>
-              <input
-                type="text"
-                name="plsqt_comment"
-                value={formData.plsqt_comment}
+              <textarea
+                name="plsqts_comment"
+                value={formData.plsqts_comment}
                 onChange={handleChange}
-                maxLength={100}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                rows={3}
+                maxLength={SECTION_CHAR_LIMITS.plsqts_comment}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
               />
+              <p className="mt-1 text-sm text-gray-500">{formData.plsqts_comment.length}/{SECTION_CHAR_LIMITS.plsqts_comment}</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">External File Reference</label>
+              <textarea
+                name="plsqts_extrn_file_ref"
+                value={formData.plsqts_extrn_file_ref}
+                onChange={handleChange}
+                rows={2}
+                maxLength={SECTION_CHAR_LIMITS.plsqts_extrn_file_ref}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
+              />
+              <p className="mt-1 text-sm text-gray-500">{formData.plsqts_extrn_file_ref.length}/{SECTION_CHAR_LIMITS.plsqts_extrn_file_ref}</p>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
               <textarea
-                name="content"
-                value={formData.content}
+                name="plsqts_content"
+                value={formData.plsqts_content}
                 onChange={handleChange}
-                rows={4}
-                maxLength={500}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                rows={6}
+                maxLength={SECTION_CHAR_LIMITS.plsqts_content}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
               />
-              <p className="mt-1 text-sm text-gray-500">{formData.content.length}/500</p>
+              <p className="mt-1 text-sm text-gray-500">{formData.plsqts_content.length}/{SECTION_CHAR_LIMITS.plsqts_content}</p>
             </div>
 
             <div>
@@ -664,13 +696,14 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave }) {
   const isSubmittingRef = useRef(false);
   const [formData, setFormData] = useState({
     section_type_id: section?.section_type_id || '',
-    plsqt_seqn: section?.plsqt_seqn || '',
-    plsqt_alt_name: section?.plsqt_alt_name || '',
-    plsqt_comment: section?.plsqt_comment || '',
-    plsqt_use_alt_name: section?.plsqt_use_alt_name || false,
+    plsqts_seqn: section?.plsqts_seqn || '',
+    plsqts_alt_name: section?.plsqts_alt_name || '',
+    plsqts_comment: section?.plsqts_comment || '',
+    plsqts_use_alt_name: section?.plsqts_use_alt_name || false,
     plsqts_active: section?.plsqts_active !== false,
     plsqts_version: section?.plsqts_version || '',
-    content: section?.content || '',
+    plsqts_extrn_file_ref: section?.plsqts_extrn_file_ref || '',
+    plsqts_content: section?.plsqts_content || '',
     plsqts_status: section?.plsqts_status || 'not started'
   });
 
@@ -679,13 +712,14 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave }) {
     if (section) {
       setFormData({
         section_type_id: section.section_type_id || '',
-        plsqt_seqn: section.plsqt_seqn || '',
-        plsqt_alt_name: section.plsqt_alt_name || '',
-        plsqt_comment: section.plsqt_comment || '',
-        plsqt_use_alt_name: section.plsqt_use_alt_name || false,
+        plsqts_seqn: section.plsqts_seqn || '',
+        plsqts_alt_name: section.plsqts_alt_name || '',
+        plsqts_comment: section.plsqts_comment || '',
+        plsqts_use_alt_name: section.plsqts_use_alt_name || false,
         plsqts_active: section.plsqts_active !== false,
         plsqts_version: section.plsqts_version || '',
-        content: section.content || '',
+        plsqts_extrn_file_ref: section.plsqts_extrn_file_ref || '',
+        plsqts_content: section.plsqts_content || '',
         plsqts_status: section.plsqts_status || 'not started'
       });
       setError('');
@@ -751,8 +785,8 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave }) {
             <label className="block text-sm font-medium text-gray-700 mb-1">Sequence</label>
             <input
               type="number"
-              name="plsqt_seqn"
-              value={formData.plsqt_seqn}
+              name="plsqts_seqn"
+              value={formData.plsqts_seqn}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
@@ -765,7 +799,7 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave }) {
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
-              {['not started', 'in process', 'in review', 'approved', 'cloned'].map(s => (
+              {STATUS_OPTIONS.map(s => (
                 <option key={s} value={s}>{s}</option>
               ))}
             </select>
@@ -774,19 +808,20 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave }) {
             <label className="block text-sm font-medium text-gray-700 mb-1">Alternate Name</label>
             <input
               type="text"
-              name="plsqt_alt_name"
-              value={formData.plsqt_alt_name}
+              name="plsqts_alt_name"
+              value={formData.plsqts_alt_name}
               onChange={handleChange}
-              maxLength={50}
+              maxLength={SECTION_CHAR_LIMITS.plsqts_alt_name}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
+            <p className="mt-1 text-xs text-gray-500">{formData.plsqts_alt_name.length}/{SECTION_CHAR_LIMITS.plsqts_alt_name}</p>
           </div>
           <div className="flex items-end pb-2">
             <label className="flex items-center">
               <input
                 type="checkbox"
-                name="plsqt_use_alt_name"
-                checked={formData.plsqt_use_alt_name}
+                name="plsqts_use_alt_name"
+                checked={formData.plsqts_use_alt_name}
                 onChange={handleChange}
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
@@ -800,35 +835,50 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave }) {
               name="plsqts_version"
               value={formData.plsqts_version}
               onChange={handleChange}
-              maxLength={25}
+              maxLength={SECTION_CHAR_LIMITS.plsqts_version}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
+            <p className="mt-1 text-xs text-gray-500">{formData.plsqts_version.length}/{SECTION_CHAR_LIMITS.plsqts_version}</p>
           </div>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Comment</label>
-          <input
-            type="text"
-            name="plsqt_comment"
-            value={formData.plsqt_comment}
+          <textarea
+            name="plsqts_comment"
+            value={formData.plsqts_comment}
             onChange={handleChange}
-            maxLength={100}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            rows={3}
+            maxLength={SECTION_CHAR_LIMITS.plsqts_comment}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
           />
+          <p className="mt-1 text-sm text-gray-500">{formData.plsqts_comment.length}/{SECTION_CHAR_LIMITS.plsqts_comment}</p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">External File Reference</label>
+          <textarea
+            name="plsqts_extrn_file_ref"
+            value={formData.plsqts_extrn_file_ref}
+            onChange={handleChange}
+            rows={2}
+            maxLength={SECTION_CHAR_LIMITS.plsqts_extrn_file_ref}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
+          />
+          <p className="mt-1 text-sm text-gray-500">{formData.plsqts_extrn_file_ref.length}/{SECTION_CHAR_LIMITS.plsqts_extrn_file_ref}</p>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
           <textarea
-            name="content"
-            value={formData.content}
+            name="plsqts_content"
+            value={formData.plsqts_content}
             onChange={handleChange}
-            rows={4}
-            maxLength={500}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            rows={6}
+            maxLength={SECTION_CHAR_LIMITS.plsqts_content}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
           />
-          <p className="mt-1 text-sm text-gray-500">{formData.content.length}/500</p>
+          <p className="mt-1 text-sm text-gray-500">{formData.plsqts_content.length}/{SECTION_CHAR_LIMITS.plsqts_content}</p>
         </div>
 
         <div className="flex items-center justify-between pt-4 border-t">
