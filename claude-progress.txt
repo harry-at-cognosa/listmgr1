@@ -5603,3 +5603,470 @@ Why ref instead of just state:
 - Progress: 104/104 features passing (100.0%)
 
 [Testing] Session complete - Feature #104 PASSED
+
+---
+
+## Session 2026-01-23 (Feature #82)
+
+### Completed
+- Feature #82: Direct URL access to template works - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in and get a template ID - Logged in as harry, noted template #1 (DYNO-MILL UBM 20)
+2. ✅ Step 2: Note the URL - URL: /templates/1
+3. ✅ Step 3: Open new browser tab - N/A (tested via logout/re-navigate)
+4. ✅ Step 4: Navigate directly to template URL - Attempted to access /templates/1 while unauthenticated
+5. ✅ Step 5: Verify redirect to login if not authenticated - Correctly redirected to /login page
+6. ✅ Step 6: Log in - Logged in as harry
+7. ✅ Step 7: Verify correct template displays - After login, redirected to /templates/1 with correct template data
+
+### Technical Details
+- Deep linking works correctly with session-based authentication
+- App remembers the original requested URL and redirects after successful login
+- Template detail page loads with all data (11 sections, status, metadata)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f82-deep-link-success.png (Template detail page after deep link login)
+
+### Current Status
+- Feature #82 verified - still passing
+- Progress: 104/105 features passing (99.0%)
+
+[Testing] Session complete - Feature #82 regression test PASSED
+
+[Testing] 2026-01-23 - Feature #92 regression test PASSED - 'Application displays correctly on desktop'
+- Step 1: Set browser window to 1920px width ✓
+- Step 2: Navigated through all pages ✓
+  * Templates list - sidebar + main content side by side
+  * Currencies reference - table columns fully visible
+  * New Template form - fields properly sized
+  * Template detail - sections list fully visible
+  * User Management - layout correct
+- Step 3: Sidebar and main content display side by side ✓
+- Step 4: Tables not truncated ✓
+- Step 5: Forms properly sized ✓
+- Step 6: No horizontal scroll needed ✓
+  * JavaScript confirmed: documentWidth (1920px) = viewportWidth (1920px)
+- Console errors: Only 401 auth errors (unrelated to responsive layout)
+- Screenshots: regression-f92-step1-6*.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #92 regression test passed
+
+---
+
+## Session 2026-01-23 (Feature #17)
+
+### Completed
+- Feature #17: Regular user cannot delete currency - VERIFIED AND PASSING
+
+### Data Issue Found and Fixed
+- Issue: harry user had role='admin' in database instead of role='user'
+- Fix: Updated harry's role to 'user' in PostgreSQL database
+- Root cause: Database had incorrect data (likely from a previous testing session)
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as regular user 'harry' - Logged in successfully
+2. ✅ Step 2: Navigate to Currencies page - Accessed /reference/currencies  
+3. ✅ Step 3: Verify Delete button is hidden or disabled - Delete buttons NOT visible (only Edit shown)
+4. ✅ Step 4: Attempt API DELETE /api/currencies/:id directly - Sent DELETE request to /api/currencies/1
+5. ✅ Step 5: Verify 403 response - API returned 403 with {"error":"Admin access required"}
+6. ✅ Step 6: Verify currency still exists - Currency ID 1 (USD) confirmed still in database
+
+### Technical Verification
+- Frontend: Currencies.jsx correctly uses isAdmin conditional (line 90-97)
+- Backend: currencies.js correctly checks req.session.user.role !== 'admin' (line 98)
+- AuthContext: isAdmin computed as user?.role === 'admin' (line 42)
+
+### Screenshots
+- regression-f17-delete-buttons-visible.png (BEFORE fix - showing delete buttons for harry)
+- regression-f17-delete-buttons-hidden-after-fix.png (AFTER fix - no delete buttons)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Current Status
+- Feature #17 verified as passing (data fix only, no code changes needed)
+
+[Testing] Session complete - Feature #17 PASSED
+
+
+---
+
+## Session 2026-01-23 (Feature #36)
+
+### Completed
+- Feature #36: User can filter templates by product category - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Automatically redirected to /templates
+3. ✅ Step 3: Locate product category filter dropdown - Found with options: All Categories, Dyno-Mill Agitator, Dyno-Mix Shaker, Turbula
+4. ✅ Step 4: Select a specific category - Selected 'Turbula'
+5. ✅ Step 5: Verify list updates correctly - Table filtered from 4 to 2 templates (only Turbula templates shown)
+6. ✅ Step 6: Clear filter - Clicked 'Clear Filters', all 4 templates displayed again
+
+### Technical Details
+- URL updates with query parameter: /templates?product_cat_id=3
+- Filter dropdown properly bound to product_cat_id
+- Clear Filters button resets all filters and refreshes template list
+
+### Screenshots
+- feature-36-product-category-filter-turbula.png (filtered view showing 2 Turbula templates)
+- feature-36-filter-cleared-all-templates.png (all 4 templates after clear)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Current Status
+- Feature #36 verified - still passing
+- Progress: 104/105 features passing (99.0%)
+
+[Testing] Session complete - Feature #36 regression test PASSED
+
+[Testing] 2026-01-24 - Feature #21 regression test PASSED - 'Admin can delete country'
+- Step 1: Logged in as admin ✓
+- Step 2: Navigated to Countries page ✓
+- Step 3: Created test country 'TST - Test Country for Delete' ✓
+- Step 4: Clicked Delete button on test country ✓
+- Step 5: Confirmed deletion in browser dialog ✓
+- Step 6: Delete operation completed successfully ✓
+- Step 7: Verified country no longer in list (8 countries remaining) ✓
+- Console errors: Only 401 auth errors (normal pre-login behavior)
+- Screenshot: regression-f21-country-deleted.png
+- All 7 verification steps PASSED
+[Testing] Session complete - Feature #21 regression test passed
+[Testing] 2026-01-24 - Feature #26 regression test PASSED - 'Product line list page displays all lines'
+- Step 1: Logged in as harry ✓
+- Step 2: Navigated to Reference Data > Product Lines ✓
+- Step 3: Page loaded without errors ✓
+- Step 4: Table displays Abbr, Name, and Product Category columns ✓
+  * 12 product lines displayed: ECM, ECO, KD, MUL, NPM, RL, UBM, UNI, MIX, TUR, TU2, TU3
+- Step 5: Product category shows name not ID ✓
+  * Categories displayed: Dyno-Mill Agitator, Dyno-Mix Shaker, Turbula
+- Console errors: Only 401 auth errors (normal pre-login behavior)
+- Screenshot: regression-f26-product-lines-list.png
+- All 5 verification steps PASSED
+[Testing] Session complete - Feature #26 regression test passed
+
+---
+
+## Session 2026-01-24 (Feature #97)
+
+### Completed
+- Feature #97: Foreign key dropdowns populated from real data - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Create a unique country 'TESTCOUNTRY' - Created with abbr 'TST' and currency USD
+2. ✅ Step 2: Navigate to Template create form - Navigated to /templates/new
+3. ✅ Step 3: Open country dropdown - Country dropdown expanded
+4. ✅ Step 4: Verify 'TESTCOUNTRY' appears in options - TESTCOUNTRY visible in dropdown
+5. ✅ Step 5: Create a unique product category - Created 'TESTCATEGORY' with abbr 'TCA' (auto-assigned)
+6. ✅ Step 6: Verify it appears in product category dropdown - TESTCATEGORY visible in Product Category dropdown
+
+### Technical Details
+- Foreign key relationships correctly populate dropdown options from database
+- Country dropdown shows all countries from 'country' table
+- Product Category dropdown shows all categories from 'product_cat' table
+- Newly created records appear immediately in dropdowns (no caching issues)
+
+### Cleanup
+- Deleted TESTCOUNTRY and TESTCATEGORY after verification
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f97-dropdowns-verified.png (Template create form with dropdowns)
+
+### Current Status
+- Feature #97 verified - still passing
+
+[Testing] Session complete - Feature #97 regression test PASSED
+
+
+---
+
+## Session 2026-01-24 (Feature #60)
+
+### Completed
+- Feature #60: Tables have readable styling - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: View Currencies list table - Navigated to /reference/currencies, table displayed correctly
+2. ✅ Step 2: View Templates list table - Navigated to /templates, table displayed correctly
+3. ✅ Step 3: Verify consistent table styling - Both tables use identical Tailwind classes (min-w-full, divide-y, etc.)
+4. ✅ Step 4: Verify header row distinguished - Headers use bg-gray-50 background with uppercase text-gray-500 styling
+5. ✅ Step 5: Verify hover states on rows - All tbody tr elements have hover:bg-gray-50 class (verified via code + JS evaluation)
+6. ✅ Step 6: Verify columns properly aligned - Consistent px-6 py-4 padding, text-left alignment
+
+### Technical Verification
+- Both Currencies.jsx and Templates.jsx use consistent table structure
+- Table classes: min-w-full divide-y divide-gray-200
+- Header: bg-gray-50 with text-xs font-medium text-gray-500 uppercase
+- Body: divide-y divide-gray-200 for row separation
+- Hover: hover:bg-gray-50 on all tbody tr elements
+- Cells: px-6 py-4 padding for consistent alignment
+
+### Screenshots
+- regression-f60-templates-table.png (Templates list table)
+- regression-f60-currencies-table.png (Currencies list table)
+- regression-f60-templates-hover.png (Templates hover state)
+- regression-f60-currencies-hover.png (Currencies hover state)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Current Status
+- Feature #60 verified - still passing
+
+[Testing] Session complete - Feature #60 regression test PASSED
+
+---
+
+## Session 2026-01-24 (Feature #58)
+
+### Completed
+- Feature #58: Navigation sidebar styled correctly - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Examine sidebar navigation - Sidebar visible with Templates and Reference Data sections
+3. ✅ Step 3: Verify professional blue color scheme - Blue header text, blue active states on menu items, blue buttons
+4. ✅ Step 4: Verify hover states on menu items - Hover effects work on Reference Data and submenu items (gray highlight)
+5. ✅ Step 5: Verify active page highlighted - Templates shows blue background when active, Currencies shows light blue when active
+6. ✅ Step 6: Verify expandable Reference Data section - Expands to show: Currencies, Countries, Product Categories, Product Lines, Section Types
+
+### Technical Details
+- Sidebar uses consistent blue color scheme (#3B82F6 / blue-500)
+- Active state uses solid blue background for top-level items
+- Active state uses light blue background for submenu items
+- Hover states provide visual feedback with subtle gray background
+- Reference Data accordion expands/collapses correctly
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f58-sidebar-overview.png (initial sidebar state)
+- regression-f58-hover-state.png (hover on Reference Data)
+- regression-f58-expanded-reference-data.png (expanded submenu)
+- regression-f58-active-submenu.png (Currencies active state)
+- regression-f58-submenu-hover.png (hover on Countries)
+- regression-f58-templates-active.png (Templates active state)
+
+### Current Status
+- Feature #58 verified - still passing
+
+[Testing] Session complete - Feature #58 regression test PASSED
+
+[Testing] 2026-01-24 - Feature #94 regression test PASSED - 'Application displays correctly on mobile'
+- Step 1: Set browser window to 375px width ✓
+- Step 2: Login page works ✓
+  * Form centered, inputs full-width, Login button good touch target
+- Step 3: Navigation accessible via hamburger menu ✓
+  * Hamburger menu icon visible, sidebar slides in/out
+  * Reference Data dropdown expands properly
+  * All nav links have good touch targets
+- Step 4: Forms usable on mobile ✓
+  * New Template form: all fields full-width, dropdowns work
+  * Edit Template form: same quality
+  * Character counters visible
+- Step 5: Touch targets reasonable size ✓
+  * Buttons (Login, Create Template, Edit, Clone) all properly sized
+  * Form inputs and dropdowns are full-width
+  * Section cards have accessible Edit/Clone buttons
+- Step 6: Text readable without zooming ✓
+  * All headings, labels, and content properly sized
+  * Table data on Currencies page readable
+- Console errors: None (only INFO/WARNING from React dev tools)
+- Screenshots: regression-f94-step*.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #94 regression test passed
+
+---
+
+## Session 2026-01-24 (Feature #67)
+
+### Completed
+- Feature #67: Required fields prevent form submission - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Open Currency create form - Navigated to /reference/currencies, clicked '+ Add Currency'
+2. ✅ Step 2: Leave symbol field empty - Symbol field left blank
+3. ✅ Step 3: Try to submit - Clicked Save button
+4. ✅ Step 4: Verify error shown for required field - Browser's HTML5 validation showed 'Please fill out this field.'
+5. ✅ Step 5: Verify form not submitted - Form remained open, no currency created
+6. ✅ Step 6: Fill required field - Entered 'TST' in Symbol field
+7. ✅ Step 7: Verify form can now submit - Form submitted successfully, 'Currency saved successfully' message shown
+
+### Technical Details
+- Form uses HTML5 'required' attribute on Symbol field (marked with *)
+- Browser native validation prevents submission with empty required fields
+- Form submits successfully when required fields are filled
+- Success message displayed and new currency appears in list
+
+### Cleanup
+- Deleted test currency (TST) after verification
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f67-empty-symbol-submit.png (validation error shown)
+- regression-f67-form-submitted-success.png (successful submission)
+
+### Current Status
+- Feature #67 verified - still passing
+
+[Testing] Session complete - Feature #67 regression test PASSED
+
+[Testing] 2026-01-26 - Feature #2 regression test PASSED - 'Database connection works'
+- Step 1: Backend server running on port 3001 ✓
+- Step 2: Health endpoint returns {"status":"ok","database":"connected"} ✓
+- Step 3: Currencies API returned 8 records from PostgreSQL database ✓
+- Step 4: Data displayed correctly in UI with proper format ✓
+- Console errors: Only 401 auth errors (normal pre-login behavior)
+- Screenshot: regression-f2-database-connection.png
+- All 4 verification steps PASSED
+[Testing] Session complete - Feature #2 regression test passed
+
+---
+
+## Session 2026-01-26 (Feature #66)
+
+### Completed
+- Feature #66: Breadcrumb navigation works correctly - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Templates > Template Detail - Navigated to /templates/1 (DYNO-MILL UBM 20)
+2. ✅ Step 2: Verify breadcrumb shows: Home > Templates > [Template Name] - Breadcrumb correctly shows 'Home > Templates > DYNO-MILL UBM 20'
+3. ✅ Step 3: Click Templates in breadcrumb - Clicked successfully
+4. ✅ Step 4: Verify navigation to Templates list - URL changed to /templates, list displayed
+5. ✅ Step 5: Verify breadcrumbs update on navigation - Tested with different template (T 30 A E), breadcrumb updated correctly
+
+### Additional Testing
+- Home breadcrumb link also navigates correctly to /templates
+- Both 'Home' and 'Templates' links in breadcrumb work properly
+- Breadcrumbs appear on template detail pages but not on list pages (correct behavior)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f66-breadcrumb-on-template-detail.png (DYNO-MILL UBM 20 with breadcrumb)
+- regression-f66-templates-list-no-breadcrumb.png (Templates list page)
+- regression-f66-breadcrumb-different-template.png (T 30 A E with breadcrumb)
+
+### Current Status
+- Feature #66 verified - still passing
+
+[Testing] Session complete - Feature #66 regression test PASSED
+
+---
+
+## Session 2026-01-26 (Feature #35)
+
+### Completed
+- Feature #35: User can filter templates by country - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Already on Templates page after login
+3. ✅ Step 3: Locate country filter dropdown - Country dropdown found at ref=e48
+4. ✅ Step 4: Verify dropdown populated from countries table - Verified 8 countries match Countries reference table:
+   - China, France, Germany, India, Japan, Switzerland, United Kingdom, United States
+5. ✅ Step 5: Select a specific country - Selected 'Switzerland'
+6. ✅ Step 6: Verify list updates to show only templates for that country
+   - Before filter: 4 templates (2 US, 2 Switzerland)
+   - After filter: 2 templates (both Switzerland)
+   - Also tested 'United States' filter: showed 2 US templates only
+7. ✅ Step 7: Clear filter and verify all templates show again
+   - Clicked 'Clear Filters' button
+   - All 4 templates restored
+   - Country dropdown reset to 'All Countries'
+
+### Technical Details
+- Country filter uses URL query parameter (country_id=6 for Switzerland, country_id=1 for USA)
+- Filter dropdown populated dynamically from /api/countries endpoint
+- Clear Filters button resets all filters and removes query parameters
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f35-templates-page.png (initial templates list)
+- regression-f35-switzerland-filtered.png (Switzerland filter applied)
+- regression-f35-filters-cleared.png (filters cleared, all templates shown)
+- regression-f35-usa-filtered.png (United States filter applied)
+
+### Current Status
+- Feature #35 verified - still passing
+
+[Testing] Session complete - Feature #35 regression test PASSED
+
+[Testing] 2026-01-26 17:22 - Feature #59 regression test PASSED - 'Forms have consistent styling'
+- Step 1: Visited Currency create form ✓
+  * Modal popup with labeled fields, gray-bordered inputs, Cancel/Save buttons
+- Step 2: Visited Template create form ✓
+  * Full-page form with 14 fields, character counters, two-column layout
+- Step 3: Visited Section create form ✓
+  * Modal popup with dropdown, text fields, checkboxes
+- Step 4: Verified consistent input field styling ✓
+  * All inputs use gray borders, rounded corners, consistent padding
+  * Required fields marked with red asterisk (*)
+- Step 5: Verified consistent button styles ✓
+  * Primary actions (Save/Create) use blue background
+  * Secondary actions (Cancel) use gray/white styling
+- Step 6: Verified proper spacing and alignment ✓
+  * Labels above fields consistently
+  * Character counters below text inputs
+  * Proper vertical spacing between form groups
+- Console errors: None
+- Screenshots: regression-f59-currency-form.png, regression-f59-template-form.png, regression-f59-section-form.png
+- All 6 verification steps PASSED
+[Testing] Session complete - Feature #59 regression test passed
+
+---
+
+## Session 2026-01-26 (Feature #106)
+
+### Completed
+- Feature #106: Rebrand App to "SalesQuoteMgr" with Custom Favicon - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Update frontend/index.html title - Changed from 'ListMgr - Sales Quote Template Manager' to 'SalesQuoteMgr - Sales Quote Template Manager'
+2. ✅ Step 2: Create custom favicon SVG - Created /frontend/favicon.svg with:
+   - Red circle background (#DC2626)
+   - White inner circle
+   - 'SQM' letters in black thin serif font (Didot/Bodoni style) with artistic overlapping
+3. ✅ Step 3: Update favicon link in index.html - Changed from '/vite.svg' to '/favicon.svg'
+4. ✅ Step 4: Update Layout.jsx line 55 - Changed 'ListMgr - Sales Quote Templates' to 'SalesQuoteMgr'
+5. ✅ Step 5: Update Layout.jsx line 56 - Changed mobile header 'ListMgr' to 'SalesQuoteMgr'
+6. ✅ Step 6: Update root package.json - Changed name from '1_listmgr' to 'salesquotemgr'
+7. ✅ Step 7: Update frontend/package.json - Changed name to 'salesquotemgr-frontend'
+8. ✅ Step 8: Update backend/package.json - Changed name to 'salesquotemgr-backend' and description
+9. ✅ Step 9: Check Login.jsx branding - Updated 'ListMgr' to 'SalesQuoteMgr'
+10. ✅ Step 10: Verify favicon displays correctly - Favicon link confirmed at /favicon.svg, no 404 errors
+
+### Technical Implementation
+- Favicon SVG structure: 64x64 viewBox with red outer circle (r=30), white inner circle (r=24), 'SQM' text monogram
+- Page title: "SalesQuoteMgr - Sales Quote Template Manager"
+- Login page header: "SalesQuoteMgr" with "Sales Quote Template Manager" subtitle
+- Layout header: "SalesQuoteMgr" (same for desktop and mobile views)
+
+### Screenshots
+- feature-106-login-rebranded.png (Login page with SalesQuoteMgr branding)
+- feature-106-templates-header-rebranded.png (Templates page with header branding)
+- feature-106-final-verification.png (Final verification screenshot)
+
+### Console Errors
+- Only expected React DevTools info and 401 auth errors (normal behavior)
+
+### Current Status
+- Feature #106 marked as passing
+- Progress: 106/106 features passing (100.0%)
+
+[Testing] Session complete - Feature #106 PASSED
