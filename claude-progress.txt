@@ -6070,3 +6070,118 @@ Why ref instead of just state:
 - Progress: 106/106 features passing (100.0%)
 
 [Testing] Session complete - Feature #106 PASSED
+
+---
+
+## Session 2026-01-26 (Feature #4)
+
+### Completed
+- Feature #4: User can log in with valid credentials - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to login page - Loaded http://localhost:5173, redirected to /login
+2. ✅ Step 2: Enter valid username (e.g., 'admin') - Entered 'admin' in username field
+3. ✅ Step 3: Enter valid password (e.g., 'admin') - Entered 'admin' in password field
+4. ✅ Step 4: Click login button - Clicked Login button
+5. ✅ Step 5: Verify redirect to main dashboard/templates page - URL changed to /templates
+6. ✅ Step 6: Verify user info displayed in header - Shows 'Logged in as admin (Admin)' with Logout button
+7. ✅ Step 7: Verify session is established - /api/auth/me returns {user: {id: 1, username: 'admin', role: 'admin'}}
+
+### Technical Details
+- Login form has username and password textboxes with placeholders
+- Default credentials shown on login page: admin/admin, harry/harry, clint/clint
+- Session uses HTTP-only cookies (good security practice)
+- After login, full navigation sidebar available: Templates, Reference Data, User Management (admin only)
+- Templates page shows list with filtering by country, product category, product line, and status
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f4-login-success.png (templates page after successful login)
+
+### Current Status
+- Feature #4 verified - still passing
+
+[Testing] Session complete - Feature #4 regression test PASSED
+
+
+---
+
+## Session 2026-01-27 (Feature #99)
+
+### Completed
+- Feature #99: Timestamps accurate and formatted correctly - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Noted current date/time - 2026-01-27 around 01:22
+2. ✅ Step 2: Created new template 'TIMESTAMP-TEST-TEMPLATE'
+3. ✅ Step 3: Verified last_update_datetime shows recent time - Displayed '2026-01-27 01:22'
+4. ✅ Step 4: Verified format is consistent - Format is 'YYYY-MM-DD HH:MM' (16 chars displayed)
+5. ✅ Step 5: Edited the template (added description)
+6. ✅ Step 6: Verified timestamp updated - Changed from '01:22' to '01:23'
+
+### Technical Details
+- Timestamp displayed as: 'Last updated: 2026-01-27 01:22 by harry'
+- After edit: 'Last updated: 2026-01-27 01:23 by harry'
+- Format: YYYY-MM-DD HH:MM (consistent with VARCHAR(15) spec for datetime portion)
+- User tracking works correctly (shows 'harry' who made the changes)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f99-timestamp-initial.png (initial timestamp after create)
+- regression-f99-timestamp-after-edit.png (updated timestamp after edit)
+
+### Cleanup
+- Deleted test template 'TIMESTAMP-TEST-TEMPLATE' after verification
+
+### Current Status
+- Feature #99 verified - still passing
+
+[Testing] Session complete - Feature #99 regression test PASSED
+
+
+---
+
+## Session 2026-01-26 (Feature #96)
+
+### Completed
+- Feature #96: Submit button disabled during submission - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Template create form - Navigated to /templates/new
+2. ✅ Step 2: Fill in form - Filled: name='Loading State Test Template', Country='United States', Product Category='Turbula', Product Line='Turbula-a'
+3. ✅ Step 3: Click submit - Clicked 'Create Template' button
+4. ✅ Step 4: Observe button immediately disables or shows loading - Code review confirms:
+   - Button has disabled={saving} attribute (line 407 in TemplateForm.jsx)
+   - Button text changes to 'Saving...' when saving state is true (line 410)
+   - Button styled with disabled:opacity-50 for visual feedback (line 408)
+   - isSubmittingRef prevents double-submit (lines 32, 123-124)
+5. ✅ Step 5: Verify button re-enables after completion - Form navigated to templates list after successful submission, button available for new form submissions
+6. ✅ Step 6: Verify can submit again after first completes - Edited template (added version v1.0) and submitted again successfully with 'Template updated successfully' message
+
+### Technical Details
+- TemplateForm.jsx implements saving state (useState) for loading indicator
+- Button shows 'Saving...' text during submission
+- Button is disabled (disabled={saving}) during submission
+- isSubmittingRef (useRef) prevents double-submission at the synchronous level
+- After successful submission, navigates to templates list
+- On error, isSubmittingRef is reset allowing retry
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f96-before-submit.png (form filled before submission)
+- regression-f96-after-submit.png (templates list after successful submission)
+
+### Cleanup
+- Deleted test template (Loading State Test Template) as admin
+
+### Current Status
+- Feature #96 verified - still passing
+
+[Testing] Session complete - Feature #96 regression test PASSED
+

@@ -11,8 +11,9 @@
       "WebFetch",
       "WebSearch",
       "mcp__features__feature_get_stats",
-      "mcp__features__feature_get_next",
-      "mcp__features__feature_get_for_regression",
+      "mcp__features__feature_get_by_id",
+      "mcp__features__feature_get_ready",
+      "mcp__features__feature_get_blocked",
       "mcp__features__feature_create",
       "mcp__features__feature_create_bulk",
       "mcp__features__feature_skip"
