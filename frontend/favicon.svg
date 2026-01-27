@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Red outer circle -->
+  <circle cx="32" cy="32" r="30" fill="#DC2626"/>
+
+  <!-- White inner circle background -->
+  <circle cx="32" cy="32" r="24" fill="#FFFFFF"/>
+
+  <!-- SQM Monogram - thin serif font with artistic overlapping -->
+  <!-- Using Didot/Bodoni style thin serif letterforms -->
+  <g fill="#000000" transform="translate(32, 32)">
+    <!-- S - positioned on the left, slightly back -->
+    <text x="-12" y="6" font-family="Didot, 'Bodoni MT', Bodoni, 'Times New Roman', serif" font-size="22" font-weight="300" letter-spacing="-2">S</text>
+
+    <!-- Q - center, slightly overlapping -->
+    <text x="-4" y="6" font-family="Didot, 'Bodoni MT', Bodoni, 'Times New Roman', serif" font-size="22" font-weight="300" letter-spacing="-2">Q</text>
+
+    <!-- M - positioned on the right, slightly forward -->
+    <text x="4" y="6" font-family="Didot, 'Bodoni MT', Bodoni, 'Times New Roman', serif" font-size="22" font-weight="300" letter-spacing="-2">M</text>
+  </g>
+</svg>

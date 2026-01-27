@@ -52,8 +52,8 @@ function Layout() {
           </button>
 
           <h1 className="text-lg md:text-xl font-semibold text-primary-700 truncate">
-            <span className="hidden sm:inline">ListMgr - Sales Quote Templates</span>
-            <span className="sm:hidden">ListMgr</span>
+            <span className="hidden sm:inline">SalesQuoteMgr</span>
+            <span className="sm:hidden">SalesQuoteMgr</span>
           </h1>
           <div className="flex items-center gap-2 md:gap-4">
             <span className="hidden sm:inline text-sm text-gray-600">

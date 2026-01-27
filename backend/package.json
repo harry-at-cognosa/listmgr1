@@ -1,7 +1,7 @@
 {
-  "name": "listmgr-backend",
+  "name": "salesquotemgr-backend",
   "version": "1.0.0",
-  "description": "Backend API for ListMgr - Sales Quote Template Manager",
+  "description": "Backend API for SalesQuoteMgr - Sales Quote Template Manager",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
