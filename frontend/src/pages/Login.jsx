@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -7,7 +7,24 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [publicSettings, setPublicSettings] = useState({});
   const { login } = useAuth();
+
+  // Fetch public settings on mount
+  useEffect(() => {
+    const fetchPublicSettings = async () => {
+      try {
+        const response = await fetch('/api/public-settings', { credentials: 'include' });
+        if (response.ok) {
+          const data = await response.json();
+          setPublicSettings(data);
+        }
+      } catch (err) {
+        console.log('Could not load public settings');
+      }
+    };
+    fetchPublicSettings();
+  }, []);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -34,8 +51,16 @@ function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-primary-700">SalesQuoteMgr</h1>
+          <h1 className="text-2xl font-bold text-blue-700">SalesQuoteMgr</h1>
+          {publicSettings.client_name && (
+            <p className="text-lg font-medium text-gray-700">{publicSettings.client_name}</p>
+          )}
           <p className="text-gray-600">Sales Quote Template Manager</p>
+          {(publicSettings.app_version || publicSettings.db_version) && (
+            <p className="text-xs text-gray-400 mt-1">
+              App: {publicSettings.app_version || '...'} | DB: {publicSettings.db_version || '...'}
+            </p>
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">

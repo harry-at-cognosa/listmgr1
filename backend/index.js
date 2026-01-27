@@ -52,6 +52,28 @@ const productLinesRoutes = require('./routes/productLines');
 const sectionTypesRoutes = require('./routes/sectionTypes');
 const templatesRoutes = require('./routes/templates');
 const sectionsRoutes = require('./routes/sections');
+const appSettingsRoutes = require('./routes/appSettings');
+
+// Public settings endpoint (unauthenticated) - for login page
+app.get('/api/public-settings', async (req, res) => {
+  try {
+    const result = await db.query(
+      `SELECT name, value FROM app_settings
+       WHERE name IN ('client_name', 'app_version', 'db_version')
+       ORDER BY name`
+    );
+
+    const settings = {};
+    result.rows.forEach(row => {
+      settings[row.name] = row.value;
+    });
+
+    res.json(settings);
+  } catch (error) {
+    console.error('Error fetching public settings:', error);
+    res.status(500).json({ error: 'Failed to fetch public settings' });
+  }
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', requireAdmin, usersRoutes);
@@ -62,6 +84,7 @@ app.use('/api/product-lines', requireAuth, productLinesRoutes);
 app.use('/api/section-types', requireAuth, sectionTypesRoutes);
 app.use('/api/templates', requireAuth, templatesRoutes);
 app.use('/api/sections', requireAuth, sectionsRoutes);
+app.use('/api/app-settings', requireAuth, appSettingsRoutes);
 
 // Health check
 app.get('/api/health', async (req, res) => {

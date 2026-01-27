@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useSettings } from '../context/SettingsContext';
 
 function Layout() {
   const { user, logout, isAdmin } = useAuth();
+  const { appVersion, dbVersion, clientName } = useSettings();
   const navigate = useNavigate();
   const [referenceOpen, setReferenceOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -51,10 +53,15 @@ function Layout() {
             </svg>
           </button>
 
-          <h1 className="text-lg md:text-xl font-semibold text-primary-700 truncate">
-            <span className="hidden sm:inline">SalesQuoteMgr</span>
-            <span className="sm:hidden">SalesQuoteMgr</span>
-          </h1>
+          <div className="flex flex-col">
+            <h1 className="text-lg md:text-xl font-semibold text-theme-700 truncate">
+              <span className="hidden sm:inline">SalesQuoteMgr</span>
+              <span className="sm:hidden">SalesQuoteMgr</span>
+            </h1>
+            {clientName && (
+              <span className="text-xs text-gray-500 hidden sm:inline">{clientName}</span>
+            )}
+          </div>
           <div className="flex items-center gap-2 md:gap-4">
             <span className="hidden sm:inline text-sm text-gray-600">
               Logged in as <strong className="text-gray-900">{user?.username}</strong>
@@ -133,11 +140,21 @@ function Layout() {
             </div>
 
             {isAdmin && (
-              <NavLink to="/admin/users" className={navLinkClass} onClick={closeMobileMenu}>
-                User Management
-              </NavLink>
+              <>
+                <NavLink to="/admin/users" className={navLinkClass} onClick={closeMobileMenu}>
+                  User Management
+                </NavLink>
+                <NavLink to="/admin/settings" className={navLinkClass} onClick={closeMobileMenu}>
+                  App Settings
+                </NavLink>
+              </>
             )}
           </nav>
+
+          {/* Version info at bottom of sidebar */}
+          <div className="absolute bottom-4 left-4 right-4 text-xs text-gray-400">
+            <div>App: {appVersion || '...'} | DB: {dbVersion || '...'}</div>
+          </div>
         </aside>
 
         {/* Main Content */}

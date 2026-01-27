@@ -1,7 +1,9 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import { SettingsProvider } from './context/SettingsContext'
 import Layout from './components/Layout'
 import Login from './pages/Login'
+import Settings from './pages/Settings'
 import Templates from './pages/Templates'
 import TemplateDetail from './pages/TemplateDetail'
 import TemplateForm from './pages/TemplateForm'
@@ -50,26 +52,29 @@ function AdminRoute({ children }) {
 
 function App() {
   return (
-    <AuthProvider>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
-          <Route index element={<Navigate to="/templates" replace />} />
-          <Route path="templates" element={<Templates />} />
-          <Route path="templates/new" element={<TemplateForm />} />
-          <Route path="templates/:id" element={<TemplateDetail />} />
-          <Route path="templates/:id/edit" element={<TemplateForm />} />
-          <Route path="reference/currencies" element={<Currencies />} />
-          <Route path="reference/countries" element={<Countries />} />
-          <Route path="reference/product-categories" element={<ProductCategories />} />
-          <Route path="reference/product-lines" element={<ProductLines />} />
-          <Route path="reference/section-types" element={<SectionTypes />} />
-          <Route path="admin/users" element={<AdminRoute><Users /></AdminRoute>} />
+    <SettingsProvider>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
+            <Route index element={<Navigate to="/templates" replace />} />
+            <Route path="templates" element={<Templates />} />
+            <Route path="templates/new" element={<TemplateForm />} />
+            <Route path="templates/:id" element={<TemplateDetail />} />
+            <Route path="templates/:id/edit" element={<TemplateForm />} />
+            <Route path="reference/currencies" element={<Currencies />} />
+            <Route path="reference/countries" element={<Countries />} />
+            <Route path="reference/product-categories" element={<ProductCategories />} />
+            <Route path="reference/product-lines" element={<ProductLines />} />
+            <Route path="reference/section-types" element={<SectionTypes />} />
+            <Route path="admin/users" element={<AdminRoute><Users /></AdminRoute>} />
+            <Route path="admin/settings" element={<AdminRoute><Settings /></AdminRoute>} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AuthProvider>
+        </Routes>
+      </AuthProvider>
+    </SettingsProvider>
   )
 }
 
