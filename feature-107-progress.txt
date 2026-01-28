@@ -1,0 +1,89 @@
+
+---
+
+## Session 2026-01-27 (Feature #107)
+
+### Completed
+- Feature #107: app_settings capability - IMPLEMENTED AND VERIFIED
+
+### Implementation Summary
+This feature adds a dynamic settings system to the SalesQuoteMgr application:
+
+1. **Database Setup**
+   - app_settings table already existed, seeded with initial data:
+     - app_version: "1.0"
+     - db_version: "1.0"
+     - webapp_main_color: "blue"
+     - index_page: "<h1>Welcome to SalesQuoteMgr</h1>"
+     - client_name: "WAB Group USA"
+   - Created sql/seed_app_settings.sql for documentation
+
+2. **Backend API Endpoints**
+   - GET /api/public-settings (unauthenticated) - returns client_name, app_version, db_version
+   - GET /api/app-settings (authenticated) - returns webapp_main_color + versions + client_name
+   - GET /api/app-settings/all (admin only) - returns all 5 settings
+   - GET /api/app-settings/colors - returns list of 22 available Tailwind colors
+   - PUT /api/app-settings/:name (admin only) - update a setting with validation
+
+3. **Frontend Theming System**
+   - Created utils/colorPalette.js with full Tailwind color palette (22 colors, 10 shades each)
+   - Added CSS variables in index.css for dynamic theming
+   - Created SettingsContext.jsx for global settings state management
+   - applyThemeColor() function updates CSS variables at runtime
+
+4. **UI Updates**
+   - Login page: Shows client name "WAB Group USA" and version info "App: 1.0 | DB: 1.0"
+   - Layout header: Shows client name below "SalesQuoteMgr"
+   - Sidebar footer: Shows "App: 1.0 | DB: 1.0"
+   - Admin-only "App Settings" menu item in sidebar
+
+5. **Admin Settings Page** (/admin/settings)
+   - View and edit all 5 settings
+   - Theme Color: Dropdown + 22 clickable color swatches
+   - Landing Page HTML: Textarea with live HTML preview
+   - Save button only enabled when value is modified
+   - Success/error feedback messages
+
+### Verification Steps
+1. Login page shows client name "WAB Group USA" and version info
+2. Templates page shows client name in header, version in sidebar
+3. Admin sees "App Settings" menu item, regular users don't
+4. App Settings page loads all 5 settings correctly
+5. Changed theme color from blue to green - UI updated immediately
+6. Reset theme color back to blue successfully
+7. API security verified - regular users get 403 when trying to access admin endpoints
+
+### Security Verification
+- Regular users (harry) cannot see App Settings menu
+- Regular users cannot access GET /api/app-settings/all (403 Admin access required)
+- Regular users cannot access PUT /api/app-settings/:name (403 Admin access required)
+
+### Screenshots
+- feature-107-login-page-with-settings.png (login with client name and version)
+- feature-107-templates-with-version-info.png (templates page with header/sidebar info)
+- feature-107-app-settings-page.png (admin settings page)
+- feature-107-theme-color-section.png (theme color with swatches)
+- feature-107-theme-changed-to-green.png (green theme applied)
+- feature-107-regular-user-no-settings.png (harry - no App Settings menu)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Current Status
+- Feature #107 marked as passing
+- Progress: 107/107 features passing (100.0%)
+
+### Files Created/Modified
+- NEW: backend/routes/appSettings.js
+- NEW: backend/check-and-seed-app-settings.js
+- NEW: frontend/src/context/SettingsContext.jsx
+- NEW: frontend/src/pages/Settings.jsx
+- NEW: frontend/src/utils/colorPalette.js
+- NEW: sql/seed_app_settings.sql
+- MOD: backend/index.js (added routes + public endpoint)
+- MOD: frontend/src/App.jsx (added SettingsProvider + Settings route)
+- MOD: frontend/src/components/Layout.jsx (show client name + version + App Settings menu)
+- MOD: frontend/src/index.css (CSS variables for theming)
+- MOD: frontend/src/pages/Login.jsx (show public settings)
+
+[Testing] Session complete - Feature #107 PASSED - 100% COMPLETE!
