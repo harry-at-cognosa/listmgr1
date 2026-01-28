@@ -6331,3 +6331,678 @@ Why ref instead of just state:
 - Progress: 106/107 features passing (99.1%)
 
 [Testing] Session complete - Feature #18 PASSED
+
+
+---
+
+## Session 2026-01-27 (Feature #93)
+
+### Completed
+- Feature #93: Application displays correctly on tablet (768px width) - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Set browser window to 768px width
+2. ✅ Step 2: Navigate through all pages (Login, Templates, Currencies, Section Types, Template Detail, Users, Template Form, Settings)
+3. ✅ Step 3: Verify layout adjusts appropriately - sidebar remains visible, content area adapts
+4. ✅ Step 4: Verify all content accessible - all navigation, buttons, form fields work
+5. ✅ Step 5: Verify tables scroll horizontally if needed - Templates table has overflow-x: auto
+6. ✅ Step 6: Verify no content cut off - all headers, navigation, content visible
+
+### Issues Found and Fixed
+- Missing Settings.jsx file - App.jsx imported a Settings page that didn't exist
+- Created basic Settings.jsx placeholder (which was then enhanced by linter)
+
+### Screenshots
+- regression-f93-login-768px.png
+- regression-f93-templates-768px-fixed.png
+- regression-f93-templates-scrolled-768px.png
+- regression-f93-currencies-768px.png
+- regression-f93-section-types-768px.png
+- regression-f93-template-detail-768px.png
+- regression-f93-users-768px.png
+- regression-f93-template-form-768px.png
+- regression-f93-settings-768px.png
+
+### Console Errors
+- None (only expected React DevTools info and warnings)
+
+### Current Status
+- Feature #93 verified - still passing
+
+[Testing] Session complete - Feature #93 regression test PASSED
+
+
+---
+
+## Session 2026-01-27 (Feature #72)
+
+### Completed
+- Feature #72: Admin can create new user - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in successfully as admin user
+2. ✅ Step 2: Navigate to User Management - Navigated to /admin/users
+3. ✅ Step 3: Click Add User - Add User form appeared with Username, Password, and Role fields
+4. ✅ Step 4: Enter username 'testuser' - Entered username
+5. ✅ Step 5: Enter password 'testpass' - Entered password
+6. ✅ Step 6: Select role 'user' - Role was already set to 'User' by default
+7. ✅ Step 7: Submit form - Clicked Save button
+8. ✅ Step 8: Verify success message - "User saved successfully" message displayed
+9. ✅ Step 9: Verify new user in list - testuser appeared in user list with role 'user' and timestamp '2026-01-27 19:12 by admin'
+10. ✅ Step 10: Log out - Logged out successfully
+11. ✅ Step 11: Log in as testuser - Logged in with testuser/testpass credentials
+12. ✅ Step 12: Verify login works - Successfully redirected to templates page, showing "Logged in as testuser"
+
+### Technical Details
+- Add User form includes: Username (required), Password (required), Role (dropdown: User/Admin)
+- Default role is 'User'
+- Success message appears after user creation
+- User list updates immediately with new user
+- New user can log in immediately after creation
+- Regular users see limited navigation (no User Management, no Delete buttons)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f72-user-created.png (user management showing newly created testuser)
+- regression-f72-testuser-login-success.png (templates page after login as testuser)
+
+### Cleanup
+- Deleted test user 'testuser' after verification
+
+### Current Status
+- Feature #72 verified - still passing
+
+[Testing] Session complete - Feature #72 regression test PASSED
+
+
+---
+
+## Session 2026-01-27 (Feature #36)
+
+### Completed
+- Feature #36: User can filter templates by product category - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Redirected to /templates after login
+3. ✅ Step 3: Locate product category filter dropdown - Found dropdown with options: All Categories, Dyno-Mill Agitator, Dyno-Mix Shaker, Turbula
+4. ✅ Step 4: Select a specific category - Selected 'Turbula', URL updated to ?product_cat_id=3
+5. ✅ Step 5: Verify list updates correctly - List filtered from 4 templates to 2 (T 30 A E, T 50 A_US_FCA Muttenz_11 2025)
+6. ✅ Step 6: Clear filter - 'Clear Filters' button reset dropdown to 'All Categories', all 4 templates displayed again
+
+### Additional Testing
+- Also tested 'Dyno-Mill Agitator' category - filtered to 2 templates (DYNO-MILL UBM 20, DYNO-MILL UNI LAB not ATEX)
+- URL query parameters correctly update when filter changes
+- Filter correctly associates product categories with their product lines
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Current Status
+- Feature #36 verified - still passing
+
+[Testing] Session complete - Feature #36 regression test PASSED
+
+---
+
+## Session 2026-01-27 (Feature #35)
+
+### Completed
+- Feature #35: User can filter templates by country - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Landed on /templates page after login
+3. ✅ Step 3: Locate country filter dropdown - Found Country dropdown in filter bar
+4. ✅ Step 4: Verify dropdown populated from countries table - Contains: China, France, Germany, India, Japan, Switzerland, United Kingdom, United States
+5. ✅ Step 5: Select a specific country - Selected 'Switzerland'
+6. ✅ Step 6: Verify list updates to show only templates for that country - Table filtered to show only 2 Swiss templates (DYNO-MILL UNI LAB not ATEX, T 30 A E)
+7. ✅ Step 7: Clear filter and verify all templates show again - Clicked 'Clear Filters', dropdown reset to 'All Countries', all 4 templates displayed
+
+### Technical Details
+- Country filter uses URL query param: ?country_id=6 (for Switzerland)
+- Dropdown populated dynamically from /api/countries endpoint
+- Clear Filters button resets all filters and removes query params
+- Filter works immediately on selection (no submit button needed)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f35-country-filter-cleared.png (templates list after clearing country filter)
+
+### Current Status
+- Feature #35 verified - still passing
+
+[Testing] Session complete - Feature #35 regression test PASSED
+
+
+
+---
+
+## Session 2026-01-27 (Feature #13)
+
+### Completed
+- Feature #13: Currency list page displays all currencies - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Reference Data > Currencies - Navigated to /reference/currencies
+3. ✅ Step 3: Verify page loads without errors - Page loaded successfully
+4. ✅ Step 4: Verify table/list of currencies displays - Table shows 8 currencies
+5. ✅ Step 5: Verify columns show symbol, name, last update info - Columns: Symbol, Name, Last Updated, Actions
+6. ✅ Step 6: Verify any seeded currencies appear - All seeded currencies displayed (CAD, CHF, CNY, EUR, GBP, INR, JPY, USD)
+
+### Technical Details
+- Currencies page accessible at /reference/currencies
+- API endpoint GET /api/currencies returns 200 OK
+- Table displays: Symbol, Name, Last Updated (datetime + user), Actions
+- 8 currencies shown: CAD, CHF, CNY, EUR, GBP, INR, JPY, USD
+- Each currency shows last update info (e.g., '2026-01-22 01:10 by system')
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f13-currencies-list.png (Currencies page showing all 8 currencies)
+
+### Current Status
+- Feature #13 verified - still passing
+
+[Testing] Session complete - Feature #13 regression test PASSED
+
+---
+
+## Session 2026-01-27 (Feature #22)
+
+### Completed
+- Feature #22: Product category list page displays all categories - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Reference Data > Product Categories - Navigated to /reference/product-categories
+3. ✅ Step 3: Verify page loads without errors - Page loaded successfully
+4. ✅ Step 4: Verify table displays category abbr and name - Table shows Abbr, Name, Last Updated, Actions columns
+5. ✅ Step 5: Verify last update info shown - Each row displays datetime and username
+
+### Technical Details
+- Product Categories page accessible at /reference/product-categories
+- API endpoint GET /api/product-categories returns 200 OK
+- Table displays: Abbr, Name, Last Updated (datetime + user), Actions
+- 3 product categories shown: MIL (Dyno-Mill Agitator), MIX (Dyno-Mix Shaker), T (Turbula)
+- Each category shows last update info (e.g., '2026-01-23 00:09 by harry')
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f22-product-categories.png
+
+### Current Status
+- Feature #22 verified - still passing
+
+[Testing] Session complete - Feature #22 regression test PASSED
+
+
+
+---
+
+## Session 2026-01-27 (Feature #54)
+
+### Completed
+- Feature #54: Section tabbed interface works - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: View template with multiple sections - Viewed 'DYNO-MILL UBM 20' with 11 sections
+3. ✅ Step 3: Verify tabbed interface displays - 'Section Editor (Tabs)' with 11 tabs visible
+4. ✅ Step 4: Click different tabs - Clicked tabs 1, 5, 3, and back to 5 - all switched correctly
+5. ✅ Step 5: Verify correct section content loads - Each tab shows unique content (Section Type, Sequence, Alternate Name, Last Updated)
+6. ✅ Step 6: Verify edits on one tab don't affect others - Tab 3 showed different content than Tab 5
+
+### Technical Details
+- Template detail page at /templates/1 shows Section Editor (Tabs)
+- Tabs are numbered 1-11 with section names (e.g., '1.Cover Page', '5.Product Pump XP 450')
+- Active tab indicated with different styling
+- Each tab loads section-specific data: Section Type, Sequence, Status, Alternate Name, Version, Comment, etc.
+- Tab switching is immediate with no page reload
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f54-tabbed-interface.png (Section Editor tabs interface)
+
+### Current Status
+- Feature #54 verified - still passing
+
+[Testing] Session complete - Feature #54 regression test PASSED
+
+
+
+---
+
+## Session 2026-01-27 (Feature #96)
+
+### Completed
+- Feature #96: Submit button disabled during submission - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Template create form - Navigated to /templates/new
+2. ✅ Step 2: Fill in form - Filled Template Name, Country, Currency, Product Category, Product Line
+3. ✅ Step 3: Click submit - Clicked "Create Template" button
+4. ✅ Step 4: Observe button immediately disables or shows loading - **CONFIRMED:**
+   - Button text changed from "Create Template" to "Saving..."
+   - Button became disabled (visible in snapshot: `button "Saving..." [disabled]`)
+   - CSS class includes `disabled:opacity-50` for visual feedback
+5. ✅ Step 5: Verify button re-enables after completion - After submission completed:
+   - Page redirected to /templates with success message
+   - When returning to form, button shows "Create Template" and is enabled
+6. ✅ Step 6: Verify can submit again after first completes - Form accepts new submissions
+
+### Technical Details (from TemplateForm.jsx)
+- `saving` state controls button disabled state and text
+- `disabled={saving}` attribute prevents clicks during submission
+- `{saving ? 'Saving...' : 'Create Template'}` shows loading text
+- `isSubmittingRef` ref provides synchronous double-submit prevention
+- Button re-enables in `finally` block after API call completes or fails
+
+### Code Evidence (lines 405-411):
+```jsx
+<button
+  type="submit"
+  disabled={saving}
+  className="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-md transition-colors disabled:opacity-50"
+>
+  {saving ? 'Saving...' : (isEditing ? 'Update Template' : 'Create Template')}
+</button>
+```
+
+### Console Errors
+- None (only expected React DevTools info and router warnings)
+
+### Cleanup
+- Deleted test templates: TEST-FEATURE-96-SUBMIT-BUTTON, TEST-FEATURE-96-LOADING-STATE
+
+### Current Status
+- Feature #96 verified - still passing
+
+[Testing] Session complete - Feature #96 regression test PASSED
+
+
+---
+
+## Session 2026-01-27 (Feature #29)
+
+### Completed
+- Feature #29: Admin can delete product line - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in successfully as admin
+2. ✅ Step 2: Navigate to Product Lines page - Navigated to /reference/product-lines
+3. ✅ Step 3: Create a test product line - Created 'TST / TEST-DELETE-F29' under Turbula category
+4. ✅ Step 4: Click Delete - Clicked Delete button for the test product line
+5. ✅ Step 5: Confirm deletion - Accepted the confirmation dialog 'Are you sure you want to delete this product line?'
+6. ✅ Step 6: Verify removed from list - Confirmed the product line is no longer in the table (went from 13 rows back to 12)
+
+### Technical Details
+- Product Lines page accessible at /reference/product-lines
+- Admin user can see Delete button for each product line
+- Clicking Delete triggers a browser confirm() dialog
+- After confirming, product line is immediately removed from the list
+- Table refreshed automatically showing only the remaining 12 product lines
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Current Status
+- Feature #29 verified - still passing
+
+[Testing] Session complete - Feature #29 regression test PASSED
+
+---
+
+## Session 2026-01-28 (Feature #53)
+
+### Completed
+- Feature #53: User can clone individual section - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: View template detail - Viewed 'DYNO-MILL UBM 20' template at /templates/1
+3. ✅ Step 3: Click Clone on a section - Clicked Clone button on section 1 (Cover Page)
+4. ✅ Step 4: Verify new section created with new ID - New section #12 created (visible in UI)
+5. ✅ Step 5: Verify new section has status 'cloned' - Section 12 shows status badge "cloned"
+6. ✅ Step 6: Verify template section_count incremented - Count increased from 11 → 12
+
+### Technical Details
+- Clone operation creates new section at the end of the section list
+- Success message displayed: "Section cloned successfully"
+- New section inherits name and type from original section
+- Status is set to "cloned" for newly cloned sections
+- Template last_update_datetime and last_update_user updated correctly
+- Section Editor tabs also updated to show 12 tabs
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f53-section-clone.png (Template after section cloned)
+- regression-f53-cloned-section-status.png (Full page showing cloned section with status)
+
+### Current Status
+- Feature #53 verified - still passing
+
+[Testing] Session complete - Feature #53 regression test PASSED
+
+---
+
+## Session 2026-01-27 (Feature #68)
+
+### Completed
+- Feature #68: Field length limits enforced - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Open Template create form - Navigated to /templates/new
+2. ✅ Step 2: Enter content field with >500 characters - Content field now has 10000 char limit (was updated from original 500)
+3. ✅ Step 3: Verify input truncated or error shown - HTML maxLength attribute enforces the limit at UI level
+4. ✅ Step 4: Enter country abbr with >3 characters - Tried to enter "TESTING" (7 chars)
+5. ✅ Step 5: Verify validation error - Input was truncated to "TES" (3 chars) - maxLength={3} working correctly
+6. ✅ Step 6: Enter valid lengths - Filled template form with valid data within limits
+7. ✅ Step 7: Verify form submits - Template "TEST-F68" created successfully with "Template created successfully" message
+
+### Technical Details
+- Template Name: maxLength={250} - enforced
+- Content field: maxLength={10000} - enforced (updated from original 500)
+- Country Abbr: maxLength={3} - enforced (input truncated from "TESTING" to "TES")
+- All text fields have character counters showing current/max (e.g., "19/250 characters")
+- HTML maxLength attribute prevents typing beyond the limit
+
+### Code Evidence (Countries.jsx lines 169-176):
+```jsx
+<input
+  type="text"
+  id="country_abbr"
+  value={formData.country_abbr}
+  onChange={(e) => setFormData(prev => ({ ...prev, country_abbr: e.target.value }))}
+  required
+  maxLength={3}
+  className="..."
+/>
+```
+
+### Console Errors
+- Only expected 401 errors from session expiration during testing (not related to feature)
+
+### Cleanup
+- Deleted test template: TEST-F68
+
+### Screenshots
+- regression-f68-valid-submission.png
+
+### Current Status
+- Feature #68 verified - still passing
+
+[Testing] Session complete - Feature #68 regression test PASSED
+
+---
+
+## Session 2026-01-28 (Feature #19)
+
+### Completed
+- Feature #19: User can create new country - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Countries page - Navigated to /reference/countries
+3. ✅ Step 3: Click Add/Create button - Clicked '+ Add Country' button
+4. ✅ Step 4: Enter country abbr 'TST' - Entered 'TST' in Abbreviation field
+5. ✅ Step 5: Enter country name 'Test Country F19' - Entered 'Test Country F19' in Name field
+6. ✅ Step 6: Select currency from dropdown - Selected 'USD - US Dollar'
+7. ✅ Step 7: Verify dropdown populated from currency table - Dropdown shows: CAD, CHF, CNY, EUR, GBP, INR, JPY, USD
+8. ✅ Step 8: Submit the form - Clicked 'Save' button
+9. ✅ Step 9: Verify success message - 'Country saved successfully' displayed
+10. ✅ Step 10: Verify new country appears with correct currency - 'TST | Test Country F19 | USD - US Dollar | 2026-01-28 01:33 by harry' appeared in table
+
+### Technical Details
+- Countries page accessible at /reference/countries
+- Add Country form is a modal dialog
+- Currency dropdown populated from /api/currencies endpoint
+- Form fields: Abbreviation *, Name *, Currency (dropdown)
+- Last update fields auto-tracked (datetime + username)
+- Save triggers POST /api/countries with credentials
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Cleanup
+- Logged in as admin and deleted test country 'TST - Test Country F19'
+
+### Screenshots
+- regression-f19-country-form-filled.png (form with data entered)
+- regression-f19-country-created-success.png (country list showing new entry)
+
+### Current Status
+- Feature #19 verified - still passing
+
+[Testing] Session complete - Feature #19 regression test PASSED
+
+
+---
+
+## Session 2026-01-27 (Feature #105)
+
+### Completed
+- Feature #105: Database schema updates and UI character limits - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Template Edit Form - Verified all TEXT fields with correct character limits:
+   - Template Name: 250 characters
+   - Order Codes: 250 characters
+   - FBO Location: 250 characters
+   - Version: 200 characters
+   - Description: 2000 characters
+   - Content: 10000 characters
+   - Comment: 2000 characters
+   - External File Reference: 1000 characters
+
+2. ✅ Section Edit Form - Verified all TEXT fields with correct character limits:
+   - Alternate Name: 200 characters
+   - Version: 200 characters
+   - Comment: 2000 characters
+   - External File Reference: 1000 characters (KEY NEW FIELD)
+   - Content: 10000 characters
+
+3. ✅ Database Migration - Verified migrate-105.js exists with all column renames:
+   - plsq_templates: extrn_file_ref → plsqt_extrn_file_ref
+   - plsq_templates: content → plsqt_content
+   - plsq_templates: plsqs_as_of_date → plsqt_as_of_date
+   - plsqt_sections: plsqt_seqn → plsqts_seqn
+   - plsqt_sections: plsqt_alt_name → plsqts_alt_name
+   - plsqt_sections: plsqt_comment → plsqts_comment
+   - plsqt_sections: plsqt_use_alt_name → plsqts_use_alt_name
+   - plsqt_sections: extrn_file_ref → plsqts_extrn_file_ref
+   - plsqt_sections: content → plsqts_content
+
+4. ✅ Backend Routes - Verified templates.js and sections.js use new column names
+
+5. ✅ Functional Test - Added and saved External File Reference content to section:
+   - Data saved successfully
+   - Data retrieved correctly on re-edit
+   - Character counter displays correctly (48/1000)
+
+### Console Errors
+- None
+
+### Screenshots
+- regression-f105-section-edit-form.png (Section edit form with External File Reference field)
+- regression-f105-template-create-form.png (Template create form with all character limits)
+
+### Current Status
+- Feature #105 verified - still passing
+
+[Testing] Session complete - Feature #105 regression test PASSED
+
+
+---
+
+## Session 2026-01-28 (Feature #21)
+
+### Completed
+- Feature #21: Admin can delete country - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in successfully as admin
+2. ✅ Step 2: Navigate to Countries page - Navigated to /reference/countries
+3. ✅ Step 3: Create a test country - Created 'TST / Test Country F21' with USD currency
+4. ✅ Step 4: Click Delete on the test country - Clicked Delete button for the test country
+5. ✅ Step 5: Confirm deletion - Accepted confirmation dialog 'Are you sure you want to delete this country?'
+6. ✅ Step 6: Verify success message - Deletion succeeded (table updated immediately)
+7. ✅ Step 7: Verify country no longer in list - Confirmed the country is no longer in the table (went from 9 rows back to 8)
+
+### Technical Details
+- Countries page accessible at /reference/countries
+- Admin user can see Delete button for each country
+- Clicking Delete triggers a browser confirm() dialog with message 'Are you sure you want to delete this country?'
+- After confirming, country is immediately removed from the list
+- Table refreshed automatically showing only the remaining 8 countries
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Current Status
+- Feature #21 verified - still passing
+
+[Testing] Session complete - Feature #21 regression test PASSED
+
+---
+
+## Session 2026-01-27 (Feature #36)
+
+### Completed
+- Feature #36: User can filter templates by product category - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Navigated to /templates
+3. ✅ Step 3: Locate product category filter dropdown - Found with options: All Categories, Dyno-Mill Agitator, Dyno-Mix Shaker
+4. ✅ Step 4: Select a specific category - Selected 'Dyno-Mill Agitator' then 'Dyno-Mix Shaker'
+5. ✅ Step 5: Verify list updates correctly - List filtered properly (0 results for Dyno-Mix Shaker, 2 for Dyno-Mill Agitator)
+6. ✅ Step 6: Clear filter - Clicked 'Clear Filters', dropdown reset, all 4 templates displayed
+
+### Technical Details
+- Product Category dropdown populated from /api/product-cats endpoint
+- Filter updates URL query parameter (product_cat_id=1 or product_cat_id=2)
+- Clear Filters button resets all filters and removes query params
+- Table updates dynamically based on filter selection
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f36-product-category-filter.png
+
+### Current Status
+- Feature #36 verified - still passing
+
+[Testing] Session complete - Feature #36 regression test PASSED
+
+
+---
+
+## Session 2026-01-28 (Feature #44)
+
+### Completed
+- Feature #44: Admin can delete template (cascades to sections) - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in successfully as admin
+2. ✅ Step 2: Create a test template with sections - Created 'TEST-DELETE-F44' with 2 sections (Cover Page, Price Summary)
+3. ✅ Step 3: Navigate to Templates list - Navigated to /templates, saw 5 templates including test template
+4. ✅ Step 4: Click Delete on test template - Clicked Delete button for TEST-DELETE-F44
+5. ✅ Step 5: Verify confirmation dialog mentions cascade - Dialog showed: "Are you sure you want to delete this template? This will also delete all its sections."
+6. ✅ Step 6: Confirm deletion - Accepted the confirmation dialog
+7. ✅ Step 7: Verify template removed from list - Template list now shows 4 templates, TEST-DELETE-F44 gone
+8. ✅ Step 8: Verify sections were also deleted - Confirmed via:
+   - Navigating to /templates/11 shows "Template not found"
+   - API returns 404 for deleted template
+   - Database schema has ON DELETE CASCADE on plsqt_sections.plsqt_id
+
+### Technical Details
+- Delete button visible only to admin users
+- Confirmation dialog warns about cascade delete to sections
+- Backend uses: DELETE FROM plsq_templates WHERE plsqt_id = $1
+- Database schema (backend/db/schema.sql line 95): plsqt_id INTEGER NOT NULL REFERENCES plsq_templates(plsqt_id) ON DELETE CASCADE
+
+### Console Errors
+- Only expected 404 errors when trying to access deleted template (expected behavior)
+
+### Screenshots
+- regression-f44-template-deleted.png (Templates list after deletion)
+
+### Current Status
+- Feature #44 verified - still passing
+
+[Testing] Session complete - Feature #44 regression test PASSED
+
+
+---
+
+## Session 2026-01-28 (Feature #108)
+
+### Completed
+- Feature #108: Add enable/disable switch for product_cat and product_line entities - VERIFIED AND PASSING
+
+### Implementation Summary
+1. ✅ Added product_cat_enabled column to product_cat table (INTEGER, default 1)
+2. ✅ Added product_line_enabled column to product_line table (INTEGER, default 1)
+3. ✅ All existing records initialized with enabled = 1
+4. ✅ Backend API updated to filter by enabled status based on user role
+5. ✅ Frontend UI updated to show status for admin users
+6. ✅ Templates list respects enabled status for non-admin users
+
+### Backend Changes
+- productCategories.js: Added filtering by product_cat_enabled for non-admin users
+- productLines.js: Added filtering by product_line_enabled and product_cat_enabled for non-admin users
+- templates.js: Added filtering to hide templates with disabled product_cat or product_line for non-admin
+- Created migration script: backend/migrations/add-enabled-columns.js
+
+### Frontend Changes
+- ProductCategories.jsx: Added Status column with Enabled/Disabled badges (admin only)
+- ProductCategories.jsx: Added Enabled checkbox in edit form (admin only)
+- ProductLines.jsx: Added Status column with Enabled/Disabled badges (admin only)
+- ProductLines.jsx: Added "Cat Disabled" badge for product lines in disabled categories
+- ProductLines.jsx: Added Enabled checkbox in edit form (admin only)
+- Red background highlighting for disabled rows (admin view)
+
+### Verification Steps Completed
+1. ✅ Database migration ran successfully - columns added to both tables
+2. ✅ Admin can see all product categories including disabled ones
+3. ✅ Admin can see Status column in Product Categories table
+4. ✅ Admin can enable/disable product categories via edit form
+5. ✅ Admin can see "Cat Disabled" badge on product lines in disabled categories
+6. ✅ Regular user (harry) cannot see disabled product categories
+7. ✅ Regular user cannot see Turbula product lines when Turbula category is disabled
+8. ✅ Regular user cannot see templates with disabled product categories
+9. ✅ Templates filter dropdowns only show enabled categories/lines for non-admin
+10. ✅ Re-enabling a category makes everything visible again
+
+### Screenshots
+- feature-108-product-categories-admin-view.png (Admin sees Status column)
+- feature-108-edit-category-enabled-checkbox.png (Admin sees Enabled checkbox)
+- feature-108-turbula-disabled.png (Turbula showing as Disabled)
+- feature-108-turbula-lines-cat-disabled.png (Product lines showing "Cat Disabled" badge)
+- feature-108-regular-user-templates-no-turbula.png (Harry sees only 2 templates, not Turbula-based)
+- feature-108-regular-user-categories-no-turbula.png (Harry sees only 2 categories, not Turbula)
+- feature-108-regular-user-lines-no-turbula.png (Harry sees only 9 lines, not Turbula lines)
+
+### Console Errors
+- None (only expected 401 errors from pre-login auth checks)
+
+### Current Status
+- Feature #108 verified - PASSING
+- Progress: 108/108 features passing (100.0%)
+
+[Testing] Session complete - Feature #108 PASSED - ALL FEATURES NOW COMPLETE!
