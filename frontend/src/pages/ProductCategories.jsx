@@ -68,15 +68,29 @@ function ProductCategories() {
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Abbr</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                {isAdmin && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                )}
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Updated</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {items.map(item => (
-                <tr key={item.product_cat_id} className="hover:bg-gray-50">
+                <tr key={item.product_cat_id} className={`hover:bg-gray-50 ${item.product_cat_enabled === 0 ? 'bg-red-50' : ''}`}>
                   <td className="px-6 py-4 font-medium">{item.product_cat_abbr}</td>
                   <td className="px-6 py-4">{item.product_cat_name}</td>
+                  {isAdmin && (
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        item.product_cat_enabled === 1
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {item.product_cat_enabled === 1 ? 'Enabled' : 'Disabled'}
+                      </span>
+                    </td>
+                  )}
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {item.last_update_datetime} by {item.last_update_user}
                   </td>
@@ -115,13 +129,15 @@ function ProductCategories() {
 }
 
 function ProductCategoryFormModal({ item, onClose, onSave }) {
+  const { isAdmin } = useAuth();
   const isEditing = !!item;
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const isSubmittingRef = useRef(false);
   const [formData, setFormData] = useState({
     product_cat_abbr: item?.product_cat_abbr || '',
-    product_cat_name: item?.product_cat_name || ''
+    product_cat_name: item?.product_cat_name || '',
+    product_cat_enabled: item?.product_cat_enabled !== undefined ? item.product_cat_enabled === 1 : true
   });
 
   const handleSubmit = async (e) => {
@@ -177,6 +193,21 @@ function ProductCategoryFormModal({ item, onClose, onSave }) {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
+            {isAdmin && (
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="product_cat_enabled"
+                  checked={formData.product_cat_enabled}
+                  onChange={(e) => setFormData(prev => ({ ...prev, product_cat_enabled: e.target.checked }))}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <label htmlFor="product_cat_enabled" className="ml-2 block text-sm text-gray-700">
+                  Enabled
+                </label>
+                <span className="ml-2 text-xs text-gray-500">(Admin only - disabled categories are hidden from regular users)</span>
+              </div>
+            )}
             <div className="flex justify-end gap-3 pt-4">
               <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md">Cancel</button>
               <button type="submit" disabled={saving} className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md disabled:opacity-50">

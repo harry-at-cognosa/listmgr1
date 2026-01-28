@@ -5,16 +5,18 @@ const router = express.Router();
 const getDateTime = () => new Date().toISOString().slice(0, 16).replace('T', ' ');
 
 // Get all templates with optional filters
+// Admin users see all templates; regular users only see templates with enabled product categories and product lines
 router.get('/', async (req, res) => {
   try {
     const { country_id, product_cat_id, product_line_id, active, search } = req.query;
+    const isAdmin = req.session.user && req.session.user.role === 'admin';
 
     let query = `
       SELECT t.*,
         c.country_name, c.country_abbr,
         cur.currency_symbol, cur.currency_name,
-        pc.product_cat_name, pc.product_cat_abbr,
-        pl.product_line_name, pl.product_line_abbr
+        pc.product_cat_name, pc.product_cat_abbr, pc.product_cat_enabled,
+        pl.product_line_name, pl.product_line_abbr, pl.product_line_enabled
       FROM plsq_templates t
       LEFT JOIN country c ON t.country_id = c.country_id
       LEFT JOIN currency cur ON t.currency_id = cur.currency_id
@@ -24,6 +26,12 @@ router.get('/', async (req, res) => {
     `;
     const params = [];
     let paramCount = 0;
+
+    // Non-admin users only see templates with enabled product categories and product lines
+    if (!isAdmin) {
+      query += ` AND (pc.product_cat_enabled = 1 OR pc.product_cat_enabled IS NULL OR t.product_cat_id IS NULL)`;
+      query += ` AND (pl.product_line_enabled = 1 OR pl.product_line_enabled IS NULL OR t.product_line_id IS NULL)`;
+    }
 
     if (country_id) {
       paramCount++;
@@ -66,22 +74,30 @@ router.get('/', async (req, res) => {
 });
 
 // Get single template
+// Non-admin users cannot view templates with disabled product categories or product lines
 router.get('/:id', async (req, res) => {
   try {
-    const result = await db.query(
-      `SELECT t.*,
+    const isAdmin = req.session.user && req.session.user.role === 'admin';
+
+    let query = `SELECT t.*,
         c.country_name, c.country_abbr,
         cur.currency_symbol, cur.currency_name,
-        pc.product_cat_name, pc.product_cat_abbr,
-        pl.product_line_name, pl.product_line_abbr
+        pc.product_cat_name, pc.product_cat_abbr, pc.product_cat_enabled,
+        pl.product_line_name, pl.product_line_abbr, pl.product_line_enabled
        FROM plsq_templates t
        LEFT JOIN country c ON t.country_id = c.country_id
        LEFT JOIN currency cur ON t.currency_id = cur.currency_id
        LEFT JOIN product_cat pc ON t.product_cat_id = pc.product_cat_id
        LEFT JOIN product_line pl ON t.product_line_id = pl.product_line_id
-       WHERE t.plsqt_id = $1`,
-      [req.params.id]
-    );
+       WHERE t.plsqt_id = $1`;
+
+    // Non-admin users cannot view templates with disabled product categories or product lines
+    if (!isAdmin) {
+      query += ` AND (pc.product_cat_enabled = 1 OR pc.product_cat_enabled IS NULL OR t.product_cat_id IS NULL)`;
+      query += ` AND (pl.product_line_enabled = 1 OR pl.product_line_enabled IS NULL OR t.product_line_id IS NULL)`;
+    }
+
+    const result = await db.query(query, [req.params.id]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Template not found' });
     }

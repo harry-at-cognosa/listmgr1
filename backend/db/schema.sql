@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS product_cat (
     product_cat_id SERIAL PRIMARY KEY,
     product_cat_abbr CHAR(3),
     product_cat_name VARCHAR(50),
+    product_cat_enabled INTEGER DEFAULT 1 NOT NULL,
     last_update_datetime VARCHAR(15),
     last_update_user VARCHAR(50)
 );
@@ -45,6 +46,7 @@ CREATE TABLE IF NOT EXISTS product_line (
     product_cat_id INTEGER NOT NULL REFERENCES product_cat(product_cat_id),
     product_line_abbr CHAR(3),
     product_line_name VARCHAR(20),
+    product_line_enabled INTEGER DEFAULT 1 NOT NULL,
     last_update_datetime VARCHAR(15),
     last_update_user VARCHAR(50)
 );
