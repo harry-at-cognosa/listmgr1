@@ -7007,3 +7007,309 @@ Why ref instead of just state:
 
 [Testing] Session complete - Feature #108 PASSED - ALL FEATURES NOW COMPLETE!
 [Testing] Feature #83 verified - still passing
+
+---
+
+## Session 2026-01-29 (Feature #36 Regression Test)
+
+### Completed
+- Feature #36: User can filter templates by product category - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Automatically redirected to /templates
+3. ✅ Step 3: Locate product category filter dropdown - Found with options: All Categories, Dyno-Mill Agitator, Dyno-Mix Shaker
+4. ✅ Step 4: Select a specific category - Tested both categories:
+   - Dyno-Mill Agitator: showed 2 templates
+   - Dyno-Mix Shaker: showed 0 templates (correct - no templates in this category)
+5. ✅ Step 5: Verify list updates correctly - List filtered properly, URL updated with query param
+6. ✅ Step 6: Clear filter - Dropdown reset, all templates displayed
+
+### Technical Details
+- Product Category dropdown populated from /api/product-cats endpoint
+- Filter updates URL query parameter (product_cat_id=1 or product_cat_id=2)
+- Clear Filters button resets all filters and removes query params
+- Table updates dynamically based on filter selection
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshot
+- regression-f36-product-category-filter.png
+
+### Current Status
+- Feature #36 verified - still passing
+
+[Testing] Session complete - Feature #36 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #28)
+
+### Completed
+- Feature #28: User can edit existing product line - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in successfully as harry
+2. ✅ Step 2: Navigate to Product Lines page - Navigated to /reference/product-lines
+3. ✅ Step 3: Click Edit on existing line - Clicked Edit button on MIX-CM product line
+4. ✅ Step 4: Change the product category - Changed from Dyno-Mix Shaker to Dyno-Mill Agitator
+5. ✅ Step 5: Submit form - Clicked Save, received 'Product line saved successfully' message
+6. ✅ Step 6: Verify changes saved - Re-opened edit form, confirmed category change persisted
+
+### Technical Details
+- Edit form shows Product Category dropdown, Abbreviation, and Name fields
+- Product Category is properly populated from the database
+- Changes are saved and the list refreshes immediately
+- Last Updated timestamp and user are correctly updated
+- Data persists correctly when re-editing the same record
+- Reverted test data back to original state (MIX-CM back to Dyno-Mix Shaker)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f28-product-line-edit.png
+
+### Current Status
+- Feature #28 verified - still passing
+
+[Testing] Session complete - Feature #28 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #88 Regression Test)
+
+### Completed
+- Feature #88: Clear individual filter works - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Templates - Logged in as harry, navigated to /templates
+2. ✅ Step 2: Apply country filter - Selected 'United States' (URL: ?country_id=1)
+3. ✅ Step 3: Apply product category filter - Selected 'Dyno-Mill Agitator' (URL: ?country_id=1&product_cat_id=1)
+4. ✅ Step 4: Clear only the country filter - Selected 'All Countries' in dropdown
+5. ✅ Step 5: Verify product category filter still active - 'Dyno-Mill Agitator' remained selected
+6. ✅ Step 6: Verify results updated correctly - URL changed to ?product_cat_id=1, showed 2 templates from different countries but same product category
+
+### Technical Details
+- Individual filters can be cleared by selecting the 'All' option in each dropdown
+- Other filters remain unaffected when one filter is cleared
+- URL query parameters correctly update to reflect only the active filters
+- Results update properly based on the remaining active filters
+
+### Console Errors
+- Some 500 errors for app-settings endpoint (pre-existing issue, unrelated to this feature)
+- Brief connection refused errors during vite server reconnection (resolved automatically)
+
+### Screenshots
+- regression-f88-clear-individual-filter.png
+
+### Current Status
+- Feature #88 verified - still passing
+
+[Testing] Session complete - Feature #88 regression test PASSED
+
+
+
+---
+
+## Session 2026-01-29 (Feature #47)
+
+### Completed
+- Feature #47: Template status can be changed - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Edit a template - Edited 'DYNO-MILL UBM 20' via edit form
+3. ✅ Step 3: Change status to 'in process' - Changed via edit form dropdown, saved successfully
+4. ✅ Step 4: Save - Template saved with 'Template updated successfully' message
+5. ✅ Step 5: Verify status_datetime updated - Last updated timestamp changed after each save
+6. ✅ Step 6: Change status to 'in review' - Changed via Change Status modal, worked correctly
+7. ✅ Step 7: Change status to 'approved' - Changed via Change Status modal, worked correctly  
+8. ✅ Step 8: Verify all status transitions work - All transitions (not started → in process → in review → approved) work correctly
+
+### Technical Details
+- Status dropdown in edit form works correctly
+- 'Change Status' button on template detail page opens modal
+- Modal shows current status and allows changing to any available status
+- 'Apply status to all sections' checkbox available in modal
+- Success messages displayed after each status change
+- Last updated timestamp and user tracked correctly
+
+### Notes
+- Encountered one transient 401 error during testing (likely Vite server restart)
+- After re-login, all status changes worked correctly
+- Feature was temporarily marked as failing, then verified and marked passing after confirming it works
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f47-template-status-approved.png (Template detail showing 'approved' status)
+
+### Current Status
+- Feature #47 verified - still passing
+
+[Testing] Session complete - Feature #47 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #22 Regression Test)
+
+### Completed
+- Feature #22: Product category list page displays all categories - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Reference Data > Product Categories - Clicked Reference Data menu, then Product Categories link
+3. ✅ Step 3: Verify page loads without errors - Page loaded at /reference/product-categories
+4. ✅ Step 4: Verify table displays category abbr and name - Table shows:
+   - MIL | Dyno-Mill Agitator
+   - MIX | Dyno-Mix Shaker
+5. ✅ Step 5: Verify last update info shown - Last Updated column shows datetime and username (e.g., '2026-01-23 00:09 by harry')
+
+### Technical Details
+- Product Categories page accessible via Reference Data > Product Categories
+- Table columns: Abbr, Name, Last Updated, Actions
+- Edit button available for each category
+- Add Category button available in header
+- All data displaying correctly from database
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshot
+- regression-f22-product-categories.png
+
+### Current Status
+- Feature #22 verified - still passing
+
+[Testing] Session complete - Feature #22 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #31 Regression Test)
+
+### Completed
+- Feature #31: User can create new section type - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Section Types page - Navigated to /reference/section-types
+3. ✅ Step 3: Click Add/Create button - Clicked '+ Add Section Type' button
+4. ✅ Step 4: Enter name 'Standard Quote Section' - Entered name in form
+5. ✅ Step 5: Set has_total_price checkbox - Checked
+6. ✅ Step 6: Set has_lineitem_prices checkbox - Checked
+7. ✅ Step 7: Enter comment - Entered 'Test section type for regression testing'
+8. ✅ Step 8: Set active checkbox - Checked (default)
+9. ✅ Step 9: Enter version - Entered '1.0'
+10. ✅ Step 10: Submit the form - Clicked Save button
+11. ✅ Step 11: Verify success message - 'Section type saved successfully' displayed
+12. ✅ Step 12: Verify new type appears in list - 'Standard Quote Section' appeared with all correct values
+
+### Technical Details
+- Form includes: Name (required), Has Total Price checkbox, Has Line Item Prices checkbox, Comment, External File Reference, Active checkbox, Version
+- Active checkbox is checked by default
+- Success message displayed after save
+- Data persists after page refresh
+- Last Updated timestamp and user correctly recorded
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+- HMR error in TemplateDetail.jsx (unrelated to this feature - syntax error in different file)
+
+### Screenshots
+- regression-f31-section-type-created.png
+
+### Cleanup
+- Test data deleted after verification (admin deleted 'Standard Quote Section')
+
+### Current Status
+- Feature #31 verified - still passing
+
+[Testing] Session complete - Feature #31 regression test PASSED
+
+
+
+---
+
+## Session 2026-01-29 (Feature #9 Regression Test)
+
+### Completed
+- Feature #9: Navigation sidebar displays correctly - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as regular user - Logged in as harry
+2. ✅ Step 2: Verify sidebar contains Templates link - Templates link visible at /templates
+3. ✅ Step 3: Verify sidebar contains Reference Data section - Reference Data section expanded showing Currencies, Countries, Product Categories, Product Lines, Section Types
+4. ✅ Step 4: Verify User Management is NOT visible for regular user - Confirmed NOT visible for harry
+5. ✅ Step 5: Log out and log in as admin - Successfully logged out and logged in as admin
+6. ✅ Step 6: Verify User Management link IS visible for admin - Confirmed visible with User Management and App Settings links
+
+### Technical Details
+- Regular user (harry) sidebar shows: Templates, Reference Data (with 5 sub-items)
+- Admin user sidebar shows: Templates, Reference Data, User Management, App Settings
+- Role-based navigation access control working correctly
+- Header shows '(Admin)' label for admin user
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f9-regular-user-sidebar.png (Harry's view - no admin links)
+- regression-f9-admin-user-sidebar.png (Admin view - User Management and App Settings visible)
+
+### Current Status
+- Feature #9 verified - still passing
+
+[Testing] Session complete - Feature #9 regression test PASSED
+
+
+
+---
+
+## Session 2026-01-29 (Feature #47)
+
+### Completed
+- Feature #47: Template status can be changed - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Edit a template - Viewed template detail page at /templates/1
+3. ✅ Step 3: Change status to "in process" - Used Change Status modal, selected "in process"
+4. ✅ Step 4: Save - Clicked "Update Status" button, received success message
+5. ✅ Step 5: Verify status_datetime updated - Last updated timestamp changed from 21:10 to 21:11
+6. ✅ Step 6: Change status to "in review" - Changed successfully via Change Status modal
+7. ✅ Step 7: Change status to "approved" - Changed successfully via Change Status modal
+8. ✅ Step 8: Verify all status transitions work - ALL STATUSES TESTED:
+   - ✅ "not started" - Working
+   - ✅ "in process" - Working
+   - ✅ "in review" - Working
+   - ✅ "approved" - Working
+   - ✅ "cloned" - Working
+
+### Technical Details
+- Template detail page has dedicated "Change Status" button next to status badge
+- Clicking button opens modal with status dropdown
+- Modal includes option to "Apply status to all sections"
+- Update Status button is disabled until status is changed
+- Success message "Template status updated successfully" displayed after each change
+- last_update_datetime and last_update_user are updated on each status change
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- feature-47-status-approved.png (Template showing approved status)
+- feature-47-all-status-transitions-verified.png (Template showing cloned status)
+
+### Current Status
+- Feature #47 verified - PASSING
+- Progress: 108/109 features passing (99.1%)
+
+[Testing] Session complete - Feature #47 PASSED
+
