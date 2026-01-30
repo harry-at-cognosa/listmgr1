@@ -17,7 +17,8 @@ const getFiltersFromParams = (searchParams) => ({
   product_cat_id: searchParams.get('product_cat_id') || '',
   product_line_id: searchParams.get('product_line_id') || '',
   active: searchParams.get('active') || '',
-  search: searchParams.get('search') || ''
+  search: searchParams.get('search') || '',
+  enabled: searchParams.get('enabled') ?? 'true' // Default to 'true' (Enabled only)
 });
 
 function Templates() {
@@ -105,9 +106,9 @@ function Templates() {
     setSearchParams(newParams, { replace: true });
   };
 
-  // Clear all filters by resetting URL search params
+  // Clear all filters by resetting URL search params (keeping default enabled filter)
   const clearFilters = () => {
-    setSearchParams({}, { replace: true });
+    setSearchParams({ enabled: 'true' }, { replace: true });
   };
 
   const handleClone = async (id) => {
@@ -215,7 +216,7 @@ function Templates() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Active?</label>
             <select
               name="active"
               value={filters.active}
@@ -227,6 +228,21 @@ function Templates() {
               <option value="false">Inactive</option>
             </select>
           </div>
+          {isAdmin && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Enabled</label>
+              <select
+                name="enabled"
+                value={filters.enabled}
+                onChange={handleFilterChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              >
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+                <option value="">All</option>
+              </select>
+            </div>
+          )}
           <div className="flex items-end">
             <button
               onClick={clearFilters}
@@ -258,63 +274,81 @@ function Templates() {
                   <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap hidden md:table-cell">Product Line</th>
                   <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap hidden lg:table-cell">Sections</th>
                   <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Status</th>
+                  {isAdmin && (
+                    <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Enabled</th>
+                  )}
                   <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {templates.map(template => (
-                  <tr key={template.plsqt_id} className="hover:bg-gray-50">
-                    <td className="px-4 md:px-6 py-4">
-                      <Link
-                        to={`/templates/${template.plsqt_id}`}
-                        state={{ searchParams: searchParams.toString() }}
-                        className="text-primary-600 hover:text-primary-800 font-medium"
-                      >
-                        {template.plsqt_name}
-                      </Link>
-                    </td>
-                    <td className="px-4 md:px-6 py-4 text-gray-600 hidden sm:table-cell">{template.country_name || '-'}</td>
-                    <td className="px-4 md:px-6 py-4 text-gray-600 hidden md:table-cell">{template.product_line_name || '-'}</td>
-                    <td className="px-4 md:px-6 py-4 text-gray-600 hidden lg:table-cell">{template.plsqt_section_count}</td>
-                    <td className="px-4 md:px-6 py-4">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${STATUS_COLORS[template.plsqt_status] || 'bg-gray-100'}`}>
-                        {template.plsqt_status}
-                      </span>
-                    </td>
-                    <td className="px-4 md:px-6 py-4">
-                      <div className="flex items-center gap-2 flex-wrap">
+                {templates.map(template => {
+                  const isTemplateEnabled = template.plsqt_enabled === 1;
+                  const canEditOrDelete = template.plsqt_status === 'cloned' || template.plsqt_status === 'not started';
+                  const canEdit = isAdmin || isTemplateEnabled || canEditOrDelete;
+                  const canDelete = isAdmin || canEditOrDelete;
+                  return (
+                    <tr key={template.plsqt_id} className={`hover:bg-gray-50 ${!isTemplateEnabled ? 'bg-red-50' : ''}`}>
+                      <td className="px-4 md:px-6 py-4">
                         <Link
                           to={`/templates/${template.plsqt_id}`}
                           state={{ searchParams: searchParams.toString() }}
-                          className="text-sm text-blue-600 hover:text-blue-800 min-w-[40px] min-h-[32px] flex items-center"
+                          className="text-primary-600 hover:text-primary-800 font-medium"
                         >
-                          View
+                          {template.plsqt_name}
                         </Link>
-                        <Link
-                          to={`/templates/${template.plsqt_id}/edit`}
-                          state={{ searchParams: searchParams.toString() }}
-                          className="text-sm text-green-600 hover:text-green-800 min-w-[40px] min-h-[32px] flex items-center"
-                        >
-                          Edit
-                        </Link>
-                        <button
-                          onClick={() => handleClone(template.plsqt_id)}
-                          className="text-sm text-purple-600 hover:text-purple-800 min-w-[40px] min-h-[32px] flex items-center"
-                        >
-                          Clone
-                        </button>
-                        {isAdmin && (
-                          <button
-                            onClick={() => handleDelete(template.plsqt_id)}
-                            className="text-sm text-red-600 hover:text-red-800 min-w-[40px] min-h-[32px] flex items-center"
+                      </td>
+                      <td className="px-4 md:px-6 py-4 text-gray-600 hidden sm:table-cell">{template.country_name || '-'}</td>
+                      <td className="px-4 md:px-6 py-4 text-gray-600 hidden md:table-cell">{template.product_line_name || '-'}</td>
+                      <td className="px-4 md:px-6 py-4 text-gray-600 hidden lg:table-cell">{template.plsqt_section_count}</td>
+                      <td className="px-4 md:px-6 py-4">
+                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${STATUS_COLORS[template.plsqt_status] || 'bg-gray-100'}`}>
+                          {template.plsqt_status}
+                        </span>
+                      </td>
+                      {isAdmin && (
+                        <td className="px-4 md:px-6 py-4">
+                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${isTemplateEnabled ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                            {isTemplateEnabled ? 'Enabled' : 'Disabled'}
+                          </span>
+                        </td>
+                      )}
+                      <td className="px-4 md:px-6 py-4">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Link
+                            to={`/templates/${template.plsqt_id}`}
+                            state={{ searchParams: searchParams.toString() }}
+                            className="text-sm text-blue-600 hover:text-blue-800 min-w-[40px] min-h-[32px] flex items-center"
                           >
-                            Delete
+                            View
+                          </Link>
+                          {canEdit && (
+                            <Link
+                              to={`/templates/${template.plsqt_id}/edit`}
+                              state={{ searchParams: searchParams.toString() }}
+                              className="text-sm text-green-600 hover:text-green-800 min-w-[40px] min-h-[32px] flex items-center"
+                            >
+                              Edit
+                            </Link>
+                          )}
+                          <button
+                            onClick={() => handleClone(template.plsqt_id)}
+                            className="text-sm text-purple-600 hover:text-purple-800 min-w-[40px] min-h-[32px] flex items-center"
+                          >
+                            Clone
                           </button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                          {canDelete && (
+                            <button
+                              onClick={() => handleDelete(template.plsqt_id)}
+                              className="text-sm text-red-600 hover:text-red-800 min-w-[40px] min-h-[32px] flex items-center"
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

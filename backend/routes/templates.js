@@ -8,7 +8,7 @@ const getDateTime = () => new Date().toISOString().slice(0, 16).replace('T', ' '
 // Admin users see all templates; regular users only see templates with enabled product categories and product lines
 router.get('/', async (req, res) => {
   try {
-    const { country_id, product_cat_id, product_line_id, active, search } = req.query;
+    const { country_id, product_cat_id, product_line_id, active, search, enabled } = req.query;
     const isAdmin = req.session.user && req.session.user.role === 'admin';
 
     let query = `
@@ -27,10 +27,21 @@ router.get('/', async (req, res) => {
     const params = [];
     let paramCount = 0;
 
-    // Non-admin users only see templates with enabled product categories and product lines
+    // Non-admin users only see templates that are:
+    // - enabled (plsqt_enabled = 1)
+    // - associated with enabled product categories (product_cat_enabled = 1 or null/no category)
+    // - associated with enabled product lines (product_line_enabled = 1 or null/no line)
     if (!isAdmin) {
+      query += ` AND t.plsqt_enabled = 1`;
       query += ` AND (pc.product_cat_enabled = 1 OR pc.product_cat_enabled IS NULL OR t.product_cat_id IS NULL)`;
       query += ` AND (pl.product_line_enabled = 1 OR pl.product_line_enabled IS NULL OR t.product_line_id IS NULL)`;
+    }
+
+    // Filter by enabled status
+    if (enabled !== undefined && enabled !== '') {
+      paramCount++;
+      query += ` AND t.plsqt_enabled = $${paramCount}`;
+      params.push(enabled === 'true' ? 1 : 0);
     }
 
     if (country_id) {
@@ -91,8 +102,9 @@ router.get('/:id', async (req, res) => {
        LEFT JOIN product_line pl ON t.product_line_id = pl.product_line_id
        WHERE t.plsqt_id = $1`;
 
-    // Non-admin users cannot view templates with disabled product categories or product lines
+    // Non-admin users cannot view disabled templates or templates with disabled product categories or product lines
     if (!isAdmin) {
+      query += ` AND t.plsqt_enabled = 1`;
       query += ` AND (pc.product_cat_enabled = 1 OR pc.product_cat_enabled IS NULL OR t.product_cat_id IS NULL)`;
       query += ` AND (pl.product_line_enabled = 1 OR pl.product_line_enabled IS NULL OR t.product_line_id IS NULL)`;
     }
@@ -115,7 +127,7 @@ router.post('/', async (req, res) => {
       country_id, currency_id, product_cat_id, product_line_id,
       plsqt_name, plsqt_order_codes, plsqt_desc, plsqt_comment,
       plsqt_fbo_location, plsqt_as_of_date, plsqt_extrn_file_ref,
-      plsqt_active, plsqt_version, plsqt_content, plsqt_status
+      plsqt_active, plsqt_enabled, plsqt_version, plsqt_content, plsqt_status
     } = req.body;
 
     if (!plsqt_name) {
@@ -128,15 +140,15 @@ router.post('/', async (req, res) => {
         (country_id, currency_id, product_cat_id, product_line_id,
          plsqt_name, plsqt_order_codes, plsqt_desc, plsqt_comment,
          plsqt_section_count, plsqt_fbo_location, plsqt_as_of_date, plsqt_extrn_file_ref,
-         plsqt_active, plsqt_version, plsqt_content, plsqt_status, status_datetime,
+         plsqt_active, plsqt_enabled, plsqt_version, plsqt_content, plsqt_status, status_datetime,
          last_update_datetime, last_update_user)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 0, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 0, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
        RETURNING *`,
       [
         country_id || null, currency_id || null, product_cat_id || null, product_line_id || null,
         plsqt_name, plsqt_order_codes, plsqt_desc, plsqt_comment,
         plsqt_fbo_location, plsqt_as_of_date || null, plsqt_extrn_file_ref,
-        plsqt_active !== false, plsqt_version, plsqt_content, plsqt_status || 'not started', now,
+        plsqt_active !== false, plsqt_enabled !== false ? 1 : 0, plsqt_version, plsqt_content, plsqt_status || 'not started', now,
         now, req.session.user.username
       ]
     );
@@ -155,7 +167,7 @@ router.put('/:id', async (req, res) => {
       country_id, currency_id, product_cat_id, product_line_id,
       plsqt_name, plsqt_order_codes, plsqt_desc, plsqt_comment,
       plsqt_fbo_location, plsqt_as_of_date, plsqt_extrn_file_ref,
-      plsqt_active, plsqt_version, plsqt_content, plsqt_status
+      plsqt_active, plsqt_enabled, plsqt_version, plsqt_content, plsqt_status
     } = req.body;
 
     const now = getDateTime();
@@ -169,23 +181,46 @@ router.put('/:id', async (req, res) => {
     const statusChanged = current.rows[0].plsqt_status !== plsqt_status;
     const statusDatetime = statusChanged ? now : current.rows[0].status_datetime;
 
-    await db.query(
-      `UPDATE plsq_templates SET
+    // Only admin users can change plsqt_enabled
+    const isAdmin = req.session.user && req.session.user.role === 'admin';
+    const enabledValue = isAdmin ? (plsqt_enabled === true || plsqt_enabled === 'true' ? 1 : 0) : undefined;
+
+    let query, params;
+    if (enabledValue !== undefined) {
+      query = `UPDATE plsq_templates SET
+        country_id = $1, currency_id = $2, product_cat_id = $3, product_line_id = $4,
+        plsqt_name = $5, plsqt_order_codes = $6, plsqt_desc = $7, plsqt_comment = $8,
+        plsqt_fbo_location = $9, plsqt_as_of_date = $10, plsqt_extrn_file_ref = $11,
+        plsqt_active = $12, plsqt_enabled = $13, plsqt_version = $14, plsqt_content = $15, plsqt_status = $16,
+        status_datetime = $17, last_update_datetime = $18, last_update_user = $19
+       WHERE plsqt_id = $20`;
+      params = [
+        country_id || null, currency_id || null, product_cat_id || null, product_line_id || null,
+        plsqt_name, plsqt_order_codes, plsqt_desc, plsqt_comment,
+        plsqt_fbo_location, plsqt_as_of_date || null, plsqt_extrn_file_ref,
+        plsqt_active === true || plsqt_active === 'true', enabledValue, plsqt_version, plsqt_content, plsqt_status,
+        statusDatetime, now, req.session.user.username,
+        req.params.id
+      ];
+    } else {
+      query = `UPDATE plsq_templates SET
         country_id = $1, currency_id = $2, product_cat_id = $3, product_line_id = $4,
         plsqt_name = $5, plsqt_order_codes = $6, plsqt_desc = $7, plsqt_comment = $8,
         plsqt_fbo_location = $9, plsqt_as_of_date = $10, plsqt_extrn_file_ref = $11,
         plsqt_active = $12, plsqt_version = $13, plsqt_content = $14, plsqt_status = $15,
         status_datetime = $16, last_update_datetime = $17, last_update_user = $18
-       WHERE plsqt_id = $19`,
-      [
+       WHERE plsqt_id = $19`;
+      params = [
         country_id || null, currency_id || null, product_cat_id || null, product_line_id || null,
         plsqt_name, plsqt_order_codes, plsqt_desc, plsqt_comment,
         plsqt_fbo_location, plsqt_as_of_date || null, plsqt_extrn_file_ref,
         plsqt_active === true || plsqt_active === 'true', plsqt_version, plsqt_content, plsqt_status,
         statusDatetime, now, req.session.user.username,
         req.params.id
-      ]
-    );
+      ];
+    }
+
+    await db.query(query, params);
 
     // Get the updated row
     const result = await db.query('SELECT * FROM plsq_templates WHERE plsqt_id = $1', [req.params.id]);
@@ -299,17 +334,22 @@ router.post('/:id/clone', async (req, res) => {
   }
 });
 
-// Delete template (admin only)
+// Delete template (admin can delete any, regular users can only delete templates with status 'cloned' or 'not started')
 router.delete('/:id', async (req, res) => {
   try {
-    if (req.session.user.role !== 'admin') {
-      return res.status(403).json({ error: 'Admin access required' });
-    }
+    const isAdmin = req.session.user && req.session.user.role === 'admin';
 
-    // Check if template exists
-    const existing = await db.query('SELECT plsqt_id FROM plsq_templates WHERE plsqt_id = $1', [req.params.id]);
+    // Check if template exists and get its status
+    const existing = await db.query('SELECT plsqt_id, plsqt_status FROM plsq_templates WHERE plsqt_id = $1', [req.params.id]);
     if (existing.rows.length === 0) {
       return res.status(404).json({ error: 'Template not found' });
+    }
+
+    const templateStatus = existing.rows[0].plsqt_status;
+    const canDelete = isAdmin || templateStatus === 'cloned' || templateStatus === 'not started';
+
+    if (!canDelete) {
+      return res.status(403).json({ error: 'Only templates with status "cloned" or "not started" can be deleted by non-admin users' });
     }
 
     await db.query('DELETE FROM plsq_templates WHERE plsqt_id = $1', [req.params.id]);
