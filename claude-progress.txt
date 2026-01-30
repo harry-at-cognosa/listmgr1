@@ -7313,3 +7313,718 @@ Why ref instead of just state:
 
 [Testing] Session complete - Feature #47 PASSED
 
+
+
+---
+
+## Session 2026-01-29 (Feature #84 Regression Test)
+
+### Completed
+- Feature #84: Empty search shows all results - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Templates - Logged in as harry, navigated to /templates
+2. ✅ Step 2: Enter search term to filter results - Typed 'UBM' in search box, filtered to 1 template (DYNO-MILL UBM 20)
+3. ✅ Step 3: Clear the search box - Cleared search box (set to empty string)
+4. ✅ Step 4: Verify all templates display again - Both templates now showing (DYNO-MILL UBM 20 and DYNO-MILL UNI LAB not ATEX)
+5. ✅ Step 5: Verify count matches total - 2 templates before search, 1 during search, 2 after clearing
+
+### Technical Details
+- Search box filters templates by name in real-time
+- URL updates with search parameter (?search=UBM) when searching
+- URL removes search parameter when search box is cleared
+- Results update immediately as search is cleared
+- All templates return to display when search is cleared
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f84-empty-search.png
+
+### Current Status
+- Feature #84 verified - still passing
+
+[Testing] Session complete - Feature #84 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #45 Regression Test)
+
+### Completed
+- Feature #45: Regular user cannot delete template - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as regular user 'harry' - Logged in successfully
+2. ✅ Step 2: Navigate to Templates - Navigated to /templates page
+3. ✅ Step 3: Verify Delete button is hidden or disabled - Confirmed NO Delete button visible for regular user (only View, Edit, Clone)
+4. ✅ Step 4: Attempt API DELETE directly - Tested via curl with harry's session
+5. ✅ Step 5: Verify 403 response - Confirmed 403 Forbidden with message 'Admin access required'
+
+### Additional Verification
+- Confirmed admin user DOES see the Delete button (role-based access control working correctly)
+
+### Technical Details
+- Regular user sees: View, Edit, Clone buttons
+- Admin user sees: View, Edit, Clone, Delete buttons
+- API returns 403 with 'Admin access required' when non-admin attempts DELETE
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f45-regular-user-no-delete.png (Harry's view - no Delete button)
+- regression-f45-admin-has-delete.png (Admin view - Delete button visible)
+
+### Current Status
+- Feature #45 verified - still passing
+
+[Testing] Session complete - Feature #45 regression test PASSED
+
+
+
+---
+
+## Session 2026-01-29 (Feature #29 Regression Test)
+
+### Completed
+- Feature #29: Admin can delete product line - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Successfully authenticated as admin user
+2. ✅ Step 2: Navigate to Product Lines page - API endpoint /api/product-lines accessible
+3. ✅ Step 3: Create a test product line - Created 'ZZZ Delete Test' (ID: 14)
+4. ✅ Step 4: Click Delete - DELETE request to /api/product-lines/14
+5. ✅ Step 5: Confirm deletion - Received 'Product line deleted successfully' message
+6. ✅ Step 6: Verify removed from list - Product line no longer appears in list
+
+### Additional Security Verification
+- Verified that non-admin users (e.g., 'harry') cannot delete product lines
+- API correctly returns 'Admin access required' (403 Forbidden) for non-admin users
+
+### Technical Details
+- Backend route correctly checks for admin role before allowing deletion
+- Frontend only shows Delete button to admin users
+- Confirmation prompt works correctly
+- Success/error messages displayed appropriately
+- List refreshes after deletion
+
+### Current Status
+- Feature #29 verified - still passing
+
+[Testing] Session complete - Feature #29 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #69 Regression Test)
+
+### Completed
+- Feature #69: Duplicate unique values rejected - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Create currency with symbol 'USD' - USD already exists in database
+2. ✅ Step 2: Try to create another currency with 'USD' - Attempted to create with symbol 'USD' and name 'Test Duplicate Dollar'
+3. ✅ Step 3: Verify error about duplicate value - Error message "A currency with this symbol already exists" displayed correctly
+4. ✅ Step 4: Change to unique symbol - Changed symbol to 'TST' 
+5. ✅ Step 5: Verify form submits - Form submitted successfully, "Currency saved successfully" message displayed, TST currency appeared in list
+
+### Technical Details
+- Unique constraint on currency symbol is properly enforced at database level
+- Backend returns 400 Bad Request with clear error message for duplicate values
+- Frontend displays the error message to user in the form
+- After changing to a unique symbol, form submits successfully
+- Test data (TST currency) was cleaned up after verification
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+- 400 Bad Request when attempting duplicate (expected, part of test)
+
+### Screenshots
+- regression-f69-duplicate-validation.png
+
+### Current Status
+- Feature #69 verified - still passing
+
+[Testing] Session complete - Feature #69 regression test PASSED
+
+---
+
+## Session 2026-01-29 (Feature #38 Regression Test)
+
+### Completed
+- Feature #38: User can filter templates by active status - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Navigated to /templates page
+3. ✅ Step 3: Locate active status filter - Found 'Status' dropdown with options: All, Active, Inactive
+4. ✅ Step 4: Toggle to show only active - Selected 'Active', URL changed to ?active=true
+5. ✅ Step 5: Verify list shows only active templates - Showed 2 active templates
+6. ✅ Step 6: Toggle to show inactive - Selected 'Inactive', URL changed to ?active=false
+7. ✅ Step 7: Verify list shows only inactive templates - Showed 'No templates found' (correct - no inactive templates in DB)
+
+### Technical Details
+- Status filter dropdown has three options: All, Active, Inactive
+- URL parameters update correctly (?active=true or ?active=false)
+- Filter applies correctly - active shows active templates, inactive shows inactive templates
+- 'All' option shows all templates regardless of status
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f38-inactive-filter.png (Inactive filter showing no templates)
+- regression-f38-all-filter.png (All filter showing 2 templates)
+
+### Current Status
+- Feature #38 verified - still passing
+
+[Testing] Session complete - Feature #38 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #8 Regression Test)
+
+### Completed
+- Feature #8: API returns 401 for unauthenticated requests - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Clear all session data - Verified by navigating to app without existing session
+2. ✅ Step 2: Make GET request to /api/templates without auth - curl returned HTTP 401
+3. ✅ Step 3: Verify 401 response - Confirmed HTTP status code 401
+4. ✅ Step 4: Make POST request to /api/currencies without auth - curl returned HTTP 401
+5. ✅ Step 5: Verify 401 response - Confirmed HTTP status code 401
+6. ✅ Step 6: Verify response body contains appropriate error message - Confirmed '{"error":"Authentication required"}'
+
+### Technical Details
+- Backend properly rejects all unauthenticated API requests with 401 Unauthorized
+- Error response body contains clear message: {"error": "Authentication required"}
+- Frontend correctly redirects to login page when session is not valid
+- Browser console shows expected 401 errors for /api/auth/me and /api/app-settings when not logged in
+
+### Console Errors
+- Expected 401 errors for unauthenticated requests (correct behavior)
+
+### Screenshots
+- regression-f8-unauthenticated-login-page.png (Login page shown when not authenticated)
+
+### Current Status
+- Feature #8 verified - still passing
+
+[Testing] Session complete - Feature #8 regression test PASSED
+
+
+
+---
+
+## Session 2026-01-29 (Feature #99 Regression Test)
+
+### Completed
+- Feature #99: Timestamps accurate and formatted correctly - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Note current date/time - Session started at approximately 21:16
+2. ✅ Step 2: Create a new template - Created "TEST Timestamp Feature 99" (ID: 13)
+3. ✅ Step 3: Verify last_update_datetime shows recent time - Confirmed: "2026-01-29 21:16"
+4. ✅ Step 4: Verify format is consistent (VARCHAR(15)) - Format: YYYY-MM-DD HH:MM (consistent)
+5. ✅ Step 5: Wait a minute, edit the template - Added description text and saved
+6. ✅ Step 6: Verify timestamp updated - Confirmed: "2026-01-29 21:17" (updated from 21:16)
+
+### Technical Details
+- Timestamps display in YYYY-MM-DD HH:MM format
+- last_update_datetime correctly updates on create and edit operations
+- last_update_user correctly shows the authenticated user (admin)
+- Format is consistent across the application
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f99-timestamp-after-create.png (Template showing timestamp 21:16 after creation)
+- regression-f99-timestamp-after-edit.png (Template showing timestamp 21:17 after edit)
+
+### Cleanup
+- Test template "TEST Timestamp Feature 99" deleted after verification
+
+### Current Status
+- Feature #99 verified - still passing
+
+[Testing] Session complete - Feature #99 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #38 Regression Test - Re-verification)
+
+### Completed
+- Feature #38: User can filter templates by active status - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Navigated to /templates page
+3. ✅ Step 3: Locate active status filter - Found 'Status' dropdown with options: All, Active, Inactive
+4. ✅ Step 4: Toggle to show only active - Selected 'Active', URL changed to ?active=true, showed 1 template
+5. ✅ Step 5: Verify list shows only active templates - Confirmed active template displayed
+6. ✅ Step 6: Toggle to show inactive - Selected 'Inactive', URL changed to ?active=false
+7. ✅ Step 7: Verify list shows only inactive templates - Showed 'No templates found' (correct - no inactive templates in DB)
+
+### Technical Details
+- Status filter dropdown has three options: All, Active, Inactive
+- URL parameters update correctly (?active=true or ?active=false)
+- Filter applies correctly - active shows active templates, inactive shows inactive templates
+- 'All' option shows all templates regardless of status
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f38-status-filter-test.png (Templates page with Status filter)
+
+### Current Status
+- Feature #38 verified - still passing
+
+[Testing] Session complete - Feature #38 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #80 Regression Test)
+
+### Completed
+- Feature #80: Back button works after navigation - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Start on Templates page - Navigated to /templates
+2. ✅ Step 2: Click to view a template detail - Clicked on 'DYNO-MILL UNI LAB not ATEX', navigated to /templates/3
+3. ✅ Step 3: Click browser back button - Used browser back navigation
+4. ✅ Step 4: Verify return to Templates list - Correctly returned to /templates
+5. ✅ Step 5: Navigate to Currencies - Navigated to /reference/currencies
+6. ✅ Step 6: Edit a currency - Clicked Edit on CHF currency (modal appeared - URL unchanged)
+7. ✅ Step 7: Click back button - Used browser back navigation
+8. ✅ Step 8: Verify navigation behavior - Back button correctly returns to previous page in history
+
+### Additional Testing
+- Tested Template edit page (/templates/3/edit) - back button correctly returns to /templates
+- All navigation history entries work correctly
+
+### Technical Details
+- Currency editing uses inline modal (no URL change) - this is by design
+- Template editing uses dedicated URL (/templates/{id}/edit) - back button works correctly
+- Browser history navigation works as expected throughout the app
+
+### Console Errors
+- No errors at error level
+- Only expected 401 errors from pre-login auth checks and React Router warnings (normal behavior)
+
+### Screenshots
+- regression-f80-back-button-works.png (Templates page after back navigation)
+
+### Current Status
+- Feature #80 verified - still passing
+
+[Testing] Session complete - Feature #80 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #39 Regression Test)
+
+### Completed
+- Feature #39: User can search templates by name keyword - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Navigated to /templates page
+3. ✅ Step 3: Enter keyword in search box - Tested with multiple keywords
+4. ✅ Step 4: Verify list updates to show matching templates - List correctly filters based on search term
+5. ✅ Step 5: Verify partial matches are included - 'DYNO', 'LAB', 'MILL' all matched template name
+6. ✅ Step 6: Clear search and verify all templates show - 'Clear Filters' button correctly resets search
+
+### Technical Details
+- Search box filters templates by name in real-time
+- URL updates with search parameter (?search=KEYWORD)
+- Partial matches work correctly (e.g., 'DYNO' matches 'DYNO-MILL UNI LAB not ATEX')
+- 'Clear Filters' button resets search and shows all templates
+- Note: Search is case-sensitive (lowercase 'mill' did not match 'MILL')
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f39-initial-templates.png (Initial templates list)
+- regression-f39-no-match.png (No match for 'NONEXISTENT')
+- regression-f39-search-working.png (Search 'MILL' showing matching template)
+
+### Current Status
+- Feature #39 verified - still passing
+
+[Testing] Session complete - Feature #39 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #6 Regression Test)
+
+### Completed
+- Feature #6: User can log out - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Verify logout button is visible in header - Logout button visible with 'Logged in as harry' text
+3. ✅ Step 3: Click logout button - Successfully clicked logout
+4. ✅ Step 4: Verify redirect to login page - Redirected to /login
+5. ✅ Step 5: Verify session is cleared - API returns 401 Unauthorized for /api/auth/me
+6. ✅ Step 6: Verify attempting to access protected page redirects to login - Navigating to /templates redirects to /login
+
+### Technical Details
+- Logout button properly displayed in header when logged in
+- Clicking logout clears the session and redirects to login page
+- Protected routes correctly reject unauthenticated users
+- Session cookie is cleared on logout
+
+### Console Errors
+- Only expected 401 errors for unauthenticated API requests (correct behavior)
+
+### Screenshots
+- regression-f6-logout-verified.png (Login page after logout, confirming session cleared)
+
+### Current Status
+- Feature #6 verified - still passing
+
+[Testing] Session complete - Feature #6 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #104 Regression Test)
+
+### Completed
+- Feature #104: Swap out SQLite3 for PostgreSQL - VERIFIED AND PASSING
+
+### Verification Steps Completed
+
+#### Reference Tables (6 tables)
+1. ✅ **Currencies** - CRUD operations verified
+   - READ: Listed 8 currencies with proper data
+   - CREATE: Added 'TST' currency successfully
+   - UPDATE: Edited TST currency name successfully
+   - DELETE: Deleted TST currency successfully
+
+2. ✅ **Countries** - CRUD operations verified  
+   - READ: Listed 8 countries with currency foreign key display
+   - CREATE: Added 'TST' country with CAD currency successfully
+   - DELETE: Deleted TST country successfully
+
+3. ✅ **Product Categories** - READ verified
+   - Listed 3 categories with Enabled/Disabled status
+
+4. ✅ **Product Lines** - READ verified
+   - Listed 12 product lines with Product Category foreign key display
+
+5. ✅ **Section Types** - READ verified
+   - Listed 15 section types with all fields (Total Price, Line Prices, Active, Version)
+
+#### Template Tables (2 tables)
+6. ✅ **Templates (plsq_templates)** - CRUD operations verified
+   - READ: Listed 4 templates with filters (Country, Product Category, Product Line, Status, Enabled)
+   - CREATE: Created 'TEST Template F104 PostgreSQL' successfully
+   - DELETE: Deleted test template successfully
+   - VIEW: Viewed template details with all foreign key relationships
+
+7. ✅ **Sections (plsqt_sections)** - READ verified
+   - Viewed 12 sections for template 'DYNO-MILL UBM 20'
+   - Sections displayed with names, statuses, and section types
+
+### Technical Details
+- PostgreSQL database connection working (confirmed via /api/health endpoint)
+- All foreign key relationships working correctly (Currency->Country, Category->ProductLine, etc.)
+- Timestamps and last_update_user tracking working
+- Dropdowns populated from related tables correctly
+- Session-based authentication working with PostgreSQL
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+- No errors during authenticated operations
+
+### Screenshots
+- regression-f104-template-view.png (Template detail view with sections)
+- regression-f104-final.png (Templates list page)
+
+### Current Status
+- Feature #104 verified - still passing
+
+[Testing] Session complete - Feature #104 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #47 Regression Test)
+
+### Completed
+- Feature #47: Template status can be changed - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Edit a template - Edited 'DYNO-MILL UBM 20' template
+3. ✅ Step 3: Change status to 'in process' - Initially was 'in process', changed to 'in review' via edit form
+4. ✅ Step 4: Save - Template saved successfully with 'Template updated successfully' message
+5. ✅ Step 5: Verify status_datetime updated - Confirmed timestamp changed to '2026-01-29 21:21'
+6. ✅ Step 6: Change status to 'in review' - Status changed via edit form successfully
+7. ✅ Step 7: Change status to 'approved' - Used 'Change Status' button on template detail page
+8. ✅ Step 8: Verify all status transitions work - Tested: in process → in review → approved → in process
+
+### Technical Details
+- Status dropdown in edit form has 5 options: not started, in process, in review, approved, cloned
+- 'Change Status' button on template detail page opens a modal for quick status changes
+- Option to apply status to all sections available in the modal
+- Timestamps update correctly on each status change
+- Last_update_user correctly shows the authenticated user (harry)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f47-edit-template-initial.png (Edit form with Status dropdown)
+- regression-f47-status-changed-to-in-review.png (Templates list showing 'in review' status)
+- regression-f47-template-view-in-review.png (Template detail page with 'in review' badge)
+- regression-f47-status-approved.png (Template detail page with 'approved' badge)
+- regression-f47-status-back-to-in-process.png (Template detail page with 'in process' badge)
+
+### Current Status
+- Feature #47 verified - still passing
+
+[Testing] Session complete - Feature #47 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #6 Regression Test - Second Verification)
+
+### Completed
+- Feature #6: User can log out - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Verify logout button is visible in header - Logout button visible with 'Logged in as harry' text
+3. ✅ Step 3: Click logout button - Successfully clicked logout
+4. ✅ Step 4: Verify redirect to login page - Redirected to /login
+5. ✅ Step 5: Verify session is cleared - API returns 401 Unauthorized for /api/auth/me
+6. ✅ Step 6: Verify attempting to access protected page redirects to login - Navigating to /templates redirects to /login
+
+### Console Errors
+- Only expected 401 errors for unauthenticated API requests (correct behavior)
+
+### Screenshots
+- regression-f6-logout-verified.png (Login page after logout, confirming session cleared)
+
+### Current Status
+- Feature #6 verified - still passing
+
+[Testing] Session complete - Feature #6 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #96 Regression Test)
+
+### Completed
+- Feature #96: Submit button disabled during submission - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Template create form - Navigated to /templates/new
+2. ✅ Step 2: Fill in form - Filled template name, country, currency, product category, product line
+3. ✅ Step 3: Click submit - Clicked 'Create Template' button
+4. ✅ Step 4: Observe button immediately disables or shows loading - Code verified: button has disabled={saving} and shows 'Saving...' text
+5. ✅ Step 5: Verify button re-enables after completion - Form resets with enabled 'Create Template' button after navigation
+6. ✅ Step 6: Verify can submit again after first completes - Successfully created second template with same workflow
+
+### Technical Details
+- Button implementation in TemplateForm.jsx (lines 426-432):
+  - `disabled={saving}` - button disabled during submission
+  - `{saving ? 'Saving...' : (isEditing ? 'Update Template' : 'Create Template')}` - text changes during save
+- Double-submit prevention using `isSubmittingRef` (synchronous ref check)
+- `setSaving(true)` called at start, `setSaving(false)` in finally block
+- On error, `isSubmittingRef.current = false` allows retry
+
+### Test Templates Created and Cleaned Up
+- Created 'TEST F96 Submit Button Loading State' - verified successful submission
+- Created 'TEST F96 Second Submission Test' - verified can submit again
+- Both test templates deleted after verification
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f96-templates-list-after-submissions.png (Templates list showing both test templates)
+
+### Current Status
+- Feature #96 verified - still passing
+
+[Testing] Session complete - Feature #96 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #107 Regression Test)
+
+### Completed
+- Feature #107: app_settings capability - VERIFIED AND PASSING
+
+### Verification Steps Completed
+
+#### 1. Public Settings Display (Login Page)
+- ✅ Client Name "WAB Group USA" displayed
+- ✅ App Version "1.1 (gab1)" displayed  
+- ✅ DB Version "1.1" displayed
+- ✅ /api/public-settings endpoint working (unauthenticated access)
+
+#### 2. Authenticated Settings Display (After Login)
+- ✅ Header shows "WAB Group USA" client name
+- ✅ Sidebar footer shows "App: 1.1 (gab1) | DB: 1.1"
+- ✅ /api/app-settings endpoint working (authenticated access)
+
+#### 3. Admin Settings Management Page (/admin/settings)
+- ✅ App Settings page loads correctly for admin users
+- ✅ All 5 settings displayed: app_version, client_name, db_version, index_page, webapp_main_color
+- ✅ Settings have proper labels and descriptions
+- ✅ Each setting has a Save button (disabled when unchanged)
+
+#### 4. Theme Color Change Functionality
+- ✅ Color dropdown with 22 Tailwind colors
+- ✅ Color swatch buttons for visual selection
+- ✅ Changed color from "green" to "blue" successfully
+- ✅ Success message displayed: "Setting webapp_main_color updated successfully"
+- ✅ Theme color change applied to sidebar immediately
+- ✅ /api/app-settings/:name PUT endpoint working
+
+#### 5. Landing Page HTML Editor
+- ✅ Textarea for HTML content editing
+- ✅ Live preview of HTML content
+- ✅ Current value: "<h1>Welcome to SalesQuoteMgr</h1>"
+
+### Technical Details
+- Backend: PostgreSQL app_settings table with 5 settings
+- API Endpoints:
+  - GET /api/public-settings (public, unauthenticated)
+  - GET /api/app-settings (authenticated)
+  - GET /api/app-settings/all (admin only)
+  - PUT /api/app-settings/:name (admin only)
+- Frontend: SettingsContext provides app settings throughout the app
+- Theme: CSS variables updated dynamically via applyThemeColor()
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f107-settings-working.png (Admin settings page loaded)
+- regression-f107-color-changed.png (Theme color change saved)
+- regression-f107-blue-theme-applied.png (Blue theme applied to sidebar)
+- regression-f107-login-public-settings.png (Login page showing public settings)
+
+### Current Status
+- Feature #107 verified - still passing
+
+[Testing] Session complete - Feature #107 regression test PASSED
+
+
+
+---
+
+## Session 2026-01-29 (Feature #103 Regression Test)
+
+### Completed
+- Feature #103: Page loads in reasonable time - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to login page - Loaded instantly (~60ms)
+2. ✅ Step 2: Verify loads in <3 seconds - Login page loaded in <100ms
+3. ✅ Step 3: Log in - Successfully logged in as harry
+4. ✅ Step 4: Verify Templates page loads in <3 seconds - Templates page loaded in ~60ms
+5. ✅ Step 5: Verify form pages load quickly - Edit/New Template forms loaded instantly
+6. ✅ Step 6: No excessive loading delays - All pages responsive with no delays
+
+### Pages Tested
+- Login page: ~60ms load time
+- Templates list page: ~60ms load time
+- Template detail page (with 12 sections): ~60ms load time
+- Edit Template form: ~60ms load time
+- New Template form: instant
+- Currencies reference page: instant
+
+### Technical Details
+- All pages load well under the 3 second threshold
+- Performance timing measured via performance.timing API
+- DOM ready and page load consistently around 60ms
+- No excessive JavaScript execution delays
+- All dropdowns and data tables populate instantly
+
+### Console Errors
+- No errors during testing (only expected pre-login 401s)
+
+### Screenshots
+- regression-f103-currencies-page.png (Reference data page)
+- regression-f103-login-page.png (Login page)
+
+### Current Status
+- Feature #103 verified - still passing
+
+[Testing] Session complete - Feature #103 regression test PASSED
+
+---
+
+## Session 2026-01-29 (Feature #110)
+
+### Completed
+- Feature #110: Fix enabled, active, admin role w/r/t template visibility - IMPLEMENTED AND VERIFIED
+
+### Changes Made
+
+#### Frontend (Templates.jsx)
+1. Changed "Status" filter label to "Active?" (requirement a)
+2. Enabled filter dropdown now only visible to admin users
+3. Enabled column in table only visible to admin users
+4. Delete button visible to all users for templates with status "cloned" or "not started"
+5. Edit button visible to all users for templates with status "cloned" or "not started"
+
+#### Frontend (TemplateDetail.jsx)
+1. Edit Template button visible for templates with "cloned" or "not started" status regardless of user role
+
+#### Backend (templates.js)
+1. Non-admin users cannot see templates with plsqt_enabled = 0
+2. Non-admin users cannot see templates with disabled product categories (product_cat_enabled = 0)
+3. Non-admin users cannot see templates with disabled product lines (product_line_enabled = 0)
+4. Delete endpoint allows non-admin users to delete templates with status "cloned" or "not started"
+
+### Verification Steps Completed
+1. ✅ Verified "Active?" label on the filter
+2. ✅ Verified Enabled filter NOT visible for regular user harry
+3. ✅ Verified Enabled column NOT visible for regular user harry
+4. ✅ Verified Delete button visible for templates with "not started" status for harry
+5. ✅ Verified Delete button visible for templates with "cloned" status for harry
+6. ✅ Verified admin sees all templates including disabled product categories
+7. ✅ Verified admin sees Enabled filter and column
+8. ✅ Verified regular user can successfully delete a "cloned" template
+
+### Technical Details
+- Non-admin users: plsqt_enabled = 1 required, product_cat_enabled = 1 required, product_line_enabled = 1 required
+- Admin users: Can see all templates regardless of enabled status
+- Delete permission: Admin can delete any, regular users can only delete "cloned" or "not started"
+- Edit permission: Regular users can edit enabled templates OR templates with "cloned"/"not started" status
+
+### Console Errors
+- No errors at error level
+
+### Screenshots
+- feature-110-harry-view.png (Regular user view - no Enabled column/filter)
+- feature-110-admin-view.png (Admin view - Enabled column/filter visible)
+- feature-110-harry-can-delete-cloned.png (Harry can delete cloned template)
+- feature-110-delete-success.png (Delete successful for regular user)
+
+### Current Status
+- Feature #110 verified - PASSING
+- Progress: 110/110 features passing (100%)
+
+[Testing] Session complete - Feature #110 PASSED - ALL FEATURES COMPLETE!
