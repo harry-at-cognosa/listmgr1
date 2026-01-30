@@ -8028,3 +8028,153 @@ Why ref instead of just state:
 - Progress: 110/110 features passing (100%)
 
 [Testing] Session complete - Feature #110 PASSED - ALL FEATURES COMPLETE!
+
+
+---
+
+## Session 2026-01-30 (Feature #97 Regression Test)
+
+### Completed
+- Feature #97: Foreign key dropdowns populated from real data - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Create a unique country 'TESTCOUNTRY' - Created country with abbr TST
+2. ✅ Step 2: Navigate to Template create form - Navigated to /templates/new
+3. ✅ Step 3: Open country dropdown - Clicked on Country dropdown
+4. ✅ Step 4: Verify 'TESTCOUNTRY' appears in options - TESTCOUNTRY visible in dropdown
+5. ✅ Step 5: Create a unique product category - Created 'TESTCATEGORY' with abbr TCAT
+6. ✅ Step 6: Verify it appears in product category dropdown - TESTCATEGORY visible in Product Category dropdown
+
+### Technical Details
+- New country created: TST - TESTCOUNTRY with USD currency
+- New product category created: TCAT - TESTCATEGORY (Enabled)
+- Both test items appeared immediately in Template form dropdowns
+- Foreign key relationships properly populated from database
+- Dropdowns correctly fetch real data from reference tables
+
+### Console Errors
+- Only expected React Router future flag warnings (normal behavior)
+- No application errors
+
+### Screenshots
+- regression-f97-dropdowns-verified.png (Template form showing dropdowns)
+
+### Cleanup
+- Deleted test country 'TESTCOUNTRY'
+- Deleted test product category 'TESTCATEGORY'
+
+### Current Status
+- Feature #97 verified - still passing
+
+[Testing] Session complete - Feature #97 regression test PASSED
+
+
+
+---
+
+## Session 2026-01-29 (Feature #51 Regression Test)
+
+### Completed
+- Feature #51: User can edit existing section - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry (regular user)
+2. ✅ Step 2: View template detail - Navigated to /templates/1 (DYNO-MILL UBM 20 with 12 sections)
+3. ✅ Step 3: Select a section tab or click edit - Clicked Edit button on section 2 (Principal Characteristics)
+4. ✅ Step 4: Modify section fields - Changed multiple fields:
+   - Alternate Name: "TEST EDIT SECTION F51"
+   - Use Alternate Name: checked
+   - Status: "in process" (from "not started")
+   - Version: "1.0-test"
+   - Comment: "Testing section edit feature for F51 regression test"
+5. ✅ Step 5: Submit form - Clicked Update button successfully
+6. ✅ Step 6: Verify changes saved - All changes persisted correctly:
+   - Section name displayed as "TEST EDIT SECTION F51" in sections list
+   - Status badge showed "in process"
+   - Section tab updated to show alternate name
+   - Re-opened edit form confirmed all fields saved
+7. ✅ Step 7: Verify last_update fields updated - Expanded section showed:
+   - "Last updated: 2026-01-30 01:46 by harry"
+   - Both timestamp and user correctly updated
+
+### Technical Details
+- Section edit form opens as a modal dialog
+- All fields editable: Section Type, Sequence, Alternate Name, Use Alternate Name (checkbox), Status (dropdown), Version, Comment, External File Reference, Content, Active (checkbox)
+- Success message "Section saved successfully" displayed after update
+- Section list and tabs update immediately after save
+- Last_update_datetime and last_update_user automatically tracked
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f51-section-edit-form-filled.png (Edit form with test data)
+- regression-f51-section-saved-successfully.png (Updated section in list)
+- regression-f51-section-expanded-last-update.png (Expanded section showing all saved fields)
+
+### Current Status
+- Feature #51 verified - still passing
+
+[Testing] Session complete - Feature #51 regression test PASSED
+
+
+---
+
+## Session 2026-01-29 (Feature #108 Regression Test)
+
+### Completed
+- Feature #108: Add enable/disable switch for product_cat and product_line - VERIFIED AND PASSING
+
+### Verification Steps Completed
+
+#### 1. Database Schema (product_cat_enabled, product_line_enabled columns)
+- ✅ Fields exist in product_cat and product_line tables
+- ✅ Default value is 1 (enabled) for new records
+
+#### 2. Regular User (harry) - Cannot See Disabled Items
+- ✅ Product Category dropdown: Only shows 2 enabled categories (Dyno-Mill Agitator, Dyno-Mix Shaker)
+- ✅ Does NOT show disabled category (Turbula)
+- ✅ Product Line dropdown: Only shows 9 enabled lines
+- ✅ Does NOT show Turbula-a, Turbula-b, Turbula-c (associated with disabled category)
+- ✅ Templates list: Only shows 2 templates (associated with enabled categories/lines)
+- ✅ Does NOT show T 30 A E, T 50 A templates (associated with disabled Turbula category)
+- ✅ No 'Enabled' column visible in templates table
+- ✅ No 'Enabled' filter dropdown available
+
+#### 3. Admin User - Can See All Items Including Disabled
+- ✅ Product Category dropdown: Shows all 3 categories including disabled Turbula
+- ✅ Product Line dropdown: Shows all 12 lines including Turbula variants
+- ✅ Templates list: Shows all templates including those with disabled categories
+- ✅ 'Enabled' column visible showing status of each template
+- ✅ 'Enabled' filter dropdown available (Enabled/Disabled/All)
+
+#### 4. Admin Can Enable/Disable Categories and Lines
+- ✅ Edit form for product category shows 'Enabled' checkbox
+- ✅ Checkbox has note: '(Admin only - disabled categories are hidden from regular users)'
+- ✅ Admin can toggle enabled status
+
+#### 5. Visual Indicators for Admin
+- ✅ Product Categories list shows 'Enabled' or 'Disabled' badge in Status column
+- ✅ Product Lines list shows 'Enabled' or 'Disabled' badge in Status column
+- ✅ Product Lines shows 'Cat Disabled' badge when parent category is disabled
+- ✅ Templates list shows 'Enabled' column for admin users
+
+### Technical Details
+- Backend routes filter by user role (admin sees all, regular users see only enabled)
+- product_cat_enabled and product_line_enabled columns use integer (1=enabled, 0=disabled)
+- Frontend conditionally renders 'Enabled' column and filter for admin users only
+
+### Console Errors
+- No errors during testing
+
+### Screenshots
+- regression-f108-product-lines-admin-view.png (Admin view of product lines)
+- regression-f108-disabled-product-lines.png (Disabled Turbula lines with visual indicators)
+- regression-f108-admin-edit-disabled-category.png (Admin edit form with Enabled checkbox)
+- regression-f108-regular-user-view.png (Regular user sees limited data)
+
+### Current Status
+- Feature #108 verified - still passing
+
+[Testing] Session complete - Feature #108 regression test PASSED
+

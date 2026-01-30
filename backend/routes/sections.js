@@ -8,7 +8,7 @@ const getDateTime = () => new Date().toISOString().slice(0, 16).replace('T', ' '
 router.get('/template/:templateId', async (req, res) => {
   try {
     const result = await db.query(
-      `SELECT s.*, st.plsqtst_name as section_type_name
+      `SELECT s.*, st.plsqtst_name as section_type_name, st.plsqtst_active as section_type_active
        FROM plsqt_sections s
        LEFT JOIN plsqts_type st ON s.section_type_id = st.plsqtst_id
        WHERE s.plsqt_id = $1
@@ -26,7 +26,7 @@ router.get('/template/:templateId', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const result = await db.query(
-      `SELECT s.*, st.plsqtst_name as section_type_name
+      `SELECT s.*, st.plsqtst_name as section_type_name, st.plsqtst_active as section_type_active
        FROM plsqt_sections s
        LEFT JOIN plsqts_type st ON s.section_type_id = st.plsqtst_id
        WHERE s.plsqts_id = $1`,

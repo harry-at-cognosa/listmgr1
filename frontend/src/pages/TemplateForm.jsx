@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
 const STATUS_OPTIONS = ['not started', 'in process', 'in review', 'approved', 'cloned'];
@@ -20,6 +21,7 @@ function TemplateForm() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isAdmin } = useAuth();
   const isEditing = !!id;
 
   // Get preserved search params from location state (passed when clicking from Templates list)
@@ -51,6 +53,7 @@ function TemplateForm() {
     plsqt_as_of_date: '',  // renamed from plsqs_as_of_date
     plsqt_extrn_file_ref: '',  // renamed from extrn_file_ref
     plsqt_active: true,
+    plsqt_enabled: true,
     plsqt_version: '',
     plsqt_content: '',  // renamed from content
     plsqt_status: 'not started'
@@ -98,6 +101,7 @@ function TemplateForm() {
         plsqt_as_of_date: template.plsqt_as_of_date ? template.plsqt_as_of_date.split('T')[0] : '',
         plsqt_extrn_file_ref: template.plsqt_extrn_file_ref || '',
         plsqt_active: template.plsqt_active !== false,
+        plsqt_enabled: template.plsqt_enabled === 1,
         plsqt_version: template.plsqt_version || '',
         plsqt_content: template.plsqt_content || '',
         plsqt_status: template.plsqt_status || 'not started'
@@ -398,6 +402,23 @@ function TemplateForm() {
               />
               <label htmlFor="plsqt_active" className="ml-2 text-sm text-gray-700">Active</label>
             </div>
+
+            {isAdmin && (
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="plsqt_enabled"
+                  id="plsqt_enabled"
+                  checked={formData.plsqt_enabled}
+                  onChange={handleChange}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <label htmlFor="plsqt_enabled" className="ml-2 text-sm text-gray-700">
+                  Enabled
+                  <span className="ml-2 text-xs text-gray-500">(Admin only - disabling hides Edit from non-admins)</span>
+                </label>
+              </div>
+            )}
           </div>
 
           {/* Actions */}
