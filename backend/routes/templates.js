@@ -134,6 +134,24 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Template name is required' });
     }
 
+    const isAdmin = req.session.user && req.session.user.role === 'admin';
+
+    // Non-admin users cannot set disabled countries or currencies
+    if (!isAdmin) {
+      if (country_id) {
+        const countryResult = await db.query('SELECT country_enabled FROM country WHERE country_id = $1', [country_id]);
+        if (countryResult.rows.length > 0 && countryResult.rows[0].country_enabled === 0) {
+          return res.status(400).json({ error: 'Cannot use a disabled country' });
+        }
+      }
+      if (currency_id) {
+        const currencyResult = await db.query('SELECT currency_enabled FROM currency WHERE currency_id = $1', [currency_id]);
+        if (currencyResult.rows.length > 0 && currencyResult.rows[0].currency_enabled === 0) {
+          return res.status(400).json({ error: 'Cannot use a disabled currency' });
+        }
+      }
+    }
+
     const now = getDateTime();
     const result = await db.query(
       `INSERT INTO plsq_templates
@@ -171,6 +189,23 @@ router.put('/:id', async (req, res) => {
     } = req.body;
 
     const now = getDateTime();
+    const isAdmin = req.session.user && req.session.user.role === 'admin';
+
+    // Non-admin users cannot set disabled countries or currencies
+    if (!isAdmin) {
+      if (country_id) {
+        const countryResult = await db.query('SELECT country_enabled FROM country WHERE country_id = $1', [country_id]);
+        if (countryResult.rows.length > 0 && countryResult.rows[0].country_enabled === 0) {
+          return res.status(400).json({ error: 'Cannot use a disabled country' });
+        }
+      }
+      if (currency_id) {
+        const currencyResult = await db.query('SELECT currency_enabled FROM currency WHERE currency_id = $1', [currency_id]);
+        if (currencyResult.rows.length > 0 && currencyResult.rows[0].currency_enabled === 0) {
+          return res.status(400).json({ error: 'Cannot use a disabled currency' });
+        }
+      }
+    }
 
     // Get current status to check if it changed
     const current = await db.query('SELECT plsqt_status, status_datetime FROM plsq_templates WHERE plsqt_id = $1', [req.params.id]);
@@ -180,9 +215,6 @@ router.put('/:id', async (req, res) => {
 
     const statusChanged = current.rows[0].plsqt_status !== plsqt_status;
     const statusDatetime = statusChanged ? now : current.rows[0].status_datetime;
-
-    // Only admin users can change plsqt_enabled
-    const isAdmin = req.session.user && req.session.user.role === 'admin';
     const enabledValue = isAdmin ? (plsqt_enabled === true || plsqt_enabled === 'true' ? 1 : 0) : undefined;
 
     let query, params;

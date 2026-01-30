@@ -82,6 +82,7 @@ function Users() {
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Username</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Updated</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
               </tr>
@@ -102,6 +103,15 @@ function Users() {
                         : 'bg-gray-100 text-gray-800'
                     }`}>
                       {user.role}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      user.user_enabled === 1
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {user.user_enabled === 1 ? 'Enabled' : 'Suspended'}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
@@ -149,7 +159,8 @@ function UserFormModal({ user, onClose, onSave }) {
   const [formData, setFormData] = useState({
     username: user?.username || '',
     password: '',
-    role: user?.role || 'user'
+    role: user?.role || 'user',
+    user_enabled: user?.user_enabled !== 0
   });
 
   // Validate form and return errors object
@@ -293,6 +304,19 @@ function UserFormModal({ user, onClose, onSave }) {
               {fieldErrors.role && (
                 <p className="mt-1 text-sm text-red-600">{fieldErrors.role}</p>
               )}
+            </div>
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="user_enabled"
+                checked={formData.user_enabled}
+                onChange={(e) => handleFieldChange('user_enabled', e.target.checked)}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <label htmlFor="user_enabled" className="ml-2 text-sm text-gray-700">
+                Enabled
+                <span className="ml-2 text-xs text-gray-500">(Disabled users cannot log in)</span>
+              </label>
             </div>
             <div className="flex justify-end gap-3 pt-4">
               <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md">Cancel</button>

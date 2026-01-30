@@ -10,7 +10,7 @@ const getDateTime = () => new Date().toISOString().slice(0, 16).replace('T', ' '
 router.get('/', async (req, res) => {
   try {
     const result = await db.query(
-      'SELECT user_id, username, role, last_update_datetime, last_update_user FROM users ORDER BY username'
+      'SELECT user_id, username, role, user_enabled, last_update_datetime, last_update_user FROM users ORDER BY username'
     );
     res.json(result.rows);
   } catch (error) {
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const result = await db.query(
-      'SELECT user_id, username, role, last_update_datetime, last_update_user FROM users WHERE user_id = $1',
+      'SELECT user_id, username, role, user_enabled, last_update_datetime, last_update_user FROM users WHERE user_id = $1',
       [req.params.id]
     );
     if (result.rows.length === 0) {
@@ -39,7 +39,7 @@ router.get('/:id', async (req, res) => {
 // Create user
 router.post('/', async (req, res) => {
   try {
-    const { username, password, role } = req.body;
+    const { username, password, role, user_enabled } = req.body;
 
     if (!username || !password) {
       return res.status(400).json({ error: 'Username and password are required' });
@@ -47,12 +47,13 @@ router.post('/', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const now = getDateTime();
+    const enabledValue = user_enabled === false || user_enabled === 0 ? 0 : 1;
 
     const result = await db.query(
-      `INSERT INTO users (username, password, role, last_update_datetime, last_update_user)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING user_id, username, role, last_update_datetime, last_update_user`,
-      [username, hashedPassword, role || 'user', now, req.session.user.username]
+      `INSERT INTO users (username, password, role, user_enabled, last_update_datetime, last_update_user)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING user_id, username, role, user_enabled, last_update_datetime, last_update_user`,
+      [username, hashedPassword, role || 'user', enabledValue, now, req.session.user.username]
     );
 
     res.status(201).json(result.rows[0]);
@@ -69,21 +70,22 @@ router.post('/', async (req, res) => {
 // Update user
 router.put('/:id', async (req, res) => {
   try {
-    const { username, password, role } = req.body;
+    const { username, password, role, user_enabled } = req.body;
     const now = getDateTime();
+    const enabledValue = user_enabled === false || user_enabled === 0 ? 0 : 1;
 
     let query, params;
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
-      query = `UPDATE users SET username = $1, password = $2, role = $3, last_update_datetime = $4, last_update_user = $5
-               WHERE user_id = $6
-               RETURNING user_id, username, role, last_update_datetime, last_update_user`;
-      params = [username, hashedPassword, role, now, req.session.user.username, req.params.id];
+      query = `UPDATE users SET username = $1, password = $2, role = $3, user_enabled = $4, last_update_datetime = $5, last_update_user = $6
+               WHERE user_id = $7
+               RETURNING user_id, username, role, user_enabled, last_update_datetime, last_update_user`;
+      params = [username, hashedPassword, role, enabledValue, now, req.session.user.username, req.params.id];
     } else {
-      query = `UPDATE users SET username = $1, role = $2, last_update_datetime = $3, last_update_user = $4
-               WHERE user_id = $5
-               RETURNING user_id, username, role, last_update_datetime, last_update_user`;
-      params = [username, role, now, req.session.user.username, req.params.id];
+      query = `UPDATE users SET username = $1, role = $2, user_enabled = $3, last_update_datetime = $4, last_update_user = $5
+               WHERE user_id = $6
+               RETURNING user_id, username, role, user_enabled, last_update_datetime, last_update_user`;
+      params = [username, role, enabledValue, now, req.session.user.username, req.params.id];
     }
 
     const result = await db.query(query, params);

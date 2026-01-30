@@ -5,11 +5,20 @@ const router = express.Router();
 const getDateTime = () => new Date().toISOString().slice(0, 16).replace('T', ' ');
 
 // Get all currencies
+// Admin users see all currencies; regular users only see enabled currencies
 router.get('/', async (req, res) => {
   try {
-    const result = await db.query(
-      'SELECT * FROM currency ORDER BY currency_symbol'
-    );
+    const isAdmin = req.session.user && req.session.user.role === 'admin';
+    let query = 'SELECT * FROM currency';
+
+    // Non-admin users only see enabled currencies
+    if (!isAdmin) {
+      query += ' WHERE currency_enabled = 1';
+    }
+
+    query += ' ORDER BY currency_symbol';
+
+    const result = await db.query(query);
     res.json(result.rows);
   } catch (error) {
     console.error('Error fetching currencies:', error);
@@ -34,10 +43,15 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Create currency
+// Create currency (admin only)
 router.post('/', async (req, res) => {
   try {
-    const { currency_symbol, currency_name } = req.body;
+    // Only admin users can create currencies
+    if (req.session.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Admin access required to create currencies' });
+    }
+
+    const { currency_symbol, currency_name, currency_enabled } = req.body;
 
     if (!currency_symbol) {
       return res.status(400).json({ error: 'Currency symbol is required' });
@@ -53,11 +67,12 @@ router.post('/', async (req, res) => {
     }
 
     const now = getDateTime();
+    const enabledValue = currency_enabled === false || currency_enabled === 0 ? 0 : 1;
     const result = await db.query(
-      `INSERT INTO currency (currency_symbol, currency_name, last_update_datetime, last_update_user)
-       VALUES ($1, $2, $3, $4)
+      `INSERT INTO currency (currency_symbol, currency_name, currency_enabled, last_update_datetime, last_update_user)
+       VALUES ($1, $2, $3, $4, $5)
        RETURNING *`,
-      [currency_symbol, currency_name, now, req.session.user.username]
+      [currency_symbol, currency_name, enabledValue, now, req.session.user.username]
     );
 
     res.status(201).json(result.rows[0]);
@@ -67,18 +82,24 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Update currency
+// Update currency (admin only)
 router.put('/:id', async (req, res) => {
   try {
-    const { currency_symbol, currency_name } = req.body;
+    // Only admin users can edit currencies
+    if (req.session.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Admin access required to edit currencies' });
+    }
+
+    const { currency_symbol, currency_name, currency_enabled } = req.body;
     const now = getDateTime();
+    const enabledValue = currency_enabled === false || currency_enabled === 0 ? 0 : 1;
 
     const result = await db.query(
       `UPDATE currency
-       SET currency_symbol = $1, currency_name = $2, last_update_datetime = $3, last_update_user = $4
-       WHERE currency_id = $5
+       SET currency_symbol = $1, currency_name = $2, currency_enabled = $3, last_update_datetime = $4, last_update_user = $5
+       WHERE currency_id = $6
        RETURNING *`,
-      [currency_symbol, currency_name, now, req.session.user.username, req.params.id]
+      [currency_symbol, currency_name, enabledValue, now, req.session.user.username, req.params.id]
     );
 
     if (result.rows.length === 0) {

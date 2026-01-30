@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'user',
+    user_enabled INTEGER DEFAULT 1 NOT NULL,
     last_update_datetime VARCHAR(15),
     last_update_user VARCHAR(50)
 );
@@ -16,6 +17,7 @@ CREATE TABLE IF NOT EXISTS currency (
     currency_id SERIAL PRIMARY KEY,
     currency_symbol VARCHAR(3) NOT NULL,
     currency_name VARCHAR(20),
+    currency_enabled INTEGER DEFAULT 1 NOT NULL,
     last_update_datetime VARCHAR(15),
     last_update_user VARCHAR(50)
 );
@@ -26,6 +28,7 @@ CREATE TABLE IF NOT EXISTS country (
     country_abbr CHAR(3) NOT NULL,
     country_name VARCHAR(50) NOT NULL,
     currency_id INTEGER REFERENCES currency(currency_id),
+    country_enabled INTEGER DEFAULT 1 NOT NULL,
     last_update_datetime VARCHAR(15),
     last_update_user VARCHAR(50)
 );

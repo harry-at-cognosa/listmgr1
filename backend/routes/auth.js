@@ -13,7 +13,7 @@ router.post('/login', async (req, res) => {
     }
 
     const result = await db.query(
-      'SELECT user_id, username, password, role FROM users WHERE username = $1',
+      'SELECT user_id, username, password, role, user_enabled FROM users WHERE username = $1',
       [username]
     );
 
@@ -22,6 +22,12 @@ router.post('/login', async (req, res) => {
     }
 
     const user = result.rows[0];
+
+    // Check if user is disabled
+    if (user.user_enabled === 0) {
+      return res.status(403).json({ error: 'User has been suspended' });
+    }
+
     const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {

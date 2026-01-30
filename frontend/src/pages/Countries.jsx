@@ -49,12 +49,14 @@ function Countries() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Countries</h2>
-        <button
-          onClick={() => { setShowForm(true); setEditingItem(null); }}
-          className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-colors"
-        >
-          + Add Country
-        </button>
+        {isAdmin && (
+          <button
+            onClick={() => { setShowForm(true); setEditingItem(null); }}
+            className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-colors"
+          >
+            + Add Country
+          </button>
+        )}
       </div>
 
       {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md">{error}</div>}
@@ -74,34 +76,51 @@ function Countries() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Abbr</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Currency</th>
+                {isAdmin && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                )}
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Updated</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {countries.map(item => (
-                <tr key={item.country_id} className="hover:bg-gray-50">
+                <tr key={item.country_id} className={`hover:bg-gray-50 ${item.country_enabled === 0 ? 'bg-red-50' : ''}`}>
                   <td className="px-6 py-4 font-medium">{item.country_abbr}</td>
                   <td className="px-6 py-4">{item.country_name}</td>
                   <td className="px-6 py-4">{item.currency_symbol ? `${item.currency_symbol} - ${item.currency_name}` : '-'}</td>
+                  {isAdmin && (
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        item.country_enabled === 1
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {item.country_enabled === 1 ? 'Enabled' : 'Disabled'}
+                      </span>
+                    </td>
+                  )}
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {item.last_update_datetime} by {item.last_update_user}
                   </td>
                   <td className="px-6 py-4">
-                    <button
-                      onClick={() => { setEditingItem(item); setShowForm(true); }}
-                      className="text-sm text-green-600 hover:text-green-800 mr-3"
-                    >
-                      Edit
-                    </button>
                     {isAdmin && (
-                      <button
-                        onClick={() => handleDelete(item.country_id)}
-                        className="text-sm text-red-600 hover:text-red-800"
-                      >
-                        Delete
-                      </button>
+                      <>
+                        <button
+                          onClick={() => { setEditingItem(item); setShowForm(true); }}
+                          className="text-sm text-green-600 hover:text-green-800 mr-3"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(item.country_id)}
+                          className="text-sm text-red-600 hover:text-red-800"
+                        >
+                          Delete
+                        </button>
+                      </>
                     )}
+                    {!isAdmin && <span className="text-sm text-gray-400">View only</span>}
                   </td>
                 </tr>
               ))}
@@ -130,7 +149,8 @@ function CountryFormModal({ item, currencies, onClose, onSave }) {
   const [formData, setFormData] = useState({
     country_abbr: item?.country_abbr || '',
     country_name: item?.country_name || '',
-    currency_id: item?.currency_id || ''
+    currency_id: item?.currency_id || '',
+    country_enabled: item?.country_enabled !== 0
   });
 
   const handleSubmit = async (e) => {
@@ -201,6 +221,19 @@ function CountryFormModal({ item, currencies, onClose, onSave }) {
                   <option key={c.currency_id} value={c.currency_id}>{c.currency_symbol} - {c.currency_name}</option>
                 ))}
               </select>
+            </div>
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="country_enabled"
+                checked={formData.country_enabled}
+                onChange={(e) => setFormData(prev => ({ ...prev, country_enabled: e.target.checked }))}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <label htmlFor="country_enabled" className="ml-2 text-sm text-gray-700">
+                Enabled
+                <span className="ml-2 text-xs text-gray-500">(Disabled countries are hidden from regular users)</span>
+              </label>
             </div>
             <div className="flex justify-end gap-3 pt-4">
               <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md">Cancel</button>
