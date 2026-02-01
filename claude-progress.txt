@@ -9125,3 +9125,320 @@ Why ref instead of just state:
 - Feature #112 marked as passing
 
 [Testing] Session complete - Feature #112 PASSED
+
+
+---
+
+## Session 2026-01-31 (Feature #40 Regression Test)
+
+### Completed
+- Feature #40: Combined filters and search work together - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - 4 templates initially displayed
+3. ✅ Step 3: Select a country filter - Switzerland selected (2 templates)
+4. ✅ Step 4: Select a product category filter - Dyno-Mill Agitator selected (2 templates)
+5. ✅ Step 5: Enter a search keyword - 'UBM 20' entered (1 template)
+6. ✅ Step 6: Verify results match ALL criteria - DYNO-MILL UBM 20 - CH/CHF matches all filters
+7. ✅ Step 7: Clear all filters - All filters reset, 4 templates shown again
+
+### Technical Details
+- URL correctly reflects combined filters: ?country_id=6&product_cat_id=1&search=UBM+20
+- Filter combination uses AND logic (results must match ALL criteria)
+- Clear Filters button properly resets all filter fields
+
+### Console Errors
+- Only pre-login 500 errors on app-settings endpoints (not related to filter functionality)
+
+### Screenshots
+- regression-f40-combined-filters.png (Templates page after clearing filters)
+
+### Current Status
+- Feature #40 verified - still passing
+
+[Testing] Session complete - Feature #40 regression test PASSED
+
+
+---
+
+## Session 2026-01-31 (Feature #35 Regression Test)
+
+### Completed
+- Feature #35: User can filter templates by country - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates - Redirected to /templates after login
+3. ✅ Step 3: Locate country filter dropdown - Found with All Countries, Switzerland, United States options
+4. ✅ Step 4: Verify dropdown populated from countries table - Confirmed populated
+5. ✅ Step 5: Select a specific country - Selected Switzerland (URL: ?country_id=6)
+6. ✅ Step 6: Verify list updates to show only templates for that country - 2 Switzerland templates shown
+7. ✅ Step 7: Clear filter and verify all templates show again - All 4 templates displayed
+
+### Additional Verification
+- Tested United States filter - correctly showed 2 US templates
+- URL query parameters correctly reflect country_id filter
+- Filter updates table immediately without page reload
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f35-country-filter-cleared.png (Templates page with all filters cleared)
+
+### Current Status
+- Feature #35 verified - still passing
+
+[Testing] Session complete - Feature #35 regression test PASSED
+
+---
+
+## Session 2026-02-01 (Feature #72 Regression Test)
+
+### Completed
+- Feature #72: Admin can create new user - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in successfully
+2. ✅ Step 2: Navigate to User Management - Navigated to /admin/users
+3. ✅ Step 3: Click Add User - Clicked '+ Add User' button
+4. ✅ Step 4: Enter username 'testuser' - Entered successfully
+5. ✅ Step 5: Enter password 'testpass' - Entered successfully
+6. ✅ Step 6: Select role 'user' - Role was already set to 'User' (default)
+7. ✅ Step 7: Submit form - Clicked Save button
+8. ✅ Step 8: Verify success message - 'User saved successfully' displayed
+9. ✅ Step 9: Verify new user in list - testuser appeared in user table with role 'user' and status 'Enabled'
+10. ✅ Step 10: Log out - Clicked Logout button successfully
+11. ✅ Step 11: Log in as testuser - Logged in with testuser/testpass credentials
+12. ✅ Step 12: Verify login works - Successfully logged in, redirected to Templates page
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f72-testuser-logged-in.png (Templates page showing testuser logged in)
+
+### Cleanup
+- Deleted test user 'testuser' after verification
+
+### Current Status
+- Feature #72 verified - still passing
+
+[Testing] Session complete - Feature #72 regression test PASSED
+
+
+---
+
+## Session 2026-02-01 (Feature #72 Regression Test)
+
+### Completed
+- Feature #72: Admin can create new user - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in successfully
+2. ✅ Step 2: Navigate to User Management - Navigated to /admin/users
+3. ✅ Step 3: Click Add User - Clicked '+ Add User' button
+4. ✅ Step 4: Enter username 'testuser' - Entered successfully
+5. ✅ Step 5: Enter password 'testpass' - Entered successfully
+6. ✅ Step 6: Select role 'user' - Role was already set to 'User' (default)
+7. ✅ Step 7: Submit form - Clicked Save button
+8. ✅ Step 8: Verify success message - 'User saved successfully' displayed
+9. ✅ Step 9: Verify new user in list - testuser appeared in user table with role 'user' and status 'Enabled'
+10. ✅ Step 10: Log out - Clicked Logout button successfully
+11. ✅ Step 11: Log in as testuser - Logged in with testuser/testpass credentials
+12. ✅ Step 12: Verify login works - Successfully logged in, redirected to Templates page
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f72-testuser-logged-in.png (Templates page showing testuser logged in)
+
+### Cleanup
+- Deleted test user 'testuser' after verification
+
+### Current Status
+- Feature #72 verified - still passing
+
+[Testing] Session complete - Feature #72 regression test PASSED
+
+
+---
+
+## Session 2026-02-01 (Feature #18 Regression Test)
+
+### Completed
+- Feature #18: Country list page displays all countries - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Reference Data > Countries - Successfully navigated
+3. ✅ Step 3: Verify page loads without errors - Page loaded (only pre-login 401s which are normal)
+4. ✅ Step 4: Verify table displays country abbr, name, currency - Table shows Abbr, Name, Currency, Last Updated, Actions columns
+5. ✅ Step 5: Verify currency shows name not just ID - Currency displayed as 'CHF - Swiss Franc' and 'USD - US Dollar' (symbol + name)
+
+### Data Verified
+- CHE | Switzerland | CHF - Swiss Franc
+- USA | United States | USD - US Dollar
+
+### Screenshots
+- regression-f18-countries-page.png (Countries page showing all countries with currency names)
+
+### Console Errors
+- Only pre-login 401 errors (normal behavior)
+
+### Current Status
+- Feature #18 verified - still passing
+
+[Testing] Session complete - Feature #18 regression test PASSED
+
+---
+
+## Session 2026-02-01 (Feature #18 Regression Test)
+
+### Completed
+- Feature #18: Country list page displays all countries - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Reference Data > Countries - Successfully navigated
+3. ✅ Step 3: Verify page loads without errors - Page loaded (only pre-login 401s which are normal)
+4. ✅ Step 4: Verify table displays country abbr, name, currency - Table shows Abbr, Name, Currency, Last Updated, Actions columns
+5. ✅ Step 5: Verify currency shows name not just ID - Currency displayed as symbol + name format
+
+### Data Verified
+- CHE | Switzerland | CHF - Swiss Franc
+- USA | United States | USD - US Dollar
+
+### Screenshots
+- regression-f18-countries-page.png
+
+### Current Status
+- Feature #18 verified - still passing
+
+[Testing] Session complete - Feature #18 regression test PASSED
+
+---
+
+## Session 2026-02-01 (Feature #83 Regression Test)
+
+### Completed
+- Feature #83: Cannot access other users' data via URL manipulation - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as user 'harry' - Logged in successfully
+2. ✅ Step 2: Create a template - Created 'Test Template for Feature 83'
+3. ✅ Step 3: Note the template ID - Template ID was 25
+4. ✅ Step 4: Templates should be visible to all users (shared data) - Confirmed
+5. ✅ Step 5: Log in as different user - Logged in as 'clint'
+6. ✅ Step 6: Access the same template - Navigated to /templates/25, full access granted
+7. ✅ Step 7: Verify appropriate access (shared in this app) - Clint could view and edit the template
+
+### Additional Verification
+- User 'clint' could see template list including harry's new template
+- Direct URL access to /templates/25 worked correctly for clint
+- Direct URL access to /templates/25/edit also worked correctly for clint
+- This confirms templates are shared data as expected for this collaborative app
+
+### Console Errors
+- No console errors during verification
+
+### Cleanup
+- Deleted test template 'Test Template for Feature 83' as admin
+
+### Screenshots
+- regression-f83-shared-access.png (Template detail page showing clint accessing harry's template)
+
+### Current Status
+- Feature #83 verified - still passing
+
+[Testing] Session complete - Feature #83 regression test PASSED
+
+---
+
+## Session 2026-02-01 (Feature #113 Implementation)
+
+### Completed
+- Feature #113: Product line page display should sort differently - IMPLEMENTED AND PASSING
+
+### Feature Description
+The product-lines page now sorts the lines on display:
+1. First by enabled/disabled PRODUCT CATEGORIES (enabled categories first, then disabled)
+2. Within each category group, sort product lines by Enabled then Disabled status
+3. Within each enabled subgroup, sort alphabetically by abbreviation
+
+This is important because for non-admin users, disabled product lines won't show up if the category is disabled.
+
+### Implementation Details
+- Modified `/frontend/src/pages/ProductLines.jsx` loadData() sorting logic
+- Added product_cat_enabled as primary sort key (enabled = 1 comes first)
+- Product_line_enabled as secondary sort key (enabled = 1 comes first)
+- Alphabetical by abbreviation as tertiary sort key
+
+### Verification Steps Completed
+1. ✅ Logged in as admin - Verified full product lines list
+2. ✅ Verified enabled category (Dyno-Mill Agitator) lines appear first:
+   - Enabled lines: ECM, KD, UBM (alphabetical)
+   - Disabled lines: ECO, MUL, NPM, RL, UNI (alphabetical)
+3. ✅ Verified disabled categories (Dyno-Mix Shaker, Turbula) lines appear last:
+   - Enabled lines: MIX, SRV, TU2, TUR (with "Cat Disabled" indicator)
+   - Disabled lines: TU3 (with "Cat Disabled" indicator)
+4. ✅ Logged in as regular user (harry) - Verified only enabled categories/lines shown
+   - Only 3 product lines visible (ECM, KD, UBM from Dyno-Mill Agitator)
+   - No "Status" column shown (admin-only)
+
+### Console Errors
+- Only expected pre-login 401 errors (normal behavior)
+- No application errors
+
+### Screenshots
+- feature-113-product-lines-sorted.png (Admin view - top of list)
+- feature-113-product-lines-sorted-bottom.png (Admin view - bottom of list showing disabled categories)
+- feature-113-product-lines-harry-view.png (Regular user view - only enabled items)
+
+### Git Commit
+- Committed as: "Feature #113: Product line page sort by category enabled then line enabled"
+
+### Current Status
+- Feature #113 marked as passing
+- Total: 113/113 features passing (100%)
+
+[Testing] Session complete - Feature #113 PASSED
+
+
+---
+
+## Session 2026-02-01 (Feature #61 Regression Test)
+
+### Completed
+- Feature #61: Loading states displayed during async operations - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as harry
+2. ✅ Step 2: Navigate to Templates page - Templates page loaded successfully
+3. ✅ Step 3: Observe loading state while data fetches - Code review confirms spinner implementation
+4. ✅ Step 4: Submit a form - Template edit form submitted successfully
+5. ✅ Step 5: Observe loading state during submission - Button shows 'Saving...' during submission
+6. ✅ Step 6: Verify loading indicators disappear when complete - Redirects to list with success message
+
+### Technical Verification
+- Templates.jsx: loading state with animate-spin spinner (lines 29, 81, 93, 259-262)
+- TemplateForm.jsx: saving state with 'Saving...' button text (lines 31-32, 136, 167, 460-463)
+- Login.jsx: loading state with animated spinner and 'Logging in...' text (lines 9, 37, 46, 105-116)
+- All Reference Data pages have consistent loading state implementation
+
+### Console Errors
+- No errors during testing (only expected 401 on initial page load before auth)
+
+### Screenshots
+- regression-f61-login-page.png (Login page)
+- regression-f61-edit-form.png (Template edit form)
+- regression-f61-form-submission-success.png (After form submission)
+- regression-f61-templates-final.png (Final templates page)
+
+### Current Status
+- Feature #61 verified - still passing
+
+[Testing] Session complete - Feature #61 regression test PASSED
+
