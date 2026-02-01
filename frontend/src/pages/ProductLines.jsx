@@ -23,13 +23,19 @@ function ProductLines() {
         api.get('/product-lines'),
         api.get('/product-categories')
       ]);
-      // Sort: enabled first, then disabled; within each group by abbr alphabetically
+      // Sort: First by product category enabled (enabled categories first),
+      // then by product line enabled (enabled first within each category group),
+      // then alphabetically by abbreviation
       const sortedLines = linesRes.data.sort((a, b) => {
-        // First sort by enabled status (enabled = 1 comes first)
+        // First sort by product category enabled status (enabled = 1 comes first)
+        if (a.product_cat_enabled !== b.product_cat_enabled) {
+          return b.product_cat_enabled - a.product_cat_enabled; // 1 comes before 0
+        }
+        // Then sort by product line enabled status (enabled = 1 comes first)
         if (a.product_line_enabled !== b.product_line_enabled) {
           return b.product_line_enabled - a.product_line_enabled; // 1 comes before 0
         }
-        // Then sort alphabetically by abbreviation
+        // Finally sort alphabetically by abbreviation
         return (a.product_line_abbr || '').localeCompare(b.product_line_abbr || '');
       });
       setItems(sortedLines);
