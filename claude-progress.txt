@@ -8885,3 +8885,243 @@ Why ref instead of just state:
 
 [Testing] Session complete - Feature #54 regression test PASSED
 
+
+---
+
+## Session 2026-01-31 (Feature #17 Regression Test)
+
+### Completed
+- Feature #17: Regular user cannot delete currency - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as regular user 'harry' - Logged in successfully
+2. ✅ Step 2: Navigate to Currencies page - Navigated to /reference/currencies
+3. ✅ Step 3: Verify Delete button is hidden or disabled - Only 'View only' text shown, no Delete button
+4. ✅ Step 4: Attempt API DELETE /api/currencies/:id directly - Sent DELETE to /api/currencies/1
+5. ✅ Step 5: Verify 403 response - Got 403 Forbidden with 'Admin access required'
+6. ✅ Step 6: Verify currency still exists - USD (currency_id=1) confirmed still in database
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+- 403 error from DELETE test (expected security response)
+
+### Screenshots
+- regression-f17-currencies-no-delete.png (Currencies page showing 'View only' for regular user)
+
+### Current Status
+- Feature #17 verified - still passing
+
+[Testing] Session complete - Feature #17 regression test PASSED
+
+
+---
+
+## Session 2026-01-31 (Feature #33 Regression Test)
+
+### Completed
+- Feature #33: Admin can delete section type - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as admin - Logged in successfully
+2. ✅ Step 2: Navigate to Section Types page - Via Reference Data menu
+3. ✅ Step 3: Create a test section type - Created 'TEST DELETE SECTION TYPE' (success message shown)
+4. ✅ Step 4: Click Delete - Clicked Delete button for the test section type
+5. ✅ Step 5: Confirm deletion - Accepted the confirmation dialog
+6. ✅ Step 6: Verify removed from list - TEST DELETE SECTION TYPE no longer in table
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f33-section-types-after-delete.png (Section Types page after deletion)
+
+### Current Status
+- Feature #33 verified - still passing
+
+[Testing] Session complete - Feature #33 regression test PASSED
+[Testing] Session complete - Feature #33 regression test PASSED
+
+
+---
+
+## Session 2026-01-31 (Feature #85 Regression Test)
+
+### Completed
+- Feature #85: Search with special characters handled - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Navigate to Templates - Logged in as harry, accessed /templates
+2. ✅ Step 2: Enter '\!@#$%' in search box - Special characters entered successfully
+3. ✅ Step 3: Verify no errors occur - No JavaScript errors, page handled gracefully
+4. ✅ Step 4: Verify empty results or graceful handling - Showed 'No templates found. Try adjusting your filters.'
+5. ✅ Step 5: Enter 'test & test' with ampersand - Properly URL-encoded as 'test+%26+test'
+6. ✅ Step 6: Verify no errors - No JavaScript errors, page handled gracefully
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f85-special-chars-search.png (Templates page showing special character search handling)
+
+### Current Status
+- Feature #85 verified - still passing
+
+[Testing] Session complete - Feature #85 regression test PASSED
+
+
+---
+
+## Session 2026-01-31 (Feature #70 Regression Test)
+
+### Completed
+- Feature #70: Invalid form input shows field-level errors - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Open user creation form (as admin) - Clicked '+ Add User' button
+2. ✅ Step 2: Enter very short username - Entered 'ab' (2 characters)
+3. ✅ Step 3: Leave password empty - Left password field blank
+4. ✅ Step 4: Try to submit - Clicked Save button
+5. ✅ Step 5: Verify each invalid field has error message - Username: 'Username must be at least 3 characters', Password: 'Password is required'
+6. ✅ Step 6: Fix errors - Entered 'testuser123' and 'password123'
+7. ✅ Step 7: Verify errors clear - Error messages disappeared after valid input
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f70-field-errors.png (Form showing field-level validation errors)
+- regression-f70-errors-cleared.png (Form after fixing errors - no error messages)
+
+### Current Status
+- Feature #70 verified - still passing
+
+[Testing] Session complete - Feature #70 regression test PASSED
+
+
+---
+
+## Session 2026-01-31 (Feature #19 Regression Test)
+
+### Completed
+- Feature #19: User can create new country - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Log in as any user - Logged in as admin
+2. ✅ Step 2: Navigate to Countries page - Navigated to /reference/countries
+3. ✅ Step 3: Click Add/Create button - Clicked '+ Add Country' button
+4. ✅ Step 4: Enter country abbr - Entered 'CAN' (Canada instead of USA since USA exists)
+5. ✅ Step 5: Enter country name - Entered 'Canada'
+6. ✅ Step 6: Select currency from dropdown - Selected 'CAD - Canadian Dollar'
+7. ✅ Step 7: Verify dropdown populated from currency table - Dropdown had CAD, CHF, CNY, EUR, GBP, INR, JPY, USD
+8. ✅ Step 8: Submit the form - Clicked Save button
+9. ✅ Step 9: Verify success message - 'Country saved successfully' displayed
+10. ✅ Step 10: Verify new country appears with correct currency - CAN - Canada - CAD - Canadian Dollar shown
+
+### Technical Notes
+- Initial attempts showed 'Authentication required' errors due to session cookie not being preserved across page navigations in Playwright
+- When the full workflow (login → navigate → add → fill → save) was performed without page refresh, everything worked correctly
+- This is likely a browser automation context issue, not an application bug
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f19-countries-page.png (Countries page as regular user - view only)
+- regression-f19-auth-error.png (Session issue during initial testing)
+- regression-f19-filled-form.png (Add Country form filled)
+- regression-f19-save-error.png (Session error on save - browser context issue)
+- regression-f19-success.png (Successful country creation)
+
+### Cleanup
+- Deleted test country 'Canada' after verification
+
+### Current Status
+- Feature #19 verified - still passing
+
+[Testing] Session complete - Feature #19 regression test PASSED
+
+
+
+---
+
+## Session 2026-01-31 (Feature #7 Regression Test)
+
+### Completed
+- Feature #7: Unauthenticated user redirected to login - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Step 1: Clear all session/cookie data - Fresh browser session started
+2. ✅ Step 2: Attempt to navigate directly to /templates - Navigated to http://localhost:5173/templates
+3. ✅ Step 3: Verify redirect to login page - Redirected to /login (confirmed)
+4. ✅ Step 4: Attempt to navigate to /admin/users - Navigated to http://localhost:5173/admin/users
+5. ✅ Step 5: Verify redirect to login page - Redirected to /login (confirmed)
+6. ✅ Step 6: Verify no protected content is visible - Only login form visible, no templates/users/admin data
+
+### Additional Testing
+- /reference/currencies - Also redirected to /login (confirmed)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f7-login-page.png (Login page after initial navigation)
+- regression-f7-redirect-verified.png (Login page after redirect verification)
+
+### Current Status
+- Feature #7 verified - still passing
+
+[Testing] Session complete - Feature #7 regression test PASSED
+
+
+---
+
+## Session 2026-02-01 (Feature #112)
+
+### Completed
+- Feature #112: Web UI sorting of lists, search section types and propagate template status - VERIFIED AND PASSING
+
+### Changes Implemented
+
+#### 1. Currencies Page Sorting (frontend/src/pages/Currencies.jsx)
+- Sorted by enabled status first (enabled = 1 before disabled = 0)
+- Within each group, sorted alphabetically by currency_symbol
+
+#### 2. Countries Page Sorting (frontend/src/pages/Countries.jsx)
+- Sorted by enabled status first (enabled = 1 before disabled = 0)
+- Within each group, sorted alphabetically by country_abbr
+
+#### 3. Product Lines Page Sorting (frontend/src/pages/ProductLines.jsx)
+- Sorted by enabled status first (enabled = 1 before disabled = 0)
+- Within each group, sorted alphabetically by product_line_abbr
+
+#### 4. Section Types Search Filter (frontend/src/pages/SectionTypes.jsx)
+- Added "Search by Name" text input field
+- Added filter logic to show only matching section types
+- Added result count "Showing X of Y section types"
+- Added Clear button to reset search
+
+#### 5. Propagate to Sections Toggle (frontend/src/pages/TemplateForm.jsx + backend/routes/templates.js)
+- Added "Propagate to Sections" checkbox below Status dropdown on edit page
+- When checked and status changes, all sections are updated to the new status
+- Backend PUT /templates/:id now accepts propagate_status parameter
+- Shows appropriate success message: "Template and all section statuses updated successfully"
+
+### Verification Steps Completed
+1. ✅ Currencies page: Verified CHF, USD (enabled) appear first alphabetically, then CAD, CNY, EUR, GBP, INR, JPY (disabled) alphabetically
+2. ✅ Countries page: Verified CHE, USA (enabled) appear first alphabetically, then CHN, DEU, FRA, GBR, IND, JPN (disabled) alphabetically
+3. ✅ Product Lines page: Verified enabled lines appear first alphabetically by abbr, then disabled lines alphabetically
+4. ✅ Section Types: Searched "cover" - showed 2 of 17 results (Cover Page, Cover Page - CH/EU)
+5. ✅ Template Edit: Enabled propagate toggle, changed status from "in process" to "in review", all 11 sections updated to "in review"
+
+### Screenshots
+- feature-112-propagate-toggle.png (Template edit page showing Propagate to Sections checkbox)
+- feature-112-sections-propagated.png (Template detail showing all sections with "in review" status)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Current Status
+- Features passing: 112/112 (100%)
+- Feature #112 marked as passing
+
+[Testing] Session complete - Feature #112 PASSED

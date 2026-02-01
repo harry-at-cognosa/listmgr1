@@ -23,7 +23,16 @@ function ProductLines() {
         api.get('/product-lines'),
         api.get('/product-categories')
       ]);
-      setItems(linesRes.data);
+      // Sort: enabled first, then disabled; within each group by abbr alphabetically
+      const sortedLines = linesRes.data.sort((a, b) => {
+        // First sort by enabled status (enabled = 1 comes first)
+        if (a.product_line_enabled !== b.product_line_enabled) {
+          return b.product_line_enabled - a.product_line_enabled; // 1 comes before 0
+        }
+        // Then sort alphabetically by abbreviation
+        return (a.product_line_abbr || '').localeCompare(b.product_line_abbr || '');
+      });
+      setItems(sortedLines);
       setCategories(catsRes.data);
     } catch (err) {
       setError(err.error || 'Failed to load product lines');

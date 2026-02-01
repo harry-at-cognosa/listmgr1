@@ -19,7 +19,16 @@ function Currencies() {
     try {
       setLoading(true);
       const response = await api.get('/currencies');
-      setCurrencies(response.data);
+      // Sort: enabled first, then disabled; within each group by symbol alphabetically
+      const sortedData = response.data.sort((a, b) => {
+        // First sort by enabled status (enabled = 1 comes first)
+        if (a.currency_enabled !== b.currency_enabled) {
+          return b.currency_enabled - a.currency_enabled; // 1 comes before 0
+        }
+        // Then sort alphabetically by symbol
+        return (a.currency_symbol || '').localeCompare(b.currency_symbol || '');
+      });
+      setCurrencies(sortedData);
     } catch (err) {
       setError(err.error || 'Failed to load currencies');
     } finally {

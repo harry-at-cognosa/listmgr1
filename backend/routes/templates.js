@@ -185,7 +185,8 @@ router.put('/:id', async (req, res) => {
       country_id, currency_id, product_cat_id, product_line_id,
       plsqt_name, plsqt_order_codes, plsqt_desc, plsqt_comment,
       plsqt_fbo_location, plsqt_as_of_date, plsqt_extrn_file_ref,
-      plsqt_active, plsqt_enabled, plsqt_version, plsqt_content, plsqt_status
+      plsqt_active, plsqt_enabled, plsqt_version, plsqt_content, plsqt_status,
+      propagate_status  // If true, propagate status to all sections
     } = req.body;
 
     const now = getDateTime();
@@ -253,6 +254,17 @@ router.put('/:id', async (req, res) => {
     }
 
     await db.query(query, params);
+
+    // If propagate_status is true and status changed, update all sections with the new status
+    if (propagate_status && statusChanged) {
+      await db.query(
+        `UPDATE plsqt_sections SET
+          plsqts_status = $1, status_datetime = $2,
+          last_update_datetime = $2, last_update_user = $3
+         WHERE plsqt_id = $4`,
+        [plsqt_status, now, req.session.user.username, req.params.id]
+      );
+    }
 
     // Get the updated row
     const result = await db.query('SELECT * FROM plsq_templates WHERE plsqt_id = $1', [req.params.id]);

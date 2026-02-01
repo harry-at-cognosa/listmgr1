@@ -23,7 +23,16 @@ function Countries() {
         api.get('/countries'),
         api.get('/currencies')
       ]);
-      setCountries(countriesRes.data);
+      // Sort: enabled first, then disabled; within each group by abbr alphabetically
+      const sortedCountries = countriesRes.data.sort((a, b) => {
+        // First sort by enabled status (enabled = 1 comes first)
+        if (a.country_enabled !== b.country_enabled) {
+          return b.country_enabled - a.country_enabled; // 1 comes before 0
+        }
+        // Then sort alphabetically by abbreviation
+        return (a.country_abbr || '').localeCompare(b.country_abbr || '');
+      });
+      setCountries(sortedCountries);
       setCurrencies(currenciesRes.data);
     } catch (err) {
       setError(err.error || 'Failed to load data');

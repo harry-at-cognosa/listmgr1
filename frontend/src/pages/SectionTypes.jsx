@@ -10,6 +10,7 @@ function SectionTypes() {
   const [success, setSuccess] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     loadData();
@@ -40,6 +41,13 @@ function SectionTypes() {
     }
   };
 
+  // Filter items by search term (name)
+  const filteredItems = items.filter(item => {
+    if (!searchTerm.trim()) return true;
+    const name = (item.plsqtst_name || '').toLowerCase();
+    return name.includes(searchTerm.toLowerCase().trim());
+  });
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -52,6 +60,36 @@ function SectionTypes() {
         </button>
       </div>
 
+      {/* Search Filter */}
+      <div className="mb-4 bg-white rounded-lg shadow-sm p-4">
+        <div className="flex items-center gap-4">
+          <div className="flex-1">
+            <label htmlFor="section-type-search" className="block text-sm font-medium text-gray-700 mb-1">Search by Name</label>
+            <input
+              type="text"
+              id="section-type-search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Enter section type name..."
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            />
+          </div>
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm('')}
+              className="mt-6 px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        {searchTerm && (
+          <p className="mt-2 text-sm text-gray-500">
+            Showing {filteredItems.length} of {items.length} section types
+          </p>
+        )}
+      </div>
+
       {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md">{error}</div>}
       {success && <div className="mb-4 p-3 bg-green-50 text-green-700 rounded-md">{success}</div>}
 
@@ -60,8 +98,10 @@ function SectionTypes() {
           <div className="p-8 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
           </div>
-        ) : items.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">No section types found. Add your first section type!</div>
+        ) : filteredItems.length === 0 ? (
+          <div className="p-8 text-center text-gray-500">
+            {searchTerm ? 'No section types match your search.' : 'No section types found. Add your first section type!'}
+          </div>
         ) : (
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -76,7 +116,7 @@ function SectionTypes() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {items.map(item => (
+              {filteredItems.map(item => (
                 <tr key={item.plsqtst_id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 font-medium">{item.plsqtst_name}</td>
                   <td className="px-6 py-4">

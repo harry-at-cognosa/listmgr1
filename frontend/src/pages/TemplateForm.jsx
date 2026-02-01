@@ -59,6 +59,10 @@ function TemplateForm() {
     plsqt_status: 'not started'
   });
 
+  // Track original status for comparison and propagate toggle
+  const [originalStatus, setOriginalStatus] = useState('not started');
+  const [propagateToSections, setPropagateToSections] = useState(false);
+
   useEffect(() => {
     loadReferenceData();
     if (isEditing) {
@@ -88,6 +92,7 @@ function TemplateForm() {
       setLoading(true);
       const response = await api.get(`/templates/${id}`);
       const template = response.data;
+      const status = template.plsqt_status || 'not started';
       setFormData({
         plsqt_name: template.plsqt_name || '',
         country_id: template.country_id || '',
@@ -104,8 +109,9 @@ function TemplateForm() {
         plsqt_enabled: template.plsqt_enabled === 1,
         plsqt_version: template.plsqt_version || '',
         plsqt_content: template.plsqt_content || '',
-        plsqt_status: template.plsqt_status || 'not started'
+        plsqt_status: status
       });
+      setOriginalStatus(status);
     } catch (err) {
       setError(err.error || 'Failed to load template');
     } finally {
@@ -139,9 +145,17 @@ function TemplateForm() {
         plsqt_as_of_date: formData.plsqt_as_of_date || null
       };
 
+      // Add propagate_status flag if editing and toggle is on and status changed
+      if (isEditing && propagateToSections && formData.plsqt_status !== originalStatus) {
+        dataToSubmit.propagate_status = true;
+      }
+
       if (isEditing) {
         await api.put(`/templates/${id}`, dataToSubmit);
-        navigate(templatesUrl, { state: { success: 'Template updated successfully' } });
+        const message = propagateToSections && formData.plsqt_status !== originalStatus
+          ? 'Template and all section statuses updated successfully'
+          : 'Template updated successfully';
+        navigate(templatesUrl, { state: { success: message } });
       } else {
         await api.post('/templates', dataToSubmit);
         navigate(templatesUrl, { state: { success: 'Template created successfully' } });
@@ -279,6 +293,24 @@ function TemplateForm() {
                   <option key={status} value={status}>{status}</option>
                 ))}
               </select>
+              {/* Propagate to Sections toggle - only show when editing and status is changed */}
+              {isEditing && (
+                <div className="mt-2 flex items-center">
+                  <input
+                    type="checkbox"
+                    id="propagate_to_sections"
+                    checked={propagateToSections}
+                    onChange={(e) => setPropagateToSections(e.target.checked)}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="propagate_to_sections" className="ml-2 text-sm text-gray-700">
+                    Propagate to Sections
+                  </label>
+                  <span className="ml-2 text-xs text-gray-500">
+                    (When enabled, status changes will apply to all sections)
+                  </span>
+                </div>
+              )}
             </div>
 
             <div>
