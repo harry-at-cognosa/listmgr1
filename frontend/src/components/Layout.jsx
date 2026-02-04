@@ -147,6 +147,9 @@ function Layout() {
                 <NavLink to="/admin/settings" className={navLinkClass} onClick={closeMobileMenu}>
                   App Settings
                 </NavLink>
+                <NavLink to="/admin/price-conversion" className={navLinkClass} onClick={closeMobileMenu}>
+                  Price Conversion
+                </NavLink>
               </>
             )}
           </nav>

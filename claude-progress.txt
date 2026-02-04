@@ -1,3 +1,73 @@
+## Session 2026-02-04 (Feature #116 - Price Conversion Manager Web Page)
+
+### Completed
+- Feature #116: Add Price Conversion Manager web page for admin users - IMPLEMENTED AND VERIFIED
+
+### Implementation Summary
+Created a full-featured admin-only web page for managing price conversion data with three tabs:
+
+1. **Factor Types Tab**
+   - View, add, edit, delete factor types
+   - Fields: Code (max 3 chars), Description
+   - Validation prevents deleting factors in use by values
+
+2. **Country Pairs Tab**
+   - View, add, edit, delete country conversion pairs
+   - Dropdown selects for from/to countries
+   - Validation prevents same from/to country
+   - Validation prevents duplicate pairs
+
+3. **Factor Values Tab**
+   - View, add, edit, delete factor values
+   - Dropdowns for factor type and country pair
+   - Date range fields (from/to)
+   - Two multiplier fields with 4 decimal precision
+   - Server-side overlap prevention via GiST constraint
+
+### Files Created
+- backend/routes/priceConversion.js - API routes for all 3 tables
+- frontend/src/pages/PriceConversion.jsx - React page with 3 tabbed panels
+
+### Files Modified
+- backend/index.js - Added priceConversion routes with requireAdmin middleware
+- frontend/src/App.jsx - Added route for /admin/price-conversion with AdminRoute wrapper
+- frontend/src/components/Layout.jsx - Added "Price Conversion" navigation link for admins
+
+### Security Verification
+- Route protected with AdminRoute wrapper (frontend)
+- API protected with requireAdmin middleware (backend)
+- Regular users cannot see navigation link
+- Regular users redirected when accessing URL directly
+- API returns 403 for non-admin users
+
+### Verification Steps Completed
+1. ✅ Page loads for admin users
+2. ✅ All 3 tabs display correct data from database
+3. ✅ Factor Types tab shows FX, MU seed data
+4. ✅ Country Pairs tab shows CHE -> USA seed data
+5. ✅ Factor Values tab shows both FX and MU values
+6. ✅ CRUD operations work (tested add/delete on Factor Types)
+7. ✅ Regular users cannot see navigation link
+8. ✅ Regular users redirected when accessing URL directly
+9. ✅ No JavaScript console errors
+
+### Screenshots
+- f116-price-conversion-factors-tab.png - Factor Types tab
+- f116-country-pairs-tab.png - Country Pairs tab
+- f116-factor-values-tab.png - Factor Values tab
+- f116-factor-created.png - Test factor created successfully
+- f116-regular-user-no-access.png - Regular user cannot see link
+
+### Console Errors
+- None (0 errors after login)
+
+### Current Status
+- 116/116 features passing (100% complete!)
+
+[Implementation] Session complete - Feature #116 Price Conversion Manager COMPLETED
+
+---
+
 ## Session 2026-02-04 (Feature #115 - Price Conversion Tables)
 
 ### Completed
@@ -471,3 +541,333 @@ Migration includes:
 - regression-f1-app-loads.png
 
 [Testing] Session complete - Feature #1 regression test PASSED
+
+## Session 2026-02-04 (Feature #105 Regression Test)
+
+### Feature #105: Database schema updates for bigger content fields - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry
+2. ✅ Navigated to Template Edit form (/templates/1/edit)
+3. ✅ Verified all TEXT fields have character limits displayed:
+   - Template Name: 44/250 characters
+   - Order Codes: 0/250 characters
+   - FBO Location: 0/250 characters
+   - Version: 0/200 characters
+   - Description: 63/2000 characters
+   - Content: 0/10000 characters
+   - Comment: 0/2000 characters
+   - External File Reference: 41/1000 characters
+4. ✅ Navigated to Section Edit form
+5. ✅ Verified Section TEXT fields have character limits:
+   - Alternate Name: 0/200 characters
+   - Version: 0/200 characters
+   - Comment: 0/2000 characters
+   - External File Reference: 0/1000 characters (NEW field in UI)
+   - Content: 0/10000 characters
+6. ✅ Verified Add Section form also has External File Reference field
+7. ✅ Verified backend routes use new column names (plsqt_extrn_file_ref, plsqts_extrn_file_ref, etc.)
+
+### Console Errors
+- None (only expected 401 errors before login)
+
+### Screenshots
+- regression-f105-template-edit-form.png
+- regression-f105-section-add-form.png
+
+[Testing] Session complete - Feature #105 regression test PASSED
+
+## Session 2026-02-04 (Feature #59 Regression Test)
+
+### Feature #59: Forms have consistent styling - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Visited Currency create form (modal)
+2. ✅ Visited Template create form (full page)
+3. ✅ Visited Section create form (modal)
+4. ✅ Verified consistent input field styling:
+   - All text inputs use same border color (light gray)
+   - All dropdowns use same styling
+   - All textareas use same styling
+5. ✅ Verified consistent button styles:
+   - Primary actions (Save/Create/Update): blue background, white text
+   - Secondary actions (Cancel): gray/white background
+6. ✅ Verified proper spacing and alignment:
+   - Labels consistently above inputs
+   - Consistent vertical spacing between fields
+   - Character counters below applicable fields
+   - Button groups aligned (Cancel left, primary right)
+
+### Additional Verification
+- Edit forms (Currency Edit, Section Edit) match Create form styling
+- Required fields marked with red asterisk (*)
+- Helper text styled consistently (gray, smaller font)
+
+### Console Errors
+- None (only expected warnings about React Router)
+
+### Screenshots
+- regression-f59-currency-form.png
+- regression-f59-template-form.png
+- regression-f59-section-form.png
+- regression-f59-section-edit-form.png
+- regression-f59-currency-edit-form.png
+
+[Testing] Session complete - Feature #59 regression test PASSED
+
+
+## Session 2026-02-04 (Feature #57 Regression Test)
+
+### Feature #57: Status badges display correct colors - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Viewed Templates list - status badges visible
+3. ✅ Verified 'not started' shows GRAY badge
+4. ✅ Verified 'in process' shows BLUE badge (template 24)
+5. ✅ Verified 'in review' shows YELLOW badge (changed template 1 status)
+6. ✅ Verified 'approved' shows GREEN badge (changed template 1 status)
+7. ✅ Verified 'cloned' shows PURPLE badge (changed template 1 status)
+8. ✅ Restored template 1 to 'not started' status
+
+### Status Badge Color Summary
+- not started: Gray ✓
+- in process: Blue ✓
+- in review: Yellow ✓
+- approved: Green ✓
+- cloned: Purple ✓
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f57-status-badges-list.png (templates list with gray/blue badges)
+- regression-f57-template-detail.png (template detail with status badge)
+- regression-f57-in-review-badge.png (yellow badge verified)
+- regression-f57-approved-badge.png (green badge verified)
+- regression-f57-cloned-badge.png (purple badge verified)
+- regression-f57-final-verified.png (final state with restored status)
+
+[Testing] Session complete - Feature #57 regression test PASSED
+
+
+## Session 2026-02-04 (Feature #20 Regression Test)
+
+### Feature #20: User can edit existing country - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin user
+2. ✅ Navigated to Countries page (Reference Data > Countries)
+3. ✅ Clicked Edit on Switzerland (CHE)
+4. ✅ Changed currency from CHF - Swiss Franc to EUR - Euro
+5. ✅ Submitted form by clicking Save
+6. ✅ Verified "Country saved successfully" message appeared
+7. ✅ Verified updated currency (EUR - Euro) displays correctly in table
+8. ✅ Verified last_update_datetime and last_update_user updated
+9. ✅ Restored Switzerland back to CHF - Swiss Franc (data cleanup)
+
+### Console Errors
+- Only expected 401 Unauthorized errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f20-country-edit-success.png (showing EUR currency after edit)
+- regression-f20-country-restored.png (showing CHF currency restored)
+
+[Testing] Session complete - Feature #20 regression test PASSED
+
+## Session 2026-02-04 (Feature #60 Regression Test)
+
+### Feature #60: Tables have readable styling - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Viewed Currencies list table - displays correctly
+2. ✅ Viewed Templates list table - displays correctly
+3. ✅ Verified consistent table styling across both tables
+4. ✅ Verified header row distinguished (uppercase, gray text)
+5. ✅ Verified hover states on rows (hover:bg-gray-50 class present)
+6. ✅ Verified columns properly aligned
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f60-templates-table.png
+- regression-f60-currencies-table.png
+
+[Testing] Session complete - Feature #60 regression test PASSED
+
+
+## Session 2026-02-04 (Feature #12 Regression Test)
+
+### Feature #12: API returns 403 for unauthorized role access - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as regular user 'harry'
+2. ✅ Made DELETE request to /api/currencies/1 - received 403 Forbidden with 'Admin access required'
+3. ✅ Verified 403 response for currency delete
+4. ✅ Made DELETE request to /api/users/1 - received 403 Forbidden with 'Admin access required'
+5. ✅ Verified 403 response for user delete
+6. ✅ Verified data was NOT deleted:
+   - Currency 1 (USD) still exists in the database
+   - User 1 (admin) and all other users still exist in User Management
+
+### Console Errors
+- Expected 403 errors from the DELETE attempts (confirming authorization is working)
+- No unexpected JavaScript errors
+
+### Screenshot
+- regression-f12-403-authorization.png
+
+[Testing] Session complete - Feature #12 regression test PASSED
+
+## Session 2026-02-04 (Feature #33 Regression Test)
+
+### Feature #33: Admin can delete section type - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin user
+2. ✅ Navigated to Section Types page (Reference Data > Section Types)
+3. ✅ Created test section type 'TEST DELETE ME'
+4. ✅ Clicked Delete button for the test section type
+5. ✅ Confirmed deletion in the 'Are you sure?' dialog
+6. ✅ Verified the section type was removed from the list
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+- No JavaScript errors during deletion
+
+### Screenshot
+- regression-f33-section-type-deleted.png
+
+[Testing] Session complete - Feature #33 regression test PASSED
+
+## Session 2026-02-04 (Feature #33 Regression Test)
+
+### Feature #33: Admin can delete section type - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin user
+2. ✅ Navigated to Section Types page (Reference Data > Section Types)
+3. ✅ Created test section type 'TEST DELETE ME'
+4. ✅ Clicked Delete button for the test section type
+5. ✅ Confirmed deletion in the 'Are you sure?' dialog
+6. ✅ Verified the section type was removed from the list
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+- No JavaScript errors during deletion
+
+### Screenshot
+- regression-f33-section-type-deleted.png
+
+[Testing] Session complete - Feature #33 regression test PASSED
+
+## Session 2026-02-04 (Feature #54 Regression Test)
+
+### Feature #54: Section tabbed interface works - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry
+2. ✅ Viewed Template 1 with 11 sections
+3. ✅ Verified 'Section Editor (Tabs)' heading with 11 numbered tabs displayed
+4. ✅ Clicked different tabs (1.Cover Page, 3.General Technical Data, 5.Product Pump FM-600)
+5. ✅ Verified correct section content loads for each tab:
+   - Tab 1: Section Type=Cover Page, Sequence=1
+   - Tab 3: Section Type=General Technical Data, Sequence=3, Alternate Name='Quote Header'
+   - Tab 5: Section Type=Product Pump, Sequence=5, Alternate Name='Product Pump FM-600', Content populated
+6. ✅ Verified edits on one tab don't affect others (each tab maintains its own section data)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshot
+- regression-f54-tabbed-interface.png
+
+[Testing] Session complete - Feature #54 regression test PASSED
+
+
+## Session 2026-02-04 (Feature #115 Regression Test)
+
+### Feature #115: New price conversion tables added to database - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Verified price_conv_factors table via API - contains FX and MU seed data
+2. ✅ Verified country_conversion_pairs table via API - contains CHE → USA pair
+3. ✅ Verified pconv_factor_values table via API - contains 2026 multiplier values
+4. ✅ Logged in as admin user
+5. ✅ Navigated to Price Conversion Manager page
+6. ✅ Factor Types tab displays correctly (FX, MU)
+7. ✅ Country Pairs tab displays correctly (CHE → USA)
+8. ✅ Factor Values tab displays correctly with all seed data:
+   - FX: CHE → USA, 2026-01-01 to 2026-12-31, Mult 1: 1.1000, Mult 2: 1.5400
+   - MU: CHE → USA, 2026-01-01 to 2026-12-31, Mult 1: 1.3000, Mult 2: 2.1800
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f115-factor-types-verified.png
+- regression-f115-factor-values-verified.png
+
+[Testing] Session complete - Feature #115 regression test PASSED
+
+## Session 2026-02-04 (Feature #4 Regression Test)
+
+### Feature #4: User can log in with valid credentials - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Navigated to login page (http://localhost:5173/login)
+2. ✅ Entered valid username 'admin'
+3. ✅ Entered valid password 'admin'
+4. ✅ Clicked Login button
+5. ✅ Verified redirect to /templates page
+6. ✅ Verified 'Logged in as admin (Admin)' displayed in header
+7. ✅ Verified session established - all API calls return 200 OK after login
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshot
+- regression-f4-login-success.png
+
+[Testing] Session complete - Feature #4 regression test PASSED
+
+## Session 2026-02-04 (Feature #107 Regression Test)
+
+### Feature #107: app_settings capability - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Verified login page shows client_name ('XYZ Company (emerald)')
+2. ✅ Verified login page shows app_version ('1.5 filtered retrieval')
+3. ✅ Verified login page shows db_version ('1.5 (blobs, customer_quotes)')
+4. ✅ Logged in as admin user
+5. ✅ Navigated to App Settings page (/admin/settings)
+6. ✅ Verified all 5 settings displayed in admin UI:
+   - Application Version: text input
+   - Client Name: text input
+   - Database Version: text input
+   - Landing Page HTML: textarea with preview
+   - Theme Color: dropdown + 22 color swatches
+7. ✅ Tested theme color change (emerald → blue → emerald)
+8. ✅ Verified success message on save
+9. ✅ Verified /api/public-settings endpoint returns correct data
+10. ✅ Verified /api/app-settings/all endpoint returns all 5 settings
+11. ✅ Verified database contains all seed data
+
+### API Endpoints Verified
+- GET /api/public-settings (unauthenticated) ✓
+- GET /api/app-settings (authenticated) ✓
+- GET /api/app-settings/all (admin only) ✓
+- PUT /api/app-settings/:name (admin only) ✓
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f107-login-page.png
+- regression-f107-app-settings-page.png
+- regression-f107-theme-colors.png
+- regression-f107-theme-changed-to-blue.png
+
+[Testing] Session complete - Feature #107 regression test PASSED
+
