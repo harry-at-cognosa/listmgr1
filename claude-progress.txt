@@ -1,3 +1,71 @@
+## Session 2026-02-04 (Feature #114 - Database Schema Migration)
+
+### Completed
+- Feature #114: Database changes including blob storage and timestamp fixes - IMPLEMENTED AND VERIFIED
+
+### Migration Summary
+All 5 migration steps completed successfully:
+
+1. ✅ **VARCHAR to TIMESTAMPTZ conversion** (12 columns)
+   - country.last_update_datetime
+   - currency.last_update_datetime
+   - customer_quotes.last_update_datetime
+   - customer_quotes.status_datetime
+   - plsq_templates.last_update_datetime
+   - plsq_templates.status_datetime
+   - plsqt_sections.last_update_datetime
+   - plsqt_sections.status_datetime
+   - plsqts_type.last_update_datetime
+   - product_cat.last_update_datetime
+   - product_line.last_update_datetime
+   - users.last_update_datetime
+
+2. ✅ **document_blob table created** (7 columns)
+   - Content-addressable blob storage with SHA-256 deduplication
+   - Columns: blob_id, bytes, sha256, size_bytes, content_type, original_filename, created_at
+
+3. ✅ **document_blob_history table created** (6 columns)
+   - Version tracking for blob changes
+   - Columns: history_id, entity_type, entity_id, blob_id, replaced_at, replaced_by
+   - Indexes: idx_blob_history_entity, idx_blob_history_blob
+
+4. ✅ **current_blob_id added to plsq_templates**
+   - BIGINT FK to document_blob
+   - Index: idx_templates_blob
+
+5. ✅ **customer_quotes table created** (23 columns)
+   - New table for customer quotes with full FK relationships
+   - Includes current_blob_id and source_template_id
+   - 5 indexes created
+
+### Additional Changes
+- Updated CORS in backend/index.js to support multiple frontend ports (5173-5176)
+- pgcrypto extension enabled for SHA-256 hashing
+
+### Verification
+- Created and deleted test currency to verify TIMESTAMPTZ columns work
+- All existing data properly converted
+- UI displays timestamps in ISO format correctly
+- CRUD operations work end-to-end
+
+### Screenshots
+- f114-currency-created.png - Shows new currency with TIMESTAMPTZ timestamp
+- f114-template-view.png - Shows template view with proper timestamp format
+
+### Files Created
+- backend/migrations/114-database-changes.js - Migration script
+- backend/migrations/verify-114.js - Verification script
+
+### Console Errors
+- None (0 errors after login)
+
+### Current Status
+- 114/114 features (if marked passing)
+
+[Implementation] Session complete - Feature #114 database migration COMPLETED
+
+---
+
 ## Session 2026-02-01 (Feature #112 Regression Test)
 
 ### Completed
@@ -24,3 +92,139 @@
 - Feature #112 verified - still passing
 
 [Testing] Session complete - Feature #112 regression test PASSED
+
+## Session 2026-02-03 (Feature #7 Regression Test)
+
+### Feature #7: Unauthenticated user redirected to login - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Cleared localStorage and sessionStorage
+2. ✅ Navigated to /templates - redirected to /login
+3. ✅ Navigated to /admin/users - redirected to /login
+4. ✅ Navigated to /currencies - redirected to /login
+5. ✅ No protected content visible on login page
+6. ✅ API returns 401 Unauthorized for unauthenticated requests (expected)
+
+### Screenshot
+- regression-f7-login-page.png
+
+[Testing] Session complete - Feature #7 regression test PASSED
+
+## Session 2026-02-04 (Feature #74 Regression Test)
+
+### Feature #74: Admin can delete user - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Created test user 'testdelete' with password 'testdelete123'
+3. ✅ Clicked Delete button on test user
+4. ✅ Confirmed deletion via dialog
+5. ✅ Verified user removed from user list
+6. ✅ Logged out and attempted login as deleted user
+7. ✅ Login failed with 'Invalid username or password' message
+
+### Screenshots
+- regression-f74-deleted-user-login-fails.png
+
+[Testing] Session complete - Feature #74 regression test PASSED
+
+## Session 2026-02-04 (Feature #94 Regression Test)
+
+### Completed
+- Feature #94: Application displays correctly on mobile (375px width) - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Browser set to 375px width (iPhone SE size)
+2. ✅ Login page works - form displays correctly, fields usable
+3. ✅ Navigation accessible - hamburger menu opens sidebar with all nav links
+4. ✅ Forms usable - Add User form displays properly with full-width fields
+5. ✅ Touch targets reasonable size - Edit/Clone/Delete buttons properly sized
+6. ✅ Text readable without zooming - all headings and content legible
+
+### Console Errors
+- Only expected 401 errors before login (auth checks)
+
+[Testing] Session complete - Feature #94 regression test PASSED
+
+## Session 2026-02-03 (Feature #91 Regression Test)
+
+### Feature #91: Form fields have associated labels - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Navigated to Currency create form
+2. ✅ Inspected HTML for label-input associations
+3. ✅ Verified each input has a label element
+4. ✅ Verified labels are properly associated (for/id attributes)
+5. ✅ Checked Template create form
+6. ✅ Verified all fields labeled
+
+### Currency Form (3 fields):
+- currency_symbol → 'Symbol *' ✅
+- currency_name → 'Name' ✅
+- currency_enabled → 'Enabled...' ✅
+
+### Template Form (16 fields):
+- All inputs, selects, textareas, and checkboxes have proper label associations
+
+### Console Errors
+- Only expected 401 errors from pre-login state (expected behavior)
+
+### Screenshots
+- regression-f91-template-form.png
+
+[Testing] Session complete - Feature #91 regression test PASSED
+
+## Session 2026-02-04 (Feature #46 Regression Test)
+
+### Feature #46: User can clone template - VERIFIED AND PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Selected template ID 1 with 11 sections
+3. ✅ Original template ID noted (ID 1)
+4. ✅ Clicked Clone button on template
+5. ✅ New template created with different ID (ID 26)
+6. ✅ New template has status 'cloned'
+7. ✅ All 11 sections were copied with new IDs
+8. ✅ Original template unchanged (status still 'not started')
+9. ✅ All cloned sections have status 'cloned'
+
+### Additional Verification
+- Clone success message displayed: 'Template cloned successfully'
+- Cloned template name has '(Clone)' suffix
+- Last updated timestamp shows current user (harry) and time
+
+### Console Errors
+- None (only expected 401 errors before login)
+
+### Screenshots
+- regression-f46-cloned-template.png
+- regression-f46-original-unchanged.png
+
+### Cleanup
+- Deleted cloned template to restore test data
+
+[Testing] Session complete - Feature #46 regression test PASSED
+
+
+## Session 2026-02-04 (Feature #65 Regression Test)
+
+### Feature #65: Confirmation dialog for delete operations - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Clicked Delete on a currency (CAD)
+3. ✅ Confirmation dialog appeared with message 'Are you sure you want to delete this currency?'
+4. ✅ Dialog explains what will be deleted (this currency)
+5. ✅ Clicked Cancel
+6. ✅ Verified CAD was NOT deleted (still in list)
+7. ✅ Created test currency 'ZZZ', clicked Delete, and confirmed
+8. ✅ Verified ZZZ test currency was successfully deleted
+
+### Console Errors
+- Only expected 401 errors before login and 400 error when trying to create duplicate symbol
+
+### Screenshot
+- regression-f65-delete-confirmation.png
+
+[Testing] Session complete - Feature #65 regression test PASSED
