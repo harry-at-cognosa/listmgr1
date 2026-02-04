@@ -120,3 +120,63 @@ CREATE INDEX IF NOT EXISTS idx_templates_product_cat ON plsq_templates(product_c
 CREATE INDEX IF NOT EXISTS idx_templates_product_line ON plsq_templates(product_line_id);
 CREATE INDEX IF NOT EXISTS idx_sections_template ON plsqt_sections(plsqt_id);
 CREATE INDEX IF NOT EXISTS idx_sections_type ON plsqt_sections(section_type_id);
+
+-- Price Conversion Tables (Migration 115)
+
+-- Enable btree_gist extension for overlap prevention constraints
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+
+-- Price Conversion Factors - lookup table defining types of price conversion factors
+CREATE TABLE IF NOT EXISTS price_conv_factors (
+    pcf_id                SERIAL PRIMARY KEY,
+    pc_factor_code        VARCHAR(3) NOT NULL,
+    pc_factor_description VARCHAR(40)
+);
+
+-- Country Conversion Pairs - directional country pairs for conversion factors
+CREATE TABLE IF NOT EXISTS country_conversion_pairs (
+    ccp_id                SERIAL PRIMARY KEY,
+    ccp_from_country_id   INTEGER NOT NULL REFERENCES country(country_id),
+    ccp_to_country_id     INTEGER NOT NULL REFERENCES country(country_id)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ccp_pair_unique
+    ON country_conversion_pairs (ccp_from_country_id, ccp_to_country_id);
+
+CREATE INDEX IF NOT EXISTS idx_ccp_from_country
+    ON country_conversion_pairs (ccp_from_country_id);
+
+CREATE INDEX IF NOT EXISTS idx_ccp_to_country
+    ON country_conversion_pairs (ccp_to_country_id);
+
+-- Price Conversion Factor Values - time-bounded multiplier values
+CREATE TABLE IF NOT EXISTS pconv_factor_values (
+    pfv_id            SERIAL PRIMARY KEY,
+    pcf_id            INTEGER NOT NULL REFERENCES price_conv_factors(pcf_id),
+    ccp_id            INTEGER NOT NULL REFERENCES country_conversion_pairs(ccp_id),
+    pfc_from_date     DATE NOT NULL DEFAULT CURRENT_DATE,
+    pfc_to_date       DATE NOT NULL DEFAULT '2040-12-31',
+    pfc_multiplier_1  NUMERIC(8,4) NOT NULL DEFAULT 1.0,
+    pfc_multiplier_2  NUMERIC(8,4) NOT NULL DEFAULT 1.0,
+
+    -- Prevent overlapping date periods for the same factor + country pair
+    CONSTRAINT pconv_no_overlap
+        EXCLUDE USING gist (
+            pcf_id WITH =,
+            ccp_id WITH =,
+            daterange(pfc_from_date, pfc_to_date, '[]') WITH &&
+        ),
+
+    -- Ensure from_date <= to_date
+    CONSTRAINT pconv_date_order
+        CHECK (pfc_from_date <= pfc_to_date)
+);
+
+CREATE INDEX IF NOT EXISTS idx_pfv_factor
+    ON pconv_factor_values (pcf_id);
+
+CREATE INDEX IF NOT EXISTS idx_pfv_ccp
+    ON pconv_factor_values (ccp_id);
+
+CREATE INDEX IF NOT EXISTS idx_pfv_dates
+    ON pconv_factor_values (pfc_from_date, pfc_to_date);
