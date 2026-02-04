@@ -871,3 +871,53 @@ Migration includes:
 
 [Testing] Session complete - Feature #107 regression test PASSED
 
+
+## Session 2026-02-04 (Feature #5 Regression Test)
+
+### Feature #5: User cannot log in with invalid credentials - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Navigated to login page (http://localhost:5173/login)
+2. ✅ Entered invalid username 'wronguser'
+3. ✅ Entered invalid password 'wrongpass'
+4. ✅ Clicked Login button
+5. ✅ Verified error message 'Invalid username or password' displays (red text on pink background)
+6. ✅ Verified user remains on login page (URL still /login)
+7. ✅ Verified no session created - attempting to access /templates redirects back to /login
+
+### Console Errors
+- Only expected 401 Unauthorized errors from auth checks (normal behavior for unauthenticated user)
+- No JavaScript runtime errors
+
+### Screenshot
+- regression-f5-invalid-login.png
+
+[Testing] Session complete - Feature #5 regression test PASSED
+
+## Session 2026-02-04 (Feature #43 Regression Test)
+
+### Feature #43: User can edit existing template - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry
+2. ✅ Navigated to Templates page
+3. ✅ Clicked Edit on template 1 (DYNO-MILL 20 FCFC_US_FOB Allendale)
+4. ✅ Modified template name (added '- EDITED')
+5. ✅ Changed country from United States to Switzerland
+6. ✅ Changed status from 'not started' to 'in review'
+7. ✅ Submitted form by clicking 'Update Template'
+8. ✅ Verified success message 'Template updated successfully' displayed
+9. ✅ Verified changes persist in templates list and detail view
+10. ✅ Verified last_update_datetime and last_update_user fields updated
+
+### Data Cleanup
+- Restored template 1 to original values (name, country=United States, status=not started)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f43-template-edited.png
+
+[Testing] Session complete - Feature #43 regression test PASSED
+
