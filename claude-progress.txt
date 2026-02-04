@@ -1,3 +1,60 @@
+## Session 2026-02-04 (Feature #115 - Price Conversion Tables)
+
+### Completed
+- Feature #115: New price conversion tables added to database - IMPLEMENTED AND VERIFIED
+
+### Migration Summary
+All 3 tables created successfully with seed data:
+
+1. ✅ **price_conv_factors table** (3 columns)
+   - Lookup table defining types of price conversion factors
+   - Columns: pcf_id, pc_factor_code, pc_factor_description
+   - Seed data: FX (currency conversion), MU (markup/duties)
+
+2. ✅ **country_conversion_pairs table** (3 columns)
+   - Directional country pairs for conversion factors
+   - Columns: ccp_id, ccp_from_country_id, ccp_to_country_id
+   - Unique index on (from_country, to_country) pair
+   - Indexes: idx_ccp_pair_unique, idx_ccp_from_country, idx_ccp_to_country
+   - Seed data: CHE -> USA pair
+
+3. ✅ **pconv_factor_values table** (7 columns)
+   - Time-bounded multiplier values for factor + country pair combinations
+   - Columns: pfv_id, pcf_id, ccp_id, pfc_from_date, pfc_to_date, pfc_multiplier_1, pfc_multiplier_2
+   - GiST exclusion constraint prevents overlapping date ranges (using btree_gist extension)
+   - CHECK constraint ensures from_date <= to_date
+   - Indexes: idx_pfv_factor, idx_pfv_ccp, idx_pfv_dates
+   - Seed data: FX and MU values for 2026 (CHE->USA)
+
+### Additional Changes
+- Enabled btree_gist extension for overlap prevention
+- Updated backend/db/schema.sql with new table definitions
+- Created migration script: backend/migrations/115-price-conversion-tables.js
+- Created verification script: backend/migrations/verify-115.js
+
+### Verification
+- All three tables created successfully
+- Seed data inserted correctly
+- Overlap prevention constraint tested and working
+- Application continues to work correctly after migration
+- Templates list loads properly
+- Template detail with sections works correctly
+- No JavaScript console errors (only expected 401s before login)
+
+### Screenshots
+- f115-templates-working.png - Templates list after migration
+- f115-template-detail-working.png - Template detail page working
+
+### Console Errors
+- None (only expected 401 errors before login)
+
+### Current Status
+- 115/115 features (100% complete)
+
+[Implementation] Session complete - Feature #115 price conversion tables COMPLETED
+
+---
+
 ## Session 2026-02-04 (Feature #114 - Database Schema Migration)
 
 ### Completed
@@ -228,3 +285,189 @@ All 5 migration steps completed successfully:
 - regression-f65-delete-confirmation.png
 
 [Testing] Session complete - Feature #65 regression test PASSED
+
+## Session 2026-02-04 (Feature #37 Regression Test)
+
+### Feature #37: User can filter templates by product line - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Navigated to Templates page
+3. ✅ Located product line filter dropdown with options: All Lines, Mill-ECM, Mill-KD, MILL-UBM
+4. ✅ Selected Mill-ECM - filtered to 3 templates (all Mill-ECM)
+5. ✅ Selected MILL-UBM - filtered to 2 templates (all MILL-UBM)
+6. ✅ Selected Mill-KD - correctly showed 'No templates found' (none exist)
+7. ✅ Selected All Lines - reset to show all 5 templates
+8. ✅ URL correctly updated with product_line_id parameter
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks
+
+### Screenshot
+- regression-f37-product-line-filter.png
+
+[Testing] Session complete - Feature #37 regression test PASSED
+
+
+## Session 2026-02-03 (Feature #49 Regression Test)
+
+### Feature #49: Template detail shows collapsed section list - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry
+2. ✅ Viewed template with 11 sections (DYNO-MILL 20 FCFC_US_FOB Allendale)
+3. ✅ Navigated to template detail page /templates/1
+4. ✅ Verified collapsed section list shows: sequence (1-11), name, status ('not started')
+5. ✅ Sections in correct sequence order (1 through 11)
+6. ✅ Status badges displayed on each section
+
+### Additional Verification
+- Expand/Collapse individual sections works
+- 'Expand All' button works
+- 'Collapse All' button works
+
+### Console Errors
+- Only expected 401 errors from pre-login state
+
+### Screenshots
+- regression-f49-template-detail-sections.png
+- regression-f49-section-expanded.png
+
+[Testing] Session complete - Feature #49 regression test PASSED
+
+
+## Session 2026-02-04 (Feature #44 Regression Test)
+
+### Feature #44: Admin can delete template (cascades to sections) - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Created test template 'TEST TEMPLATE FOR DELETION' (ID 27)
+3. ✅ Added 2 sections to template (Cover Page, Price Summary)
+4. ✅ Navigated to Templates list
+5. ✅ Clicked Delete on test template
+6. ✅ Confirmation dialog appeared with message: 'Are you sure you want to delete this template? This will also delete all its sections.'
+7. ✅ Confirmed deletion
+8. ✅ Verified template removed from list (no longer visible)
+9. ✅ Verified sections were cascade deleted:
+   - Navigating to /templates/27 shows 'Template not found'
+   - API returns 404 for /api/templates/27/sections
+
+### Console Errors
+- None (only expected 404 errors when accessing deleted template)
+
+### Screenshot
+- regression-f44-template-deleted.png
+
+[Testing] Session complete - Feature #44 regression test PASSED
+
+
+## Session 2026-02-04 (Feature #66 Regression Test)
+
+### Feature #66: Breadcrumb navigation works correctly - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Navigated to Templates > Template Detail (DYNO-MILL 20 FCFC_US_FOB Allendale)
+2. ✅ Verified breadcrumb shows: Home > Templates > DYNO-MILL 20 FCFC_US_FOB Allendale : USA/USD
+3. ✅ Clicked Templates in breadcrumb
+4. ✅ Verified navigation to Templates list (URL updated to /templates)
+5. ✅ Verified breadcrumbs update on navigation (different template showed correct breadcrumb)
+
+### Additional Verification
+- Home breadcrumb link navigates correctly to Templates list
+- Breadcrumbs dynamically update when viewing different templates
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks
+
+### Screenshot
+- regression-f66-breadcrumb-template-detail.png
+
+[Testing] Session complete - Feature #66 regression test PASSED
+
+## Session 2026-02-04 (Feature #2 Regression Test)
+
+### Feature #2: Database connection works - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Backend server is running (verified by successful page loads)
+2. ✅ No database connection errors in logs (only expected 401 auth errors before login)
+3. ✅ API calls successfully query the database:
+   - Templates page loaded 4 templates with full details
+   - Currencies page loaded 8 currencies from database
+4. ✅ Response returns expected data format:
+   - All fields present (symbol, name, status, timestamps, user info)
+   - Data displayed correctly in the UI
+
+### Console Errors
+- Only expected 401 Unauthorized errors from pre-login auth checks (expected behavior)
+
+### Screenshot
+- regression-f2-database-connection.png
+
+[Testing] Session complete - Feature #2 regression test PASSED
+
+
+
+## Session 2026-02-04 (Feature #114 Regression Test)
+
+### Feature #114: Database Schema Migration - VERIFIED PASSING
+
+### Feature Description
+Migration includes:
+1. Convert VARCHAR(20) datetime columns to TIMESTAMPTZ (12 columns across 8 tables)
+2. Create document_blob table for content-addressable blob storage
+3. Create document_blob_history table for version tracking  
+4. Add current_blob_id FK to plsq_templates
+5. Create customer_quotes table
+
+### Verification Steps Completed
+1. ✅ Started backend server
+2. ✅ Logged in as admin
+3. ✅ Verified Currencies page - timestamps display correctly (TIMESTAMPTZ)
+4. ✅ Verified Countries page - timestamps and FK relationships work
+5. ✅ Verified Product Categories page - timestamps display correctly
+6. ✅ Verified Product Lines page - timestamps and FK relationships work
+7. ✅ Verified Section Types page - timestamps display correctly
+8. ✅ Verified Template detail page - status_datetime and last_update_datetime work
+9. ✅ Ran verify-114.js script - all 8 verification checks passed:
+   - All datetime columns are TIMESTAMPTZ ✓
+   - document_blob table exists (7 columns) ✓
+   - document_blob_history table exists (6 columns) ✓
+   - current_blob_id column on plsq_templates ✓
+   - customer_quotes table exists (23 columns) ✓
+   - All 8 indexes created ✓
+   - pgcrypto extension installed ✓
+   - Timestamp queries working ✓
+
+### Console Errors
+- None (only expected React Router warnings)
+
+### Screenshot
+- regression-f114-section-types-verified.png
+
+[Testing] Session complete - Feature #114 regression test PASSED
+
+## Session 2026-02-04 (Feature #1 Regression Test)
+
+### Feature #1: App loads without errors - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Navigated to http://localhost:5173 - redirected to /login (expected)
+2. ✅ No JavaScript console errors - only expected 401 auth responses
+3. ✅ Login page renders correctly with all UI elements:
+   - SalesQuoteMgr heading
+   - XYZ Company (emerald) subtitle
+   - Username/Password fields
+   - Login button
+   - Version info displayed
+4. ✅ Network requests verified - /api/public-settings returns 200 OK
+
+### Console Messages
+- 401 errors on /api/auth/me and /api/app-settings (expected - not logged in)
+- React Router future flag warnings (informational only)
+
+### Screenshot
+- regression-f1-app-loads.png
+
+[Testing] Session complete - Feature #1 regression test PASSED
