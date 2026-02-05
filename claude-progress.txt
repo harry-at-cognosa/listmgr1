@@ -1494,3 +1494,51 @@ Migration includes:
 - regression-f101-logout-redirect-to-login.png
 
 [Testing] Session complete - Feature #101 regression test PASSED
+
+## Session 2026-02-05 (Feature #113 Regression Test)
+
+### Feature #113: Product line page display should sort differently - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Logged in as admin (to see both enabled and disabled items)
+2. Navigated to Product Lines page (Reference Data > Product Lines)
+3. Verified sorting order - 13 product lines displayed correctly:
+   - Group 1: Enabled category (Dyno-Mill Agitator) + Enabled lines (ECM, KD, UBM) - alphabetical
+   - Group 2: Enabled category (Dyno-Mill Agitator) + Disabled lines (ECO, MUL, NPM, RL, UNI) - alphabetical
+   - Group 3: Disabled categories (Dyno-Mix Shaker, Turbula) + Enabled lines (MIX, SRV, TU2, TUR) - alphabetical
+   - Group 4: Disabled categories + Disabled lines (TU3)
+4. "Cat Disabled" badge shown in orange/red for product lines under disabled categories
+5. Disabled product line rows have pinkish/light red background for visual distinction
+6. Three-level sort confirmed: category enabled status > line enabled status > alphabetical by abbr
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f113-product-lines-sorting.png (top of table)
+- regression-f113-product-lines-sorting-bottom.png (full page view)
+
+[Testing] Session complete - Feature #113 regression test PASSED
+
+## Session 2026-02-05 (Feature #74 Regression Test)
+
+### Feature #74: Admin can delete user - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Created test user 'testdel' via + Add User form — appeared in user list (6 users)
+3. ✅ Clicked Delete on testdel user — confirmation dialog appeared: 'Are you sure you want to delete this user?'
+4. ✅ Confirmed deletion — testdel removed from list (back to 5 users)
+5. ✅ Verified testdel no longer appears in User Management table
+6. ✅ Logged out and attempted login as testdel/testdel
+7. ✅ Login failed with 'Invalid username or password' error (401 Unauthorized)
+
+### Console Errors
+- Only expected 401 from deleted user login attempt (correct behavior)
+- No JavaScript runtime errors
+
+### Screenshots
+- regression-f74-user-deleted.png (user list after deletion)
+- regression-f74-deleted-user-login-fails.png (login attempt fails)
+
+[Testing] Session complete - Feature #74 regression test PASSED
