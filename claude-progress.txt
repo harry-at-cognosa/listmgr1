@@ -1,3 +1,40 @@
+## Session 2026-02-05 (Feature #117 - Customer Contact Table Migration)
+
+### Completed
+- Feature #117: Create customer_contact table and FK on customer_quotes - IMPLEMENTED AND VERIFIED
+
+### What was done
+1. Created migration file `backend/migrations/116-customer-contact.js` following existing migration patterns
+2. Migration creates `customer_contact` table with 13 columns:
+   - cc_id SERIAL PRIMARY KEY
+   - cc_customer_name TEXT NOT NULL
+   - cc_company_name TEXT (nullable)
+   - cc_phone_number TEXT (nullable)
+   - cc_email_address TEXT (nullable)
+   - cc_addr_line_1 VARCHAR(55) (nullable)
+   - cc_addr_line_2 VARCHAR(55) (nullable)
+   - cc_city VARCHAR(40) (nullable)
+   - cc_state VARCHAR(20) (nullable)
+   - cc_zip VARCHAR(20) (nullable)
+   - cc_comment TEXT (nullable)
+   - last_update_datetime TIMESTAMPTZ (nullable)
+   - last_update_user VARCHAR(50) (nullable)
+3. Migration also adds nullable `cc_id` INTEGER column to `customer_quotes` with FK to `customer_contact(cc_id)`
+4. Migration is idempotent - safe to run multiple times
+5. Updated `backend/db/schema.sql` with customer_contact table definition
+6. Verified all column types, nullability, and FK constraint via SQL queries
+7. Verified app still works correctly after migration (login, templates page)
+
+### Verification
+- All 13 columns verified with correct data types and nullability
+- FK constraint `customer_quotes_cc_id_fkey` verified: cc_id -> customer_contact(cc_id)
+- cc_id on customer_quotes confirmed nullable (YES)
+- App loads and functions correctly after migration
+- Screenshot: f117-app-working-after-migration.png
+
+### Current Status
+- 117/120 features passing (97.5%)
+
 ## Session 2026-02-04 (Feature #116 - Price Conversion Manager Web Page)
 
 ### Completed
@@ -921,3 +958,59 @@ Migration includes:
 
 [Testing] Session complete - Feature #43 regression test PASSED
 
+
+## Session 2026-02-05 (Feature #54 Regression Test)
+
+### Feature #54: Section tabbed interface works - VERIFIED PASSING
+
+[Testing] Session complete - Feature #54 regression test PASSED
+
+## Session 2026-02-05 (Feature #23 Regression Test)
+
+### Feature #23: User can create new product category - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Navigated to Product Categories page (Reference Data > Product Categories)
+3. ✅ Clicked '+ Add Category' button - form appeared with Abbreviation and Name fields
+4. ✅ Entered category abbr 'HW'
+5. ✅ Entered category name 'Hardware'
+6. ✅ Submitted form by clicking 'Save' button
+7. ✅ Verified success message 'Product category saved successfully' displayed
+8. ✅ Verified new category 'HW - Hardware' appeared in list with correct timestamp and user
+
+### Cleanup
+- Logged in as admin and deleted test category 'HW - Hardware' to restore clean state
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshot
+- regression-f23-product-category-created.png
+
+[Testing] Session complete - Feature #23 regression test PASSED
+
+## Session 2026-02-05 (Feature #8 Regression Test)
+
+### Feature #8: API returns 401 for unauthenticated requests - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Started with clean session (no cookies/auth)
+2. ✅ GET /api/templates without auth → 401 with {"error":"Authentication required"}
+3. ✅ POST /api/currencies without auth → 401 with {"error":"Authentication required"}
+4. ✅ GET /api/currencies without auth → 401
+5. ✅ GET /api/countries without auth → 401
+6. ✅ GET /api/users without auth → 401
+7. ✅ GET /api/product-categories without auth → 401
+8. ✅ Browser navigating to /templates redirects to /login (unauthenticated)
+9. ✅ Network requests show 401 for protected endpoints, 200 for /api/public-settings
+10. ✅ All response bodies contain appropriate error message
+
+### Console Errors
+- Only expected 401 errors from unauthenticated API calls (correct behavior)
+- No JavaScript runtime errors
+
+### Screenshot
+- regression-f8-unauthenticated-redirect.png
+
+[Testing] Session complete - Feature #8 regression test PASSED
