@@ -68,7 +68,7 @@ function App() {
             <Route path="reference/countries" element={<Countries />} />
             <Route path="reference/product-categories" element={<ProductCategories />} />
             <Route path="reference/product-lines" element={<ProductLines />} />
-            <Route path="reference/section-types" element={<SectionTypes />} />
+            <Route path="reference/section-types" element={<AdminRoute><SectionTypes /></AdminRoute>} />
             <Route path="customers/contacts" element={<CustomerContacts />} />
             <Route path="admin/users" element={<AdminRoute><Users /></AdminRoute>} />
             <Route path="admin/settings" element={<AdminRoute><Settings /></AdminRoute>} />

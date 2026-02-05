@@ -7,7 +7,10 @@ function Layout() {
   const { user, logout, isAdmin } = useAuth();
   const { appVersion, dbVersion, clientName } = useSettings();
   const navigate = useNavigate();
+  const [templatesOpen, setTemplatesOpen] = useState(false);
+  const [customerQuotesOpen, setCustomerQuotesOpen] = useState(false);
   const [referenceOpen, setReferenceOpen] = useState(false);
+  const [adminOpen, setAdminOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -32,6 +35,8 @@ function Layout() {
         ? 'bg-primary-100 text-primary-700'
         : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
     }`;
+
+  const disabledSubNavClass = 'block px-4 py-2 pl-8 rounded-md text-gray-400 cursor-default';
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -98,26 +103,60 @@ function Layout() {
           md:block
         `}>
           <nav className="space-y-1 mt-14 md:mt-0">
-            <NavLink to="/templates" className={navLinkClass} onClick={closeMobileMenu}>
-              Templates
-            </NavLink>
-            <NavLink to="/customers/contacts" className={navLinkClass} onClick={closeMobileMenu}>
-              Customer Contacts
-            </NavLink>
+            {/* GROUP 1 — Templates (all users) */}
+            <div>
+              <button
+                onClick={() => setTemplatesOpen(!templatesOpen)}
+                className="w-full flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                <span>Templates</span>
+                <svg className={`w-4 h-4 transition-transform ${templatesOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {templatesOpen && (
+                <div className="mt-1 space-y-1">
+                  <NavLink to="/templates" className={subNavLinkClass} onClick={closeMobileMenu}>
+                    Manage Quote Templates
+                  </NavLink>
+                  <span className={disabledSubNavClass}>Load Quote Template</span>
+                  <span className={disabledSubNavClass}>Generate Quote Templates</span>
+                  <span className={disabledSubNavClass}>Export Quote Templates</span>
+                </div>
+              )}
+            </div>
 
-            {/* Reference Data Submenu */}
+            {/* GROUP 2 — Customer Quotes (all users) */}
+            <div>
+              <button
+                onClick={() => setCustomerQuotesOpen(!customerQuotesOpen)}
+                className="w-full flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                <span>Customer Quotes</span>
+                <svg className={`w-4 h-4 transition-transform ${customerQuotesOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {customerQuotesOpen && (
+                <div className="mt-1 space-y-1">
+                  <span className={disabledSubNavClass}>Manage Customer Quotes</span>
+                  <span className={disabledSubNavClass}>Generate Customer Quotes</span>
+                  <span className={disabledSubNavClass}>Export Customer Quotes</span>
+                  <NavLink to="/customers/contacts" className={subNavLinkClass} onClick={closeMobileMenu}>
+                    Manage Customers
+                  </NavLink>
+                </div>
+              )}
+            </div>
+
+            {/* GROUP 3 — Reference Data (all users) */}
             <div>
               <button
                 onClick={() => setReferenceOpen(!referenceOpen)}
                 className="w-full flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
               >
                 <span>Reference Data</span>
-                <svg
-                  className={`w-4 h-4 transition-transform ${referenceOpen ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className={`w-4 h-4 transition-transform ${referenceOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
@@ -135,25 +174,39 @@ function Layout() {
                   <NavLink to="/reference/product-lines" className={subNavLinkClass} onClick={closeMobileMenu}>
                     Product Lines
                   </NavLink>
-                  <NavLink to="/reference/section-types" className={subNavLinkClass} onClick={closeMobileMenu}>
-                    Section Types
-                  </NavLink>
                 </div>
               )}
             </div>
 
+            {/* GROUP 4 — Admin (admin only) */}
             {isAdmin && (
-              <>
-                <NavLink to="/admin/users" className={navLinkClass} onClick={closeMobileMenu}>
-                  User Management
-                </NavLink>
-                <NavLink to="/admin/settings" className={navLinkClass} onClick={closeMobileMenu}>
-                  App Settings
-                </NavLink>
-                <NavLink to="/admin/price-conversion" className={navLinkClass} onClick={closeMobileMenu}>
-                  Price Conversion
-                </NavLink>
-              </>
+              <div>
+                <button
+                  onClick={() => setAdminOpen(!adminOpen)}
+                  className="w-full flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+                >
+                  <span>Admin</span>
+                  <svg className={`w-4 h-4 transition-transform ${adminOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {adminOpen && (
+                  <div className="mt-1 space-y-1">
+                    <NavLink to="/reference/section-types" className={subNavLinkClass} onClick={closeMobileMenu}>
+                      Section Types
+                    </NavLink>
+                    <NavLink to="/admin/price-conversion" className={subNavLinkClass} onClick={closeMobileMenu}>
+                      Price Conversion
+                    </NavLink>
+                    <NavLink to="/admin/users" className={subNavLinkClass} onClick={closeMobileMenu}>
+                      User Management
+                    </NavLink>
+                    <NavLink to="/admin/settings" className={subNavLinkClass} onClick={closeMobileMenu}>
+                      App Settings
+                    </NavLink>
+                  </div>
+                )}
+              </div>
             )}
           </nav>
 

@@ -1,3 +1,40 @@
+## Session 2026-02-05 (Feature #120 - Restructure sidebar navigation into 4 collapsible menu groups)
+
+### Feature #120: Restructure sidebar navigation - VERIFIED PASSING
+
+### Implementation
+1. Replaced single `referenceOpen` state with four state variables: `templatesOpen`, `customerQuotesOpen`, `referenceOpen`, `adminOpen`
+2. Added `disabledSubNavClass` for grayed-out placeholder menu items
+3. Restructured nav into 4 collapsible groups:
+   - **Templates** (all users): Manage Quote Templates (enabled), Load/Generate/Export (disabled placeholders)
+   - **Customer Quotes** (all users): Manage/Generate/Export Customer Quotes (disabled), Manage Customers (enabled)
+   - **Reference Data** (all users): Currencies, Countries, Product Categories, Product Lines (all enabled). Section Types REMOVED from here.
+   - **Admin** (admin only): Section Types, Price Conversion, User Management, App Settings (all enabled)
+4. Updated Section Types route in App.jsx from PrivateRoute to AdminRoute
+5. Disabled items use `<span>` elements (not NavLink) so they're not clickable
+
+### Verification Steps Completed
+1. ✅ All 4 groups expand/collapse independently
+2. ✅ Disabled items appear grayed out and are `<span>` elements (not links)
+3. ✅ "Manage Quote Templates" navigates to /templates correctly
+4. ✅ "Manage Customers" navigates to /customers/contacts correctly
+5. ✅ Admin group only visible to admin users (verified by logging in as harry)
+6. ✅ Section Types route protected by AdminRoute — regular user redirected to /templates
+7. ✅ Mobile hamburger menu works with all 4 groups, closes on navigation
+8. ✅ Zero JavaScript console errors on clean page load
+
+### Screenshots
+- f120-sidebar-collapsed-admin.png - All 4 groups collapsed (admin)
+- f120-all-groups-expanded-admin.png - All 4 groups expanded (admin)
+- f120-harry-no-admin-group.png - Regular user sees only 3 groups
+- f120-mobile-menu-open.png - Mobile menu with all 4 groups
+- f120-mobile-navigation-works.png - Mobile navigation to User Management
+- f120-final-desktop-verified.png - Desktop view with Templates expanded
+
+### Current Status: 120/120 features passing (100%)
+
+---
+
 ## Session 2026-02-05 (Feature #119 - Create CustomerContacts CRUD page)
 
 ### Feature #119: Create CustomerContacts CRUD page - VERIFIED PASSING
@@ -1376,3 +1413,84 @@ Migration includes:
 
 [Testing] Session complete - Feature #85 regression test PASSED
 [Testing] Session complete - Feature #60 regression test PASSED
+
+## Session 2026-02-05 (Feature #67 Regression Test)
+
+### Feature #67: Required fields prevent form submission - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Logged in as admin (has create permissions)
+2. Navigated to Currencies page
+3. Opened Currency create form - Symbol * (required) and Name fields visible
+4. Left Symbol empty, clicked Save - browser validation showed 'Please fill out this field.'
+5. Form was NOT submitted - dialog remained open
+6. Filled Symbol=ZZZ, Name=Test Validation Currency
+7. Clicked Save - submitted successfully, ZZZ appeared in table
+8. Cleaned up test data - deleted ZZZ, restored to 8 currencies
+
+[Testing] Session complete - Feature #67 regression test PASSED
+[Testing] Session complete - Feature #112 regression test PASSED - all 5 sub-features verified (currencies sorting, countries sorting, product lines sorting, section types search, propagate to sections)
+[Testing] Feature #60 'Tables have readable styling' regression test PASSED - verified 4 tables (Templates, Currencies, Countries, Product Lines) with consistent styling, hover states, and aligned columns
+
+## Session 2026-02-05 (Feature #9 Regression Test)
+
+### Feature #9: Navigation sidebar displays correctly - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Sidebar contains Templates link
+3. ✅ Sidebar contains Reference Data section with Currencies, Countries, Product Categories, Product Lines
+4. ✅ User Management NOT visible for regular user harry (only Templates, Customer Quotes, Reference Data shown)
+5. ✅ Logged out and logged in as admin
+6. ✅ Admin sidebar shows Admin section with Section Types, Price Conversion, User Management, App Settings
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+- No JavaScript runtime errors
+
+### Screenshots
+- regression-f9-harry-sidebar.png (regular user - no User Management)
+- regression-f9-admin-sidebar.png (admin user - User Management visible)
+
+[Testing] Session complete - Feature #9 regression test PASSED
+
+## Session 2026-02-05 (Feature #4 Regression Test)
+
+### Feature #4: User can log in with valid credentials - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Navigated to login page - form displayed with Username, Password fields and Login button
+2. ✅ Entered valid username 'admin'
+3. ✅ Entered valid password 'admin'
+4. ✅ Clicked Login button
+5. ✅ Verified redirect to /templates (main dashboard)
+6. ✅ Verified header shows 'Logged in as admin (Admin)'
+7. ✅ Verified session established - /api/auth/me returns {user:{id:1,username:admin,role:admin}}, httpOnly cookie
+
+### Console Errors
+- Only expected pre-login 401 errors on /api/auth/me and /api/app-settings (normal behavior)
+- Zero post-login errors
+
+[Testing] Session complete - Feature #4 regression test PASSED
+
+## Session 2026-02-05 (Feature #101 Regression Test)
+
+### Feature #101: Logout clears all session data - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry - header showed 'Logged in as harry' with Logout button
+2. ✅ Navigated around app: Templates list, Template detail (template 1 with 11 sections), Reference Data > Currencies
+3. ✅ Clicked Logout - immediately redirected to login page
+4. ✅ Checked client storage: no cookies, localStorage, or sessionStorage remnants after logout
+5. ✅ Tested 5 protected API endpoints directly: /api/auth/me, /api/currencies, /api/countries, /api/templates, /api/product-categories
+6. ✅ All 5 endpoints returned HTTP 401 Unauthorized after logout
+7. ✅ Verified redirect to login on protected pages: /templates, /templates/1, /reference/currencies, /admin/users all redirect to /login
+
+### Console Errors
+- Only expected 401 errors from unauthenticated API checks on login page (normal behavior)
+- No JavaScript runtime errors
+
+### Screenshot
+- regression-f101-logout-redirect-to-login.png
+
+[Testing] Session complete - Feature #101 regression test PASSED
