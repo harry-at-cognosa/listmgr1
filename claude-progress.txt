@@ -1,3 +1,26 @@
+## Session 2026-02-05 (Feature #40 - Combined Filters and Search)
+
+### Feature #40: Combined filters and search work together - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Navigated to Templates page - 4 templates visible (unfiltered)
+3. ✅ Selected country filter "United States" → 2 US templates shown
+4. ✅ Added search keyword "FCFC" → 1 template matching both country AND keyword
+5. ✅ Cleared filters → all 4 templates restored
+6. ✅ Applied triple filter: Switzerland + MILL-UBM product line + "KERAMIK" search → 1 matching template
+7. ✅ Tested no-match scenario: "NONEXISTENT" search → 0 results with "No templates found" message
+8. ✅ Cleared all filters → all 4 templates restored, all dropdowns reset
+9. ✅ Verified all API calls return 200 OK with correct combined query parameters
+10. ✅ No JavaScript runtime errors (only expected pre-login 401s)
+
+### Screenshots
+- f40-combined-country-search.png (Country=US + Search=FCFC)
+- f40-triple-filter-combined.png (Country=CH + Line=MILL-UBM + Search=KERAMIK)
+- f40-filters-cleared.png (All filters cleared, full list)
+
+[Testing] Session complete - Feature #40 PASSED
+
 ## Session 2026-02-05 (Feature #117 - Customer Contact Table Migration)
 
 ### Completed
@@ -1014,3 +1037,70 @@ Migration includes:
 - regression-f8-unauthenticated-redirect.png
 
 [Testing] Session complete - Feature #8 regression test PASSED
+
+## Session 2026-02-05 (Feature #7 Regression Test)
+
+### Feature #7: Unauthenticated user redirected to login - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Fresh browser session (no cookies/session)
+2. ✅ Navigated to /templates - redirected to /login
+3. ✅ Verified login page displayed (URL = /login)
+4. ✅ Navigated to /admin/users - redirected to /login
+5. ✅ Verified login page displayed (URL = /login)
+6. ✅ No protected content visible - only login form elements
+7. ✅ Bonus: /currencies also redirects to /login
+8. ✅ Bonus: API endpoints /api/templates and /api/users return 401 Unauthorized
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshot
+- regression-f7-unauthenticated-redirect.png
+
+[Testing] Session complete - Feature #7 regression test PASSED
+
+## Session 2026-02-05 (Feature #52 Regression Test)
+
+### Feature #52: Admin can delete section - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin user
+2. ✅ Viewed template 1 (DYNO-MILL 20 FCFC_US_FOB Allendale) with 11 sections
+3. ✅ Created test section #99 (Basic Execution) for safe testing — section count went to 12
+4. ✅ Clicked Delete on test section #99 — confirmation dialog appeared
+5. ✅ Confirmed deletion — section removed from list and tabs
+6. ✅ Verified section_count decremented back to 11
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshot
+- regression-f52-section-deleted.png
+
+[Testing] Session complete - Feature #52 regression test PASSED
+
+## Session 2026-02-05 (Feature #40 Regression Test)
+
+### Feature #40: Combined filters and search work together - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Navigated to Templates page - all 4 templates displayed
+3. ✅ Selected Country filter = United States - correctly shows 2 US templates only
+4. ✅ Added Product Line filter = MILL-UBM on top of country - correctly shows 1 template
+5. ✅ Added Search = 'Allendale' on top of filters - correctly shows 1 matching template
+6. ✅ Changed Search to 'KERAMIK' (no match with US/MILL-UBM) - correctly shows 'No templates found'
+7. ✅ Cleared all filters - all 4 templates displayed again, URL reset to ?enabled=true
+8. ✅ Tested Country=Switzerland + Search='UBM' - correctly shows 1 Swiss UBM template
+9. ✅ URL correctly reflects all filter parameters throughout
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+- No JavaScript errors during filtering operations
+
+### Screenshot
+- regression-f40-combined-filters.png
+
+[Testing] Session complete - Feature #40 regression test PASSED
+[Testing] Feature #31 verified - still passing
