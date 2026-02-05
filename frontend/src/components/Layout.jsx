@@ -101,6 +101,9 @@ function Layout() {
             <NavLink to="/templates" className={navLinkClass} onClick={closeMobileMenu}>
               Templates
             </NavLink>
+            <NavLink to="/customers/contacts" className={navLinkClass} onClick={closeMobileMenu}>
+              Customer Contacts
+            </NavLink>
 
             {/* Reference Data Submenu */}
             <div>

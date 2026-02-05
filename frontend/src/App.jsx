@@ -14,6 +14,7 @@ import ProductLines from './pages/ProductLines'
 import SectionTypes from './pages/SectionTypes'
 import Users from './pages/Users'
 import PriceConversion from './pages/PriceConversion'
+import CustomerContacts from './pages/CustomerContacts'
 import NotFound from './pages/NotFound'
 
 function PrivateRoute({ children }) {
@@ -68,6 +69,7 @@ function App() {
             <Route path="reference/product-categories" element={<ProductCategories />} />
             <Route path="reference/product-lines" element={<ProductLines />} />
             <Route path="reference/section-types" element={<SectionTypes />} />
+            <Route path="customers/contacts" element={<CustomerContacts />} />
             <Route path="admin/users" element={<AdminRoute><Users /></AdminRoute>} />
             <Route path="admin/settings" element={<AdminRoute><Settings /></AdminRoute>} />
             <Route path="admin/price-conversion" element={<AdminRoute><PriceConversion /></AdminRoute>} />
