@@ -1,3 +1,40 @@
+## Session 2026-02-05 (Feature #118 - Customer Contact REST API Routes)
+
+### Feature #118: Create customer_contact REST API routes - VERIFIED PASSING
+
+### Implementation Summary
+- Created backend/routes/customerContacts.js following currencies.js pattern
+- Registered route in backend/index.js: app.use('/api/customer-contacts', requireAuth, customerContactsRoutes)
+
+### Endpoints Implemented
+1. GET /api/customer-contacts - returns all records sorted by cc_customer_name (no enable/disable filtering)
+2. GET /api/customer-contacts/:id - returns single record, 404 if not found
+3. POST /api/customer-contacts - creates new record, requires cc_customer_name, auto-sets last_update_datetime/user
+4. PUT /api/customer-contacts/:id - updates all fields, requires cc_customer_name, auto-sets last_update_datetime/user
+5. DELETE /api/customer-contacts/:id - admin only, handles FK constraint errors (23503) gracefully
+
+### Verification Steps Completed
+1. Unauthenticated GET returns 401 (requireAuth middleware)
+2. Admin can GET all (empty array initially)
+3. Admin can POST new contact with all fields - returns 201 with RETURNING *
+4. POST without cc_customer_name returns 400 validation error
+5. Admin can GET single contact by ID
+6. GET non-existent ID returns 404
+7. Admin can PUT update contact - all fields updated correctly
+8. Regular user (harry) can GET all contacts
+9. Regular user can POST new contacts (last_update_user set to 'harry')
+10. Regular user DELETE returns 403 (admin only)
+11. Admin DELETE returns 200 with success message
+12. DELETE non-existent returns 404
+13. Sort order verified (Alpha before Zeta by cc_customer_name)
+14. Browser automation: all 5 endpoints verified via fetch API in browser
+15. No console errors (only expected pre-login 401s)
+16. No mock data patterns found in codebase
+17. App still fully functional after changes
+
+### Current Stats
+- 117/120 features passing (97.5%)
+
 ## Session 2026-02-05 (Feature #40 - Combined Filters and Search)
 
 ### Feature #40: Combined filters and search work together - VERIFIED PASSING
@@ -1104,3 +1141,65 @@ Migration includes:
 
 [Testing] Session complete - Feature #40 regression test PASSED
 [Testing] Feature #31 verified - still passing
+
+## Session 2026-02-05 (Feature #37 Regression Test)
+
+### Feature #37: User can filter templates by product line - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Navigated to Templates page - all 4 templates displayed
+3. ✅ Product line filter dropdown visible with options: All Lines, Mill-ECM, Mill-KD, MILL-UBM
+4. ✅ Selected MILL-UBM - correctly filtered to 2 templates, URL updated to ?product_line_id=3
+5. ✅ Selected Mill-ECM - correctly filtered to 2 templates, URL updated to ?product_line_id=1
+6. ✅ Selected Mill-KD - correctly showed 'No templates found' message
+7. ✅ Reset to All Lines - all 4 templates restored
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshot
+- regression-f37-product-line-filter.png
+
+[Testing] Session complete - Feature #37 regression test PASSED
+
+## Session 2026-02-05 (Feature #3 Regression Test)
+
+### Feature #3: Login page renders correctly - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Navigated to login page (http://localhost:5177/login)
+2. ✅ Username input field visible with label and placeholder
+3. ✅ Password input field visible with label and placeholder
+4. ✅ Login button visible and styled (blue, full-width, cursor=pointer)
+5. ✅ Page has appropriate styling: centered card layout, branding header, version info, credential hints
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+- No JavaScript runtime errors
+
+### Screenshot
+- regression-f3-login-page.png
+
+[Testing] Session complete - Feature #3 regression test PASSED
+
+## Session 2026-02-05 (Feature #49 Regression Test)
+
+### Feature #49: Template detail shows collapsed section list - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Viewed template 1 (DYNO-MILL 20 FCFC_US_FOB Allendale) with 11 sections
+3. ✅ Viewed template detail at /templates/1
+4. ✅ Collapsed section list shows: sequence (1-11), name, status badge ('not started')
+5. ✅ Sections displayed in correct sequence order (1 through 11)
+6. ✅ Status badges shown on each section ('not started' for all 11)
+7. ✅ Expand/Collapse functionality works (individual click + Expand All/Collapse All buttons)
+8. ✅ Verified on second template (template 24) with 9 sections and mixed statuses ('in process', 'not started')
+9. ✅ Zero console errors (only expected pre-login 401s)
+
+### Screenshots
+- regression-f49-template-detail-sections.png
+- regression-f49-section-expanded.png
+
+[Testing] Session complete - Feature #49 regression test PASSED
