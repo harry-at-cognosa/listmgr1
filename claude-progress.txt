@@ -1,3 +1,32 @@
+## Session 2026-02-05 (Feature #85 - Search with special characters)
+
+### Feature #85: Search with special characters handled - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Navigated to Templates page, logged in as harry
+2. Entered `!@#$%` in search box - no errors, graceful "No templates found" message
+3. Entered `test & test` with ampersand - URL properly encoded as `%26`, no errors
+4. Tested SQL injection `'; DROP TABLE--` - parameterized queries prevent exploitation
+5. Tested XSS `<script>alert('xss')</script>` - React auto-escaping prevents execution
+6. Cleared filters - all 4 templates restored correctly
+7. Backend logs: zero errors from any special character search
+8. Console errors: only expected pre-login 401s, no JS runtime errors
+
+### Technical Analysis
+- Frontend: URLSearchParams handles URL encoding of special characters
+- Backend: Parameterized SQL queries ($N placeholders) prevent SQL injection
+- React: JSX auto-escapes rendered content, preventing XSS
+- PostgreSQL LIKE with parameterized values treats special chars as literals
+
+### Screenshots
+- f85-special-chars-search.png
+- f85-ampersand-search.png
+- f85-filters-cleared-after-special-chars.png
+
+### Current Stats: 118/120 features passing (98.3%)
+
+[Testing] Session complete - Feature #85 PASSED
+
 ## Session 2026-02-05 (Feature #118 - Customer Contact REST API Routes)
 
 ### Feature #118: Create customer_contact REST API routes - VERIFIED PASSING
@@ -1203,3 +1232,105 @@ Migration includes:
 - regression-f49-section-expanded.png
 
 [Testing] Session complete - Feature #49 regression test PASSED
+
+## Session 2026-02-05 (Feature #95 Regression Test)
+
+### Feature #95: Double-click submit creates only one record - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Logged in as admin (has create/delete permissions)
+2. Navigated to Currencies page - 8 currencies initially
+3. Filled form with Symbol=TST, Name=Test Currency Double Click
+4. Rapidly double-clicked Save button - only ONE TST created
+5. Confirmed via DOM: tstCount=1, totalRows=9
+6. Verified after page reload: still only 1 TST entry
+7. Second test with ZZZ: server returned error, no duplicate
+8. Cleaned up test data - deleted TST, restored to 8 currencies
+
+[Testing] Session complete - Feature #95 regression test PASSED
+
+## Session 2026-02-05 (Feature #24 Regression Test)
+
+### Feature #24: User can edit existing product category - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Navigated to Product Categories page (Reference Data > Product Categories)
+3. ✅ Clicked Edit on existing category 'MIL - Dyno-Mill Agitator' — edit form appeared with pre-filled Abbreviation and Name
+4. ✅ Modified the name to 'Dyno-Mill Agitator EDITED'
+5. ✅ Submitted form by clicking Save
+6. ✅ Verified changes saved — success message 'Product category saved successfully', name updated in table, timestamp updated to current time by harry
+7. ✅ Restored original value 'Dyno-Mill Agitator' to keep database clean
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshot
+- regression-f24-product-category-edited.png
+
+[Testing] Session complete - Feature #24 regression test PASSED
+
+## Session 2026-02-05 (Feature #10 Regression Test)
+
+### Feature #10: Header displays current user info - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as 'harry' - header shows 'Logged in as harry' with Logout button
+2. ✅ Username 'harry' displayed in bold in header
+3. ✅ Logout button present and functional
+4. ✅ Logged out successfully, redirected to login page, logged in as 'admin'
+5. ✅ Header now shows 'Logged in as admin (Admin)' with role indicator
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+
+### Screenshots
+- regression-f10-harry-logged-in.png
+- regression-f10-admin-logged-in.png
+
+[Testing] Session complete - Feature #10 regression test PASSED
+
+## Session 2026-02-05 (Feature #28 Regression Test)
+
+### Feature #28: User can edit existing product line - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Navigated to Product Lines page (Reference Data > Product Lines)
+3. ✅ Clicked Edit on existing product line 'KD - Mill-KD' — edit form appeared with pre-filled fields (Product Category, Abbreviation, Name)
+4. ✅ Changed name from 'Mill-KD' to 'Mill-KD EDITED'
+5. ✅ Submitted form by clicking Save — success message 'Product line saved successfully'
+6. ✅ Verified changes saved — name updated in table, timestamp updated to current time by harry
+7. ✅ Restored original value 'Mill-KD' to keep database clean — second edit also confirmed working
+
+### Console Errors
+- Zero console errors throughout entire test (only React Router future flag warnings)
+
+### Screenshot
+- regression-f28-product-line-edited.png
+
+[Testing] Session complete - Feature #28 regression test PASSED
+
+## Session 2026-02-05 (Feature #85 Regression Test)
+
+### Feature #85: Search with special characters handled - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Navigated to Templates page - all 4 templates displayed
+3. ✅ Entered '\!@#$%' in search box - no errors, shows 'No templates found. Try adjusting your filters.'
+4. ✅ API returned 200 with empty array [] (verified via browser evaluate)
+5. ✅ Entered 'test & test' with ampersand - no errors, shows 'No templates found.'
+6. ✅ Entered SQL injection pattern "'; DROP TABLE --" - no errors, graceful handling
+7. ✅ Cleared filters - all 4 templates restored
+8. ✅ Backend uses parameterized queries (safe from injection)
+
+### Console Errors
+- Only expected 401 errors from pre-login auth checks (normal behavior)
+- No JavaScript runtime errors, no 500 errors during search operations
+
+### Screenshot
+- regression-f85-special-chars-search.png
+
+[Testing] Session complete - Feature #85 regression test PASSED
+[Testing] Session complete - Feature #60 regression test PASSED
