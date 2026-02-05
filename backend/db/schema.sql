@@ -180,3 +180,23 @@ CREATE INDEX IF NOT EXISTS idx_pfv_ccp
 
 CREATE INDEX IF NOT EXISTS idx_pfv_dates
     ON pconv_factor_values (pfc_from_date, pfc_to_date);
+
+-- Customer Contact table (Migration 116)
+CREATE TABLE IF NOT EXISTS customer_contact (
+    cc_id                SERIAL PRIMARY KEY,
+    cc_customer_name     TEXT NOT NULL,
+    cc_company_name      TEXT,
+    cc_phone_number      TEXT,
+    cc_email_address     TEXT,
+    cc_addr_line_1       VARCHAR(55),
+    cc_addr_line_2       VARCHAR(55),
+    cc_city              VARCHAR(40),
+    cc_state             VARCHAR(20),
+    cc_zip               VARCHAR(20),
+    cc_comment           TEXT,
+    last_update_datetime TIMESTAMPTZ,
+    last_update_user     VARCHAR(50)
+);
+
+-- Add cc_id foreign key to customer_quotes (nullable)
+-- ALTER TABLE customer_quotes ADD COLUMN IF NOT EXISTS cc_id INTEGER REFERENCES customer_contact(cc_id);
