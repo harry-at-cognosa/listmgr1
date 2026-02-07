@@ -513,7 +513,7 @@ function SectionFormModal({ templateId, section, sectionTypes, onClose, onSave }
   const isSubmittingRef = useRef(false);
   const [formData, setFormData] = useState({
     section_type_id: section?.section_type_id || '',
-    plsqts_seqn: section?.plsqts_seqn || '',
+    plsqts_seqn: section?.plsqts_seqn ?? '',
     plsqts_alt_name: section?.plsqts_alt_name || '',
     plsqts_comment: section?.plsqts_comment || '',
     plsqts_use_alt_name: section?.plsqts_use_alt_name || false,
@@ -587,6 +587,7 @@ function SectionFormModal({ templateId, section, sectionTypes, onClose, onSave }
                   name="plsqts_seqn"
                   value={formData.plsqts_seqn}
                   onChange={handleChange}
+                  min="0"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
@@ -728,7 +729,7 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave, isAdmin, te
   const isSubmittingRef = useRef(false);
   const [formData, setFormData] = useState({
     section_type_id: section?.section_type_id || '',
-    plsqts_seqn: section?.plsqts_seqn || '',
+    plsqts_seqn: section?.plsqts_seqn ?? '',
     plsqts_alt_name: section?.plsqts_alt_name || '',
     plsqts_comment: section?.plsqts_comment || '',
     plsqts_use_alt_name: section?.plsqts_use_alt_name || false,
@@ -744,7 +745,7 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave, isAdmin, te
     if (section) {
       setFormData({
         section_type_id: section.section_type_id || '',
-        plsqts_seqn: section.plsqts_seqn || '',
+        plsqts_seqn: section.plsqts_seqn ?? '',
         plsqts_alt_name: section.plsqts_alt_name || '',
         plsqts_comment: section.plsqts_comment || '',
         plsqts_use_alt_name: section.plsqts_use_alt_name || false,
@@ -855,6 +856,7 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave, isAdmin, te
               name="plsqts_seqn"
               value={formData.plsqts_seqn}
               onChange={handleChange}
+              min="0"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
           </div>

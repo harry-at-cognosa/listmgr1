@@ -55,6 +55,11 @@ router.post('/template/:templateId', async (req, res) => {
       return res.status(400).json({ error: 'Section type is required' });
     }
 
+    // Validate seqn >= 0 if provided
+    if (plsqts_seqn != null && plsqts_seqn !== '' && Number(plsqts_seqn) < 0) {
+      return res.status(400).json({ error: 'Sequence number must be 0 or greater' });
+    }
+
     const now = getDateTime();
 
     // Get max sequence number
@@ -62,7 +67,7 @@ router.post('/template/:templateId', async (req, res) => {
       'SELECT COALESCE(MAX(plsqts_seqn), 0) as max_seqn FROM plsqt_sections WHERE plsqt_id = $1',
       [req.params.templateId]
     );
-    const nextSeqn = plsqts_seqn || (maxSeq.rows[0].max_seqn + 1);
+    const nextSeqn = (plsqts_seqn != null && plsqts_seqn !== '') ? Number(plsqts_seqn) : (maxSeq.rows[0].max_seqn + 1);
 
     const result = await db.query(
       `INSERT INTO plsqt_sections
@@ -104,6 +109,11 @@ router.put('/:id', async (req, res) => {
       plsqts_use_alt_name, plsqts_subsection_count, plsqts_active,
       plsqts_version, plsqts_extrn_file_ref, plsqts_content, plsqts_status
     } = req.body;
+
+    // Validate seqn >= 0 if provided
+    if (plsqts_seqn != null && plsqts_seqn !== '' && Number(plsqts_seqn) < 0) {
+      return res.status(400).json({ error: 'Sequence number must be 0 or greater' });
+    }
 
     const now = getDateTime();
 
