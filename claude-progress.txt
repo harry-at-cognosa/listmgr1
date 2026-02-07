@@ -1,3 +1,33 @@
+## Session 2026-02-07 (Feature #46 Regression Test)
+
+### Feature #46: User can clone template - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Used existing template #1 (DYNO-MILL 20 FCFC_US_FOB Allendale : USA/USD) with 11 sections
+3. ✅ Noted original template ID = 1
+4. ✅ Clicked Clone button on template #1 in templates list
+5. ✅ New template created with different ID (112 vs 1)
+6. ✅ New template has status 'cloned' (purple badge displayed)
+7. ✅ All 11 sections were copied with new IDs, all showing 'cloned' status
+8. ✅ Original template unchanged - still 'not started' status with 11 'not started' sections
+9. ✅ All cloned sections have status 'cloned' (verified all 11 sections)
+
+### Console Errors
+- Zero console errors throughout entire test (only React Router future flag warnings)
+
+### Screenshots
+- f46-step4-before-clone.png (templates list before clone)
+- f46-step5-after-clone.png (templates list after clone - new clone visible)
+- f46-step6-cloned-detail.png (cloned template detail - status cloned, 11 sections)
+- f46-step7-cloned-sections-bottom.png (all sections show cloned status)
+- f46-step8-original-unchanged.png (original template unchanged)
+
+### Cleanup
+- Deleted test clone template after verification to keep database clean
+
+[Testing] Session complete - Feature #46 regression test PASSED
+
 ## Session 2026-02-07 (Features #121, #122, #123)
 
 ### Feature #121: Fix zero-as-falsy bug for plsqts_seqn - VERIFIED PASSING
@@ -1650,3 +1680,81 @@ Migration includes:
 - regression-f65-after-delete-confirmed.png (after confirmed deletion, ZZZ removed)
 
 [Testing] Session complete - Feature #65 regression test PASSED
+
+## Session 2026-02-07 (Feature #35 Regression Test)
+
+### Feature #35: User can filter templates by country - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Navigated to Templates page - all 85 templates displayed with filter bar visible
+3. ✅ Country filter dropdown present with options: All Countries, Switzerland, United States (populated from countries table)
+4. ✅ Selected 'United States' - table updated to show exactly 3 templates, all with country='United States'
+5. ✅ URL updated to ?country_id=1 (correct query parameter)
+6. ✅ Selected 'Switzerland' - table updated to show 82 templates, all with country='Switzerland'
+7. ✅ URL updated to ?country_id=6 (correct query parameter)
+8. ✅ Clicked 'Clear Filters' - all 85 templates restored, dropdown reset to 'All Countries'
+
+### Console Errors
+- Zero console errors throughout entire test
+- Only expected React Router future flag warnings (2 total)
+- All API calls returned 200/304 (no failures)
+
+### Network Requests Verified
+- GET /api/templates?country_id=1&enabled=true → 200
+- GET /api/templates?country_id=6&enabled=true → 200
+- GET /api/templates?enabled=true → 200 (after clear)
+
+### Screenshots
+- regression-f35-templates-initial.png (all templates, no filter)
+- regression-f35-us-filtered.png (United States filter - 3 templates)
+- regression-f35-switzerland-filtered.png (Switzerland filter - 82 templates)
+- regression-f35-filters-cleared.png (filters cleared - all templates restored)
+
+[Testing] Session complete - Feature #35 regression test PASSED
+
+## Session 2026-02-07 (Feature #20 Regression Test)
+
+### Feature #20: User can edit existing country - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Navigated to Countries page - 8 countries displayed (CHE, USA, CHN, DEU, FRA, GBR, IND, JPN)
+3. ✅ Clicked Edit on Switzerland (CHE) - edit form opened with pre-filled values (Abbr, Name, Currency dropdown, Enabled checkbox)
+4. ✅ Changed currency selection from 'CHF - Swiss Franc' to 'EUR - Euro'
+5. ✅ Submitted form - success message 'Country saved successfully' displayed
+6. ✅ Verified changes saved - CHE shows EUR - Euro, Last Updated timestamp refreshed to current time
+7. ✅ Verified updated currency displays correctly in the table
+8. ✅ Restored original value (CHF - Swiss Franc) - second edit also confirmed working
+
+### Console Errors
+- Zero console errors throughout entire test
+- All API calls returned 200 OK (PUT /api/countries/6 for both edits)
+
+### Screenshots
+- regression-f20-countries-page.png (countries list)
+- regression-f20-edit-form-currency-changed.png (edit form with EUR selected)
+- regression-f20-country-edited-success.png (after save - EUR displayed)
+- regression-f20-country-restored.png (restored to CHF)
+
+[Testing] Session complete - Feature #20 regression test PASSED
+
+## Session 2026-02-07 (Feature #91 Regression Test)
+
+### Feature #91: Form fields have associated labels - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Currency create form - 3 fields (Symbol, Name, Enabled) all have label[for]/input[id] associations
+2. ✅ Template create form - 16 fields all have label[for]/input[id] associations
+3. ✅ Country create form - 4 fields all have label[for]/input[id] associations
+4. ✅ Section Type create form - 7 fields all have label[for]/input[id] associations
+5. ✅ Login form - 2 fields (Username, Password) have htmlFor/id associations
+6. ✅ Search field on Section Types page has label[for]/input[id] association
+
+### Console Errors
+- Zero console errors throughout entire test
+
+### Screenshots
+- regression-f91-section-editor-labels.png
+
+[Testing] Session complete - Feature #91 regression test PASSED
