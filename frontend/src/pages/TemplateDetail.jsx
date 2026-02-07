@@ -46,6 +46,7 @@ function TemplateDetail() {
   const [newStatus, setNewStatus] = useState('');
   const [cascadeToSections, setCascadeToSections] = useState(false);
   const [statusChanging, setStatusChanging] = useState(false);
+  const [showResequence, setShowResequence] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -269,6 +270,12 @@ function TemplateDetail() {
               Collapse All
             </button>
             <button
+              onClick={() => setShowResequence(true)}
+              className="px-3 py-1 text-sm bg-yellow-500 hover:bg-yellow-600 text-white rounded-md transition-colors"
+            >
+              Resequence
+            </button>
+            <button
               onClick={() => { setShowSectionForm(true); setEditingSection(null); }}
               className="px-3 py-1 text-sm bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-colors"
             >
@@ -441,6 +448,16 @@ function TemplateDetail() {
         />
       )}
 
+      {/* Resequence Sections Modal */}
+      {showResequence && (
+        <ResequenceSectionsModal
+          templateId={id}
+          sections={sections}
+          onClose={() => setShowResequence(false)}
+          onSave={() => { setShowResequence(false); loadData(); setSuccess('Sections resequenced successfully'); setTimeout(() => setSuccess(''), 3000); }}
+        />
+      )}
+
       {/* Status Change Modal */}
       {showStatusChange && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -502,6 +519,137 @@ function TemplateDetail() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function ResequenceSectionsModal({ templateId, sections, onClose, onSave }) {
+  // Sort sections by current seqn, then by id for deterministic order
+  const sortedSections = [...sections].sort((a, b) => {
+    if (a.plsqts_seqn !== b.plsqts_seqn) return a.plsqts_seqn - b.plsqts_seqn;
+    return a.plsqts_id - b.plsqts_id;
+  });
+
+  const [seqnValues, setSeqnValues] = useState(() => {
+    const values = {};
+    sortedSections.forEach(s => {
+      values[s.plsqts_id] = s.plsqts_seqn;
+    });
+    return values;
+  });
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSeqnChange = (sectionId, value) => {
+    setSeqnValues(prev => ({
+      ...prev,
+      [sectionId]: value === '' ? '' : Number(value)
+    }));
+  };
+
+  const handleSave = async () => {
+    // Validate all values are >= 0
+    for (const [id, val] of Object.entries(seqnValues)) {
+      if (val === '' || val < 0) {
+        setError('All sequence numbers must be 0 or greater');
+        return;
+      }
+    }
+
+    // Build updates array - only include changed values
+    const updates = [];
+    sortedSections.forEach(s => {
+      if (seqnValues[s.plsqts_id] !== s.plsqts_seqn) {
+        updates.push({
+          plsqts_id: s.plsqts_id,
+          plsqts_seqn: seqnValues[s.plsqts_id]
+        });
+      }
+    });
+
+    if (updates.length === 0) {
+      onClose();
+      return;
+    }
+
+    setSaving(true);
+    setError('');
+
+    try {
+      await api.put(`/sections/template/${templateId}/resequence`, { updates });
+      onSave();
+    } catch (err) {
+      setError(err.error || 'Failed to resequence sections');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Get section display name
+  const getSectionName = (section) => {
+    if (section.plsqts_use_alt_name && section.plsqts_alt_name) {
+      return section.plsqts_alt_name;
+    }
+    return section.section_type_name;
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto m-4">
+        <div className="p-6">
+          <h3 className="text-lg font-semibold mb-2">Resequence Sections</h3>
+          <p className="text-sm text-gray-500 mb-4">
+            Edit sequence numbers to reorder sections. Duplicates are allowed for alternative sections.
+          </p>
+
+          {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md">{error}</div>}
+
+          <div className="space-y-2">
+            {/* Header row */}
+            <div className="grid grid-cols-[80px_1fr] gap-3 px-2 py-1 text-sm font-medium text-gray-500 border-b">
+              <div>Seq #</div>
+              <div>Section Name</div>
+            </div>
+
+            {/* Section rows */}
+            {sortedSections.map(section => (
+              <div
+                key={section.plsqts_id}
+                className="grid grid-cols-[80px_1fr] gap-3 items-center px-2 py-1"
+              >
+                <input
+                  type="number"
+                  min="0"
+                  value={seqnValues[section.plsqts_id] ?? ''}
+                  onChange={(e) => handleSeqnChange(section.plsqts_id, e.target.value)}
+                  className="w-full px-2 py-1 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+                <div className="text-sm text-gray-700 truncate" title={getSectionName(section)}>
+                  {getSectionName(section)}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4 mt-4 border-t">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={saving}
+              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-colors disabled:opacity-50"
+            >
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

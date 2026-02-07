@@ -243,4 +243,55 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Batch resequence sections for a template
+router.put('/template/:templateId/resequence', async (req, res) => {
+  try {
+    const { updates } = req.body; // Array of { plsqts_id, plsqts_seqn }
+
+    if (!Array.isArray(updates) || updates.length === 0) {
+      return res.status(400).json({ error: 'Updates array is required' });
+    }
+
+    // Validate all seqn values >= 0
+    for (const u of updates) {
+      if (u.plsqts_seqn == null || Number(u.plsqts_seqn) < 0) {
+        return res.status(400).json({ error: 'All sequence numbers must be 0 or greater' });
+      }
+    }
+
+    const now = getDateTime();
+    const username = req.session.user.username;
+
+    // Update each section's seqn
+    for (const { plsqts_id, plsqts_seqn } of updates) {
+      await db.query(
+        `UPDATE plsqt_sections SET plsqts_seqn = $1, last_update_datetime = $2, last_update_user = $3
+         WHERE plsqts_id = $4 AND plsqt_id = $5`,
+        [Number(plsqts_seqn), now, username, plsqts_id, req.params.templateId]
+      );
+    }
+
+    // Update template last_update
+    await db.query(
+      `UPDATE plsq_templates SET last_update_datetime = $1, last_update_user = $2 WHERE plsqt_id = $3`,
+      [now, username, req.params.templateId]
+    );
+
+    // Return updated sections
+    const result = await db.query(
+      `SELECT s.*, st.plsqtst_name as section_type_name, st.plsqtst_active as section_type_active
+       FROM plsqt_sections s
+       LEFT JOIN plsqts_type st ON s.section_type_id = st.plsqtst_id
+       WHERE s.plsqt_id = $1
+       ORDER BY s.plsqts_seqn, s.plsqts_id`,
+      [req.params.templateId]
+    );
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error resequencing sections:', error);
+    res.status(500).json({ error: 'Failed to resequence sections' });
+  }
+});
+
 module.exports = router;
