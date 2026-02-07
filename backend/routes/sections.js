@@ -12,7 +12,7 @@ router.get('/template/:templateId', async (req, res) => {
        FROM plsqt_sections s
        LEFT JOIN plsqts_type st ON s.section_type_id = st.plsqtst_id
        WHERE s.plsqt_id = $1
-       ORDER BY s.plsqts_seqn`,
+       ORDER BY s.plsqts_seqn, s.plsqts_id`,
       [req.params.templateId]
     );
     res.json(result.rows);
