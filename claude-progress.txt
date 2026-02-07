@@ -1,3 +1,36 @@
+## Session 2026-02-07 (Features #121, #122, #123)
+
+### Feature #121: Fix zero-as-falsy bug for plsqts_seqn - VERIFIED PASSING
+
+Changes made:
+- backend/routes/sections.js: Changed `plsqts_seqn || (max+1)` to explicit null check for POST route
+- backend/routes/sections.js: Added validation rejecting seqn < 0 in POST and PUT routes
+- frontend/src/pages/TemplateDetail.jsx: Changed `||` to `??` (nullish coalescing) for plsqts_seqn in SectionFormModal and SectionTabForm
+- frontend/src/pages/TemplateDetail.jsx: Added min="0" to both sequence input fields
+
+Verified: Created section with seqn=0, confirmed it saves as 0 and displays as 0 in all views (collapsed list, tab bar, modal edit form, tab form). Cleaned up test data.
+
+### Feature #122: Section resequencing popup for templates - VERIFIED PASSING
+
+Changes made:
+- backend/routes/sections.js: Added PUT /sections/template/:id/resequence batch endpoint
+- frontend/src/pages/TemplateDetail.jsx: Created ResequenceSectionsModal component with two-column grid
+- frontend/src/pages/TemplateDetail.jsx: Added yellow "Resequence" button to section header area
+
+Verified: Swapped sections (7↔11), confirmed reordering. Set duplicate seqn=7, confirmed both display. Restored original order.
+
+### Feature #123: Add deterministic secondary sort for duplicate seqn sections - VERIFIED PASSING
+
+Changes made:
+- backend/routes/sections.js line 15: Changed `ORDER BY s.plsqts_seqn` to `ORDER BY s.plsqts_seqn, s.plsqts_id`
+
+Verified: Two sections with same seqn=7 always display in consistent order (lower ID first) across page reloads.
+
+### Current Status
+- 122/123 features passing (99.2%)
+- 1 feature in_progress (likely from another agent session)
+- All 3 assigned features (#121, #122, #123) completed and verified
+
 ## Session 2026-02-05 (Feature #120 - Restructure sidebar navigation into 4 collapsible menu groups)
 
 ### Feature #120: Restructure sidebar navigation - VERIFIED PASSING
@@ -1542,3 +1575,78 @@ Migration includes:
 - regression-f74-deleted-user-login-fails.png (login attempt fails)
 
 [Testing] Session complete - Feature #74 regression test PASSED
+
+## Session 2026-02-07 (Feature #56 Regression Test)
+
+### Feature #56: Expand/collapse all sections button works - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry (regular user)
+2. ✅ Navigated to template #1 (DYNO-MILL 20 FCFC_US_FOB Allendale) with 11 sections
+3. ✅ Verified all 11 sections initially collapsed (only headers visible with downward arrows)
+4. ✅ Clicked 'Expand All' - all 11 sections expanded showing Type, Active, Content, Last updated
+5. ✅ Clicked 'Collapse All' - all 11 sections collapsed back to headers only
+6. ✅ Repeated expand/collapse cycle - toggle works reliably on second invocation
+
+### Console Errors
+- Zero console errors throughout entire test (only React Router future flag warnings)
+
+### Screenshots
+- regression-f56-initial-collapsed.png (initial state - all collapsed)
+- regression-f56-all-expanded.png (after Expand All - all 11 sections expanded)
+- regression-f56-all-collapsed.png (after Collapse All - all collapsed again)
+
+[Testing] Session complete - Feature #56 regression test PASSED
+[Testing] Session complete - Feature #46 regression test PASSED
+
+## Session 2026-02-07 (Feature #43 Regression Test)
+
+### Feature #43: User can edit existing template - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin (has full edit permissions)
+2. ✅ Navigated to Templates page - all templates displayed
+3. ✅ Clicked Edit on template 'DYNO-MILL 20 FCFC_US_FOB Allendale : USA/USD' - edit form displayed with all fields pre-filled
+4. ✅ Modified template name (appended ' EDITED')
+5. ✅ Changed country selection from 'United States' to 'Switzerland'
+6. ✅ Changed status from 'not started' to 'in review'
+7. ✅ Submitted form via 'Update Template' button - redirected to templates list
+8. ✅ Verified changes visible in templates list (name, country, status all updated)
+9. ✅ Verified changes persist on template detail page (View) - all fields correct
+10. ✅ Verified last_update fields updated: '2026-02-07T14:18:00.000Z by admin'
+11. ✅ Restored original values (name, country, status) - second edit also confirmed working
+
+### Console Errors
+- Zero console errors during testing (only React Router future flag warnings)
+
+### Screenshots
+- regression-f43-edit-form.png (edit form with pre-filled values)
+- regression-f43-after-edit.png (templates list with updated values)
+- regression-f43-detail-verified.png (template detail showing persisted changes)
+- regression-f43-restored-top.png (original values restored)
+
+[Testing] Session complete - Feature #43 regression test PASSED
+
+## Session 2026-02-07 (Feature #65 Regression Test)
+
+### Feature #65: Confirmation dialog for delete operations - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin (required for delete permissions)
+2. ✅ Created test currency ZZZ 'Test Delete Currency' to safely test deletion
+3. ✅ Clicked Delete on ZZZ currency - confirmation dialog appeared: 'Are you sure you want to delete this currency?'
+4. ✅ Dialog explains what will be deleted (identifies it as a currency)
+5. ✅ Clicked Cancel - dialog dismissed
+6. ✅ Verified ZZZ currency still present in table after cancelling (9 currencies, unchanged)
+7. ✅ Clicked Delete again on ZZZ, confirmed deletion by accepting dialog
+8. ✅ Verified ZZZ currency removed from table (back to 8 original currencies)
+
+### Console Errors
+- Zero console errors throughout entire test
+- Only 2 React Router future flag warnings (expected, non-issue)
+
+### Screenshots
+- regression-f65-currencies-page.png (initial state with 8 currencies)
+- regression-f65-after-delete-confirmed.png (after confirmed deletion, ZZZ removed)
+
+[Testing] Session complete - Feature #65 regression test PASSED
