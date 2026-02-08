@@ -252,6 +252,16 @@ function TemplateDetail() {
         </div>
       </div>
 
+      {/* Document Section */}
+      <DocumentSection
+        templateId={id}
+        template={template}
+        isAdmin={isAdmin}
+        onUpdate={loadData}
+        setError={setError}
+        setSuccess={setSuccess}
+      />
+
       {/* Sections */}
       <div className="bg-white rounded-lg shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
@@ -1123,6 +1133,224 @@ function SectionTabForm({ templateId, section, sectionTypes, onSave, isAdmin, te
       <div className="mt-4 text-xs text-gray-400">
         Last updated: {section.last_update_datetime} by {section.last_update_user}
       </div>
+    </div>
+  );
+}
+
+// Document upload/download section for template detail page
+function DocumentSection({ templateId, template, isAdmin, onUpdate, setError, setSuccess }) {
+  const [docInfo, setDocInfo] = useState(null);
+  const [docLoading, setDocLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  const fileInputRef = useRef(null);
+
+  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+
+  useEffect(() => {
+    loadDocInfo();
+  }, [templateId]);
+
+  const loadDocInfo = async () => {
+    try {
+      setDocLoading(true);
+      const res = await api.get(`/templates/${templateId}/document/info`);
+      setDocInfo(res.data);
+    } catch (err) {
+      // If template just has no doc info endpoint, treat as no document
+      setDocInfo({ has_document: false });
+    } finally {
+      setDocLoading(false);
+    }
+  };
+
+  const formatFileSize = (bytes) => {
+    if (!bytes) return '0 B';
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    try {
+      return new Date(dateStr).toLocaleString();
+    } catch {
+      return dateStr;
+    }
+  };
+
+  const handleFileSelect = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Reset file input so same file can be selected again
+    e.target.value = '';
+
+    // Client-side validation: file type
+    if (!file.name.toLowerCase().endsWith('.docx')) {
+      setUploadError('Only .docx files are allowed.');
+      setTimeout(() => setUploadError(''), 5000);
+      return;
+    }
+
+    // Client-side validation: file size
+    if (file.size > MAX_FILE_SIZE) {
+      setUploadError('File size exceeds 4MB limit. Please choose a smaller file.');
+      setTimeout(() => setUploadError(''), 5000);
+      return;
+    }
+
+    // Upload the file
+    setUploading(true);
+    setUploadError('');
+
+    try {
+      const formData = new FormData();
+      formData.append('document', file);
+
+      await api.upload(`/templates/${templateId}/document`, formData);
+      setSuccess('Document uploaded successfully');
+      setTimeout(() => setSuccess(''), 3000);
+      loadDocInfo();
+      onUpdate(); // Refresh template data
+    } catch (err) {
+      setUploadError(err.error || 'Failed to upload document');
+      setTimeout(() => setUploadError(''), 5000);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDownload = () => {
+    // Open download URL in new window - the browser will handle the download
+    const downloadUrl = api.getDownloadUrl(`/templates/${templateId}/document`);
+    window.open(downloadUrl, '_blank');
+  };
+
+  const handleRemoveDocument = async () => {
+    if (!window.confirm('Are you sure you want to remove this document? The document will be archived in version history.')) {
+      return;
+    }
+
+    try {
+      await api.delete(`/templates/${templateId}/document`);
+      setSuccess('Document removed successfully');
+      setTimeout(() => setSuccess(''), 3000);
+      loadDocInfo();
+      onUpdate();
+    } catch (err) {
+      setError(err.error || 'Failed to remove document');
+      setTimeout(() => setError(''), 5000);
+    }
+  };
+
+  if (docLoading) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-3">Document</h3>
+        <div className="flex items-center justify-center py-4">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-600"></div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-lg font-semibold text-gray-800">Document</h3>
+        <span className="text-xs text-gray-400">(optional)</span>
+      </div>
+
+      {uploadError && (
+        <div className="mb-3 p-3 bg-red-50 text-red-700 rounded-md text-sm">{uploadError}</div>
+      )}
+
+      {docInfo && docInfo.has_document ? (
+        // Document exists - show info + download/replace/remove options
+        <div className="border border-gray-200 rounded-lg p-4">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              {/* Document icon */}
+              <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-medium text-gray-800">{docInfo.original_filename || 'Document'}</p>
+                <p className="text-sm text-gray-500">
+                  {formatFileSize(docInfo.size_bytes)}
+                  {docInfo.created_at && (' \u00B7 Uploaded ' + formatDate(docInfo.created_at))}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleDownload}
+                className="px-3 py-1.5 text-sm bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-colors flex items-center gap-1"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download
+              </button>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className="px-3 py-1.5 text-sm bg-yellow-500 hover:bg-yellow-600 text-white rounded-md transition-colors disabled:opacity-50"
+              >
+                {uploading ? 'Uploading...' : 'Replace'}
+              </button>
+              {isAdmin && (
+                <button
+                  onClick={handleRemoveDocument}
+                  className="px-3 py-1.5 text-sm bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors"
+                  title="Remove document (admin only)"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : (
+        // No document - show upload area
+        <div
+          className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary-400 transition-colors cursor-pointer"
+          onClick={() => !uploading && fileInputRef.current?.click()}
+        >
+          <svg className="mx-auto h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          <p className="mt-2 text-sm text-gray-600">No document attached</p>
+          <button
+            onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+            disabled={uploading}
+            className="mt-3 px-4 py-2 text-sm bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-colors disabled:opacity-50"
+          >
+            {uploading ? (
+              <span className="flex items-center gap-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                Uploading...
+              </span>
+            ) : (
+              'Upload Document'
+            )}
+          </button>
+          <p className="mt-2 text-xs text-gray-400">.docx files only, max 4MB</p>
+        </div>
+      )}
+
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        onChange={handleFileSelect}
+        className="hidden"
+      />
     </div>
   );
 }

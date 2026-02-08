@@ -85,6 +85,26 @@ const api = {
     return { data: await response.json() };
   },
 
+  async upload(url, formData) {
+    const response = await safeFetch(`${API_BASE}${url}`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData
+      // Note: Do NOT set Content-Type header - browser sets it with boundary for multipart
+    });
+
+    if (!response.ok) {
+      const error = await parseErrorResponse(response);
+      throw { status: response.status, ...error };
+    }
+
+    return { data: await response.json() };
+  },
+
+  getDownloadUrl(url) {
+    return `${API_BASE}${url}`;
+  },
+
   async delete(url) {
     const response = await safeFetch(`${API_BASE}${url}`, {
       method: 'DELETE',
