@@ -94,12 +94,17 @@ router.get('/:id', async (req, res) => {
         c.country_name, c.country_abbr,
         cur.currency_symbol, cur.currency_name,
         pc.product_cat_name, pc.product_cat_abbr, pc.product_cat_enabled,
-        pl.product_line_name, pl.product_line_abbr, pl.product_line_enabled
+        pl.product_line_name, pl.product_line_abbr, pl.product_line_enabled,
+        CASE WHEN t.current_blob_id IS NOT NULL THEN true ELSE false END AS has_document,
+        db.original_filename AS document_filename,
+        db.size_bytes AS document_size_bytes,
+        db.created_at AS document_created_at
        FROM plsq_templates t
        LEFT JOIN country c ON t.country_id = c.country_id
        LEFT JOIN currency cur ON t.currency_id = cur.currency_id
        LEFT JOIN product_cat pc ON t.product_cat_id = pc.product_cat_id
        LEFT JOIN product_line pl ON t.product_line_id = pl.product_line_id
+       LEFT JOIN document_blob db ON db.blob_id = t.current_blob_id
        WHERE t.plsqt_id = $1`;
 
     // Non-admin users cannot view disabled templates or templates with disabled product categories or product lines

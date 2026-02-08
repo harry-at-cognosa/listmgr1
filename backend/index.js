@@ -55,6 +55,7 @@ const sectionsRoutes = require('./routes/sections');
 const appSettingsRoutes = require('./routes/appSettings');
 const priceConversionRoutes = require('./routes/priceConversion');
 const customerContactsRoutes = require('./routes/customerContacts');
+const documentBlobsRoutes = require('./routes/documentBlobs');
 
 // Public settings endpoint (unauthenticated) - for login page
 app.get('/api/public-settings', async (req, res) => {
@@ -89,6 +90,7 @@ app.use('/api/sections', requireAuth, sectionsRoutes);
 app.use('/api/app-settings', requireAuth, appSettingsRoutes);
 app.use('/api/price-conversion', requireAdmin, priceConversionRoutes);
 app.use('/api/customer-contacts', requireAuth, customerContactsRoutes);
+app.use('/api/templates', requireAuth, documentBlobsRoutes);
 
 // Health check
 app.get('/api/health', async (req, res) => {
