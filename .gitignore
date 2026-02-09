@@ -43,6 +43,9 @@ coverage/
 # OS files
 Thumbs.db
 
+# Screenshots
+*.png
+
 # Temporary files
 tmp/
 temp/
