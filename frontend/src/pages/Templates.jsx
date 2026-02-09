@@ -11,6 +11,18 @@ const STATUS_COLORS = {
   'cloned': 'bg-purple-100 text-purple-800'
 };
 
+// Format date for the list view
+const formatListDate = (dateStr) => {
+  if (!dateStr) return '';
+  try {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return dateStr;
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return dateStr;
+  }
+};
+
 // Helper to get filter values from URL search params
 const getFiltersFromParams = (searchParams) => ({
   country_id: searchParams.get('country_id') || '',
@@ -18,7 +30,8 @@ const getFiltersFromParams = (searchParams) => ({
   product_line_id: searchParams.get('product_line_id') || '',
   active: searchParams.get('active') || '',
   search: searchParams.get('search') || '',
-  enabled: searchParams.get('enabled') ?? 'true' // Default to 'true' (Enabled only)
+  enabled: searchParams.get('enabled') ?? 'true', // Default to 'true' (Enabled only)
+  sort: searchParams.get('sort') || 'newest' // Default to newest first
 });
 
 function Templates() {
@@ -79,11 +92,11 @@ function Templates() {
   const loadTemplates = useCallback(async () => {
     try {
       setLoading(true);
-      // Build API params from URL search params
+      // Build API params from URL search params (exclude 'sort' - it's client-side only)
       const currentFilters = getFiltersFromParams(searchParams);
       const params = new URLSearchParams();
       Object.entries(currentFilters).forEach(([key, value]) => {
-        if (value) params.append(key, value);
+        if (value && key !== 'sort') params.append(key, value);
       });
       const response = await api.get(`/templates?${params.toString()}`);
       setTemplates(response.data);
@@ -106,10 +119,21 @@ function Templates() {
     setSearchParams(newParams, { replace: true });
   };
 
-  // Clear all filters by resetting URL search params (keeping default enabled filter)
+  // Clear all filters by resetting URL search params (keeping default enabled filter and default sort)
   const clearFilters = () => {
-    setSearchParams({ enabled: 'true' }, { replace: true });
+    setSearchParams({ enabled: 'true', sort: 'newest' }, { replace: true });
   };
+
+  // Sort templates client-side by last_update_datetime
+  const sortedTemplates = [...templates].sort((a, b) => {
+    const dateA = a.last_update_datetime ? new Date(a.last_update_datetime).getTime() : 0;
+    const dateB = b.last_update_datetime ? new Date(b.last_update_datetime).getTime() : 0;
+    if (filters.sort === 'oldest') {
+      return dateA - dateB;
+    }
+    // Default: newest first
+    return dateB - dateA;
+  });
 
   const handleClone = async (id) => {
     try {
@@ -243,6 +267,18 @@ function Templates() {
               </select>
             </div>
           )}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+            <select
+              name="sort"
+              value={filters.sort}
+              onChange={handleFilterChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+            </select>
+          </div>
           <div className="flex items-end">
             <button
               onClick={clearFilters}
@@ -274,6 +310,7 @@ function Templates() {
                   <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap hidden md:table-cell">Product Line</th>
                   <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap hidden lg:table-cell">Sections</th>
                   <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Status</th>
+                  <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap hidden xl:table-cell">Last Updated</th>
                   {isAdmin && (
                     <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Enabled</th>
                   )}
@@ -281,7 +318,7 @@ function Templates() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {templates.map(template => {
+                {sortedTemplates.map(template => {
                   const isTemplateEnabled = template.plsqt_enabled === 1;
                   const canEditOrDelete = template.plsqt_status === 'cloned' || template.plsqt_status === 'not started';
                   const canEdit = isAdmin || isTemplateEnabled || canEditOrDelete;
@@ -304,6 +341,9 @@ function Templates() {
                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${STATUS_COLORS[template.plsqt_status] || 'bg-gray-100'}`}>
                           {template.plsqt_status}
                         </span>
+                      </td>
+                      <td className="px-4 md:px-6 py-4 text-gray-500 text-sm hidden xl:table-cell whitespace-nowrap">
+                        {template.last_update_datetime ? formatListDate(template.last_update_datetime) : '-'}
                       </td>
                       {isAdmin && (
                         <td className="px-4 md:px-6 py-4">

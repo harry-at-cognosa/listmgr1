@@ -2135,3 +2135,81 @@ Migration includes:
 - regression-f35-us-filtered.png (United States filter showing 2 templates)
 
 [Testing] Session complete - Feature #35 regression test PASSED
+
+## Session 2026-02-09 (Feature #28 Regression Test)
+
+### Feature #28: User can edit existing product line - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Navigated to Product Lines page (Reference Data > Product Lines) - 13 product lines displayed
+3. ✅ Clicked Edit on ECM (Mill-ECM) - edit form appeared with pre-filled values
+4. ✅ Changed product category from Dyno-Mill Agitator to Dyno-Mix Shaker
+5. ✅ Changed name from Mill-ECM to Mill-ECM EDITED
+6. ✅ Submitted form via Save button - success message displayed
+7. ✅ Verified changes saved: name updated, category updated, timestamp refreshed to current time by admin
+8. ✅ Restored original values - second edit also confirmed working
+9. ✅ Also restored KD product line that was left dirty by a prior test session
+10. ✅ All 13 product lines intact after test
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- regression-f28-product-lines-list.png (initial 13 product lines)
+- regression-f28-edit-form-prefilled.png (edit form with ECM pre-filled values)
+- regression-f28-form-modified.png (category changed to Dyno-Mix Shaker, name to Mill-ECM EDITED)
+- regression-f28-save-success.png (success message after save)
+- regression-f28-edited-row-visible.png (edited ECM row with new category and timestamp)
+- regression-f28-data-restored.png (all data restored to original values)
+
+[Testing] Session complete - Feature #28 regression test PASSED
+
+## Session 2026-02-09 (Feature #28 Regression Test)
+
+### Feature #28: User can edit existing product line - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Logged in as admin
+2. Navigated to Product Lines page - 13 product lines displayed
+3. Clicked Edit on KD - edit form with pre-filled values
+4. Product Category dropdown populated with 3 options from product_cat table
+5. Changed category from Dyno-Mill Agitator to Dyno-Mix Shaker
+6. Changed name from Mill-KD to Mill-KD EDITED
+7. Saved - success message displayed, changes persisted
+8. Last_update fields updated correctly (timestamp + user)
+9. Restored KD to original values - second edit also confirmed
+10. Zero console errors throughout entire test
+
+[Testing] Session complete - Feature #28 regression test PASSED
+
+## Session 2026-02-09 (Feature #12 Regression Test)
+
+### Feature #12: API returns 403 for unauthorized role access - REGRESSION FOUND AND FIXED
+
+### Regression Found
+- DELETE /api/templates/:id allowed regular users to delete templates with status 'not started' or 'cloned'
+- Per spec, only admin users should be able to delete any records
+- All other delete endpoints (currencies, countries, product_categories, product_lines, sections, etc.) correctly required admin
+- Template delete was the ONLY endpoint with this security hole
+
+### Fix Applied
+- Changed backend/routes/templates.js DELETE endpoint to check req.session.user.role \!== 'admin'
+- Returns 403 'Admin access required' for non-admin users (consistent with all other endpoints)
+- Removed old logic that checked template status for non-admin delete permissions
+
+### Verification Steps Completed
+1. Logged in as harry (regular user)
+2. DELETE /api/currencies/1 -> 403 Admin access required
+3. DELETE /api/users/1 -> 403 Admin access required
+4. DELETE /api/templates/114 -> 403 Admin access required (FIXED)
+5. DELETE /api/countries/1 -> 403 Admin access required
+6. DELETE /api/product-categories/1 -> 403 Admin access required
+7. Verified currency #1 (USD) still exists after attempted delete
+8. Verified template #114 still exists with 11 sections after attempted delete
+9. Recreated template (was deleted during initial test before fix) as template #114
+
+### Console Errors: Zero errors throughout entire test
+
+### Commit: 7054d05 - Fix security regression: template delete now requires admin role
+
+[Testing] Session complete - Feature #12 regression FOUND, FIXED, and VERIFIED
