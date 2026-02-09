@@ -109,6 +109,8 @@ A collaborative web application for managing sales quote templates, built with a
 │   ├── add original file names to psql_template records.txt
 │   └── document_blob_versioning_guide.md
 │
+├── png_save/                       # Tracked screenshots (*.png exempt from .gitignore)
+│
 ├── CLAUDE.md                       # AI assistant project instructions
 ├── .gitignore
 ├── app_spec.txt                    # Original application specification
