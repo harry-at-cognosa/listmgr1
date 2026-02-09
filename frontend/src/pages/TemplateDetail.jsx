@@ -1284,6 +1284,9 @@ function DocumentSection({ templateId, template, isAdmin, onUpdate, setError, se
                   {formatFileSize(docInfo.size_bytes)}
                   {docInfo.created_at && (' \u00B7 Uploaded ' + formatDate(docInfo.created_at))}
                 </p>
+                {docInfo.blob_id && (
+                  <p className="text-xs text-gray-400 mt-0.5">Blob ID: {docInfo.blob_id}</p>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-2">

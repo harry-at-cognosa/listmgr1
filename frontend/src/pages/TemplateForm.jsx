@@ -17,6 +17,21 @@ const CHAR_LIMITS = {
   plsqt_content: 10000
 };
 
+// Format audit date to a human-readable format
+const formatAuditDate = (dateStr) => {
+  if (!dateStr) return '';
+  try {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) {
+      // If it's not a valid Date, it might be in "YYYY-MM-DD HH:MM" format
+      return dateStr;
+    }
+    return date.toLocaleString();
+  } catch {
+    return dateStr;
+  }
+};
+
 function TemplateForm() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -62,6 +77,13 @@ function TemplateForm() {
   // Track original status for comparison and propagate toggle
   const [originalStatus, setOriginalStatus] = useState('not started');
   const [propagateToSections, setPropagateToSections] = useState(false);
+
+  // Read-only metadata fields (only shown when editing)
+  const [auditInfo, setAuditInfo] = useState({
+    last_update_user: '',
+    last_update_datetime: '',
+    current_blob_id: null
+  });
 
   useEffect(() => {
     loadReferenceData();
@@ -112,6 +134,11 @@ function TemplateForm() {
         plsqt_status: status
       });
       setOriginalStatus(status);
+      setAuditInfo({
+        last_update_user: template.last_update_user || '',
+        last_update_datetime: template.last_update_datetime || '',
+        current_blob_id: template.current_blob_id || null
+      });
     } catch (err) {
       setError(err.error || 'Failed to load template');
     } finally {
@@ -452,6 +479,35 @@ function TemplateForm() {
               </div>
             )}
           </div>
+
+          {/* Read-only Metadata (shown only when editing) */}
+          {isEditing && (
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide">Record Metadata</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">Last Updated By</label>
+                  <div className="px-3 py-2 bg-gray-100 border border-gray-200 rounded-md text-gray-700 text-sm">
+                    {auditInfo.last_update_user || 'N/A'}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">Last Updated At</label>
+                  <div className="px-3 py-2 bg-gray-100 border border-gray-200 rounded-md text-gray-700 text-sm">
+                    {auditInfo.last_update_datetime ? formatAuditDate(auditInfo.last_update_datetime) : 'N/A'}
+                  </div>
+                </div>
+                {auditInfo.current_blob_id && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-500 mb-1">Document Blob ID</label>
+                    <div className="px-3 py-2 bg-gray-100 border border-gray-200 rounded-md text-gray-700 text-sm">
+                      {auditInfo.current_blob_id}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Actions */}
           <div className="flex items-center gap-4 pt-4 border-t">

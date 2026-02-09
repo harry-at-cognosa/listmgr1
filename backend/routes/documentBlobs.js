@@ -89,11 +89,11 @@ router.post('/:id/document', upload.single('document'), async function(req, res)
         );
       }
 
-      // Step 3: Update template's current_blob_id
+      // Step 3: Update template's current_blob_id and sync plsqt_extrn_file_ref with uploaded filename
       var now = new Date().toISOString().slice(0, 16).replace('T', ' ');
       await client.query(
-        'UPDATE plsq_templates SET current_blob_id = $1, last_update_datetime = $2, last_update_user = $3 WHERE plsqt_id = $4',
-        [newBlobId, now, username, templateId]
+        'UPDATE plsq_templates SET current_blob_id = $1, plsqt_extrn_file_ref = $2, last_update_datetime = $3, last_update_user = $4 WHERE plsqt_id = $5',
+        [newBlobId, originalFilename, now, username, templateId]
       );
 
       await client.query('COMMIT');
