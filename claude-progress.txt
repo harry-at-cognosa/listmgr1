@@ -2213,3 +2213,85 @@ Migration includes:
 ### Commit: 7054d05 - Fix security regression: template delete now requires admin role
 
 [Testing] Session complete - Feature #12 regression FOUND, FIXED, and VERIFIED
+
+## Session 2026-02-09 (Feature #74 Regression Test)
+
+### Feature #74: Admin can delete user - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Logged in as admin - User Management page shows 5 users (admin, clint, gab, guest, harry)
+2. Created test user "testdelete" (role=user) - success message shown, 6 users in list
+3. Clicked Delete on "testdelete" - confirmation dialog: "Are you sure you want to delete this user?"
+4. Confirmed deletion - user removed from list
+5. Verified user removed - back to 5 users (admin, clint, gab, guest, harry)
+6. Logged out and attempted login as "testdelete" with correct password
+7. Login correctly failed with "Invalid username or password" error message
+
+### Additional Observations
+- Admin's own Delete button is correctly disabled (cannot delete yourself)
+- Confirmation dialog properly guards against accidental deletion
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- regression-f74-user-management-initial.png (5 users before test)
+- regression-f74-test-user-created.png (6 users after creating testdelete)
+- regression-f74-user-deleted.png (5 users after deleting testdelete)
+- regression-f74-deleted-user-login-fails.png (login fails for deleted user)
+
+[Testing] Session complete - Feature #74 regression test PASSED
+
+[Testing] Session 2026-02-09 - Feature #74 regression test PASSED
+
+## Session 2026-02-09 (Feature #74 Regression Test)
+
+### Feature #74: Admin can delete user - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin - navigated to User Management page (5 existing users)
+2. ✅ Clicked '+ Add User' - form appeared with Username, Password, Role, Enabled fields
+3. ✅ Created test user 'testdelete' with password, role=user, enabled=true
+4. ✅ Success message 'User saved successfully' displayed, user appeared in list (6 users)
+5. ✅ Clicked Delete on 'testdelete' - confirmation dialog 'Are you sure you want to delete this user?' appeared
+6. ✅ Confirmed deletion - user removed from list (back to 5 users)
+7. ✅ Admin's own Delete button correctly disabled (self-delete prevention)
+8. ✅ Logged out, attempted login as deleted user 'testdelete' - received 'Invalid username or password' error
+9. ✅ Deleted user confirmed unable to authenticate
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- regression-f74-login-success.png (admin logged in, templates page)
+- regression-f74-user-management-page.png (5 users before test)
+- regression-f74-add-user-form.png (add user form filled)
+- regression-f74-test-user-created.png (6 users after create)
+- regression-f74-user-deleted.png (5 users after delete)
+- regression-f74-deleted-user-login-fails.png (login fails for deleted user)
+
+[Testing] Session complete - Feature #74 regression test PASSED
+
+## Session 2026-02-09 (Feature #77 Regression Test)
+
+### Feature #77: Last update fields track correctly - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as harry - verified currencies page shows 'View only' for regular users (by design)
+2. ✅ Logged in as admin - navigated to Currencies page (8 currencies displayed)
+3. ✅ Created new currency TST 'Test Currency F77' via Add Currency form
+4. ✅ Verified last_update_user shows 'admin' after creation
+5. ✅ Verified last_update_datetime is current (2026-02-09T08:17:00.000Z)
+6. ✅ Edited TST currency - changed name to 'Test F77 v2'
+7. ✅ Verified last_update_datetime updated to new time (08:17 -> 08:18)
+8. ✅ Verified last_update_user still shows 'admin' after edit
+9. ✅ Existing CHF currency shows 'by harry' - confirming different users tracked correctly
+10. ✅ Cleaned up test data - deleted TST currency, restored to 8 original currencies
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- regression-f77-harry-logged-in.png (harry logged in, templates page)
+- regression-f77-currency-created-by-admin.png (TST created, timestamp by admin)
+- regression-f77-edited-timestamp-updated.png (TST edited, timestamp updated)
+- regression-f77-cleanup-complete.png (restored to 8 original currencies)
+
+[Testing] Session complete - Feature #77 regression test PASSED

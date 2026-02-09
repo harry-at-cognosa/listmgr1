@@ -6,7 +6,7 @@ A collaborative web application for managing sales quote templates, built with a
 
 | Layer    | Technology                          |
 |----------|-------------------------------------|
-| Frontend | React 18, Vite 5, Tailwind CSS 3   |
+| Frontend | React 18, Vite 5, Tailwind CSS 3    |
 | Backend  | Node.js, Express 4                  |
 | Database | PostgreSQL (+ SQLite for dev)       |
 | Auth     | Session-based with bcrypt           |

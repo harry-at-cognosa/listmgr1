@@ -46,6 +46,9 @@ Thumbs.db
 # Screenshots
 *.png
 
+# Playwright MCP artifacts
+.playwright-mcp/
+
 # Temporary files
 tmp/
 temp/
