@@ -383,22 +383,18 @@ router.post('/:id/clone', async (req, res) => {
   }
 });
 
-// Delete template (admin can delete any, regular users can only delete templates with status 'cloned' or 'not started')
+// Delete template (admin only)
 router.delete('/:id', async (req, res) => {
   try {
-    const isAdmin = req.session.user && req.session.user.role === 'admin';
-
-    // Check if template exists and get its status
-    const existing = await db.query('SELECT plsqt_id, plsqt_status FROM plsq_templates WHERE plsqt_id = $1', [req.params.id]);
-    if (existing.rows.length === 0) {
-      return res.status(404).json({ error: 'Template not found' });
+    // Check if user is admin
+    if (req.session.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Admin access required' });
     }
 
-    const templateStatus = existing.rows[0].plsqt_status;
-    const canDelete = isAdmin || templateStatus === 'cloned' || templateStatus === 'not started';
-
-    if (!canDelete) {
-      return res.status(403).json({ error: 'Only templates with status "cloned" or "not started" can be deleted by non-admin users' });
+    // Check if template exists
+    const existing = await db.query('SELECT plsqt_id FROM plsq_templates WHERE plsqt_id = $1', [req.params.id]);
+    if (existing.rows.length === 0) {
+      return res.status(404).json({ error: 'Template not found' });
     }
 
     await db.query('DELETE FROM plsq_templates WHERE plsqt_id = $1', [req.params.id]);
