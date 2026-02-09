@@ -45,6 +45,7 @@ Thumbs.db
 
 # Screenshots
 *.png
+!png_save/*.png
 
 # Playwright MCP artifacts
 .playwright-mcp/
