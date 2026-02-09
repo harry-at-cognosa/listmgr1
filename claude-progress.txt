@@ -1,3 +1,59 @@
+## Session 2026-02-09 (Feature #12 Regression Test)
+
+### Feature #12: API returns 403 for unauthorized role access - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as regular user 'harry'
+2. ✅ Made DELETE request to /api/currencies/1 → received 403 "Admin access required"
+3. ✅ Verified 403 response code and error message
+4. ✅ Made DELETE request to /api/users/1 → received 403 "Admin access required"
+5. ✅ Verified 403 response code and error message
+6. ✅ Verified currency with currency_id=1 (USD) still exists after rejected DELETE
+7. ✅ Verified all 5 users still exist after rejected DELETE (admin, harry, clint, gab, guest)
+8. ✅ UI correctly shows "View only" for regular users on currencies page (no Edit/Delete buttons)
+9. ✅ Zero console errors throughout entire test
+
+### Additional Security Observations
+- /api/users endpoint fully protected at route level (even GET requires admin)
+- /api/currencies DELETE protected at endpoint level with role check
+- Both patterns correctly return 403 with "Admin access required" message
+
+### Screenshots
+- regression-f12-harry-logged-in.png (logged in as harry)
+- regression-f12-harry-currencies-view-only.png (currencies page showing View only for regular user)
+
+### Current Progress: 127/128 features passing (99.2%)
+
+[Testing] Session complete - Feature #12 regression test PASSED
+
+## Session 2026-02-08 (Features #124 & #125 - Document Blob Upload/Download)
+
+### Feature #124: Document Blob API & Versioning Backend - PASSING
+- Created `/backend/routes/documentBlobs.js` with 5 endpoints:
+  - POST /:id/document (upload with multer, 4MB limit, .docx validation, SHA-256 dedup)
+  - GET /:id/document (download with correct Content-Type/Content-Disposition)
+  - DELETE /:id/document (admin only, archives to history)
+  - GET /:id/document/info (metadata without binary)
+  - GET /:id/document/history (version history)
+- Modified `/backend/routes/templates.js` - LEFT JOIN document_blob in GET /:id
+- Modified `/backend/index.js` - registered documentBlobs routes
+- Installed multer dependency
+- All API tests passed via curl (upload, download, dedup, versioning, auth, validation)
+
+### Feature #125: Template Document Upload/Download UI - PASSING
+- Added DocumentSection component to TemplateDetail.jsx
+- Added `upload()` and `getDownloadUrl()` methods to api.js
+- Full UI: upload area (no doc) / document card (has doc)
+- Client-side validation: 4MB limit, .docx only
+- Download, Replace (all users), Remove (admin only) buttons
+- Loading states, error messages, success feedback
+- Browser-tested all flows: upload, replace, remove, role-based visibility
+- Zero console errors
+
+### Project Status: 125/125 features passing (100%)
+
+---
+
 ## Session 2026-02-07 (Feature #46 Regression Test)
 
 ### Feature #46: User can clone template - VERIFIED PASSING
@@ -1803,3 +1859,279 @@ Migration includes:
 - regression-f112-propagated-sections.png
 
 [Testing] Session complete - Feature #112 regression test PASSED
+[Testing] Session complete - Feature #52 regression test PASSED
+
+## Session 2026-02-08 (Feature #31 Regression Test)
+
+### Feature #31: User can create new section type - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Navigated to Section Types page - 17 existing section types displayed
+3. ✅ Clicked '+ Add Section Type' button - form modal appeared with all fields
+4. ✅ Entered name 'Standard Quote Section TEST'
+5. ✅ Set has_total_price checkbox to checked
+6. ✅ Set has_lineitem_prices checkbox to checked
+7. ✅ Entered comment 'Test section type for regression testing'
+8. ✅ Active checkbox defaulted to checked (correct)
+9. ✅ Entered version '2.0'
+10. ✅ Submitted form via Save button
+11. ✅ Success message 'Section type saved successfully' displayed
+12. ✅ New type appeared in list with correct values (Name, Yes/Yes, Active, 2.0, timestamp by admin)
+13. ✅ Cleaned up test data - deleted test section type, back to 17 entries
+
+### Console Errors
+- Zero console errors throughout entire test
+- Only 2 React Router future flag warnings (expected, non-issue)
+
+### Note
+- Initial submit attempt failed with 'Authentication required' due to stale session from backend restart
+- After fresh login, all CRUD operations worked correctly - not a regression, just a session issue
+
+### Screenshots
+- regression-f31-section-types-list.png (initial list with 17 section types)
+- regression-f31-create-form.png (empty create form)
+- regression-f31-form-filled.png (form filled with test data)
+- regression-f31-success-message.png (after successful save)
+- regression-f31-new-entry-visible.png (new entry visible in table)
+
+[Testing] Session complete - Feature #31 regression test PASSED
+
+## Session 2026-02-08 (Feature #67 Regression Test)
+
+### Feature #67: Required fields prevent form submission - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Logged in as admin
+2. Navigated to Currencies page (Reference Data > Currencies)
+3. Clicked Add Currency - form displayed with Symbol (required), Name, Enabled fields
+4. Left Symbol field empty, clicked Save - form blocked submission, focus moved to required field
+5. Verified no POST request made (form NOT submitted) via network request log
+6. Filled Symbol=TST, Name=Test Currency, clicked Save - form submitted successfully
+7. Success message displayed, TST appeared in currency table
+8. Cleaned up: deleted TST test currency, confirmed 8 original currencies restored
+
+### Console Errors: Zero errors throughout entire test
+
+[Testing] Session complete - Feature #67 regression test PASSED
+
+## Session 2026-02-08 (Feature #57 Regression Test)
+
+### Feature #57: Status badges display correct colors - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Verified "not started" shows gray badge (bg-gray-100 text-gray-800) on templates list
+3. ✅ Verified "in process" shows blue badge (bg-blue-100 text-blue-800) on templates list
+4. ✅ Changed template #1 status to "in review" - verified yellow badge (bg-yellow-100 text-yellow-800)
+5. ✅ Changed template #1 status to "approved" - verified green badge (bg-green-100 text-green-800)
+6. ✅ Changed template #1 status to "cloned" - verified purple badge (bg-purple-100 text-purple-800)
+7. ✅ Verified "cloned" badge displays correctly on template detail page (View) as well
+8. ✅ Verified section-level "not started" badges display on detail page
+9. ✅ Restored template #1 status back to "not started" (original value)
+10. ✅ Confirmed badge color classes match in both Templates.jsx and TemplateDetail.jsx
+
+### Console Errors
+- Zero console errors throughout entire test
+- Only 2 React Router future flag warnings (expected, non-issue)
+
+### Screenshots
+- regression-f57-templates-list.png (initial - not started + in process badges)
+- regression-f57-in-review-top.png (in review yellow badge)
+- regression-f57-approved-badge.png (approved green badge)
+- regression-f57-cloned-badge.png (cloned purple badge on list)
+- regression-f57-detail-cloned-badge.png (cloned purple badge on detail page)
+- regression-f57-status-restored.png (status restored to not started)
+
+[Testing] Session complete - Feature #57 regression test PASSED
+
+## Session 2026-02-08 (Feature #24 Regression Test)
+
+### Feature #24: User can edit existing product category - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Logged in as admin
+2. Navigated to Product Categories page - 3 categories displayed (MIL, MIX, T)
+3. Clicked Edit on MIX (Dyno-Mix Shaker) - edit form modal appeared with pre-filled values
+4. Modified name from Dyno-Mix Shaker to Dyno-Mix Shaker EDITED
+5. Submitted form via Save button - success message displayed
+6. Verified changes saved: name updated, timestamp refreshed to current time by admin
+7. Restored original name - second edit also confirmed working
+8. Zero console errors throughout entire test
+
+[Testing] Session complete - Feature #24 regression test PASSED
+
+## Session 2026-02-08 (Feature #95 Regression Test)
+
+### Feature #95: Double-click submit creates only one record - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Navigated to Currencies page (Reference Data > Currencies) - 8 currencies displayed
+3. ✅ Clicked '+ Add Currency' - form opened with Symbol, Name, Enabled fields
+4. ✅ Filled form with unique values: Symbol=ZZZ, Name=Test Double Click Currency
+5. ✅ Rapidly double-clicked Save button (browser dblclick)
+6. ✅ Success message 'Currency saved successfully' displayed once
+7. ✅ Only ONE ZZZ record created (9 total rows, 1 ZZZ - verified via DOM query)
+8. ✅ Network requests confirmed: only 1 POST /api/currencies => 201 Created (no duplicate POST)
+9. ✅ Cleaned up test data - deleted ZZZ currency, back to 8 original currencies
+
+### Console Errors
+- Zero console errors throughout entire test
+- Only 2 React Router future flag warnings (expected, non-issue)
+
+### Screenshots
+- regression-f95-double-click-one-record.png (after double-click submit - only 1 ZZZ entry)
+- regression-f95-cleanup-complete.png (after cleanup - 8 original currencies restored)
+
+[Testing] Session complete - Feature #95 regression test PASSED
+
+## Session 2026-02-08 (Feature #95 Regression Test)
+
+### Feature #95: Double-click submit creates only one record - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin on Currencies page (8 currencies initially)
+2. ✅ Clicked '+ Add Currency' - form displayed with Symbol, Name, Enabled fields
+3. ✅ Filled form with Symbol=ZZZ, Name=Test Double Click Currency
+4. ✅ Rapidly double-clicked Save button (Playwright dblclick)
+5. ✅ Success message 'Currency saved successfully' displayed (not duplicate error)
+6. ✅ Table showed exactly 9 currencies - only ONE ZZZ entry (no duplicates)
+7. ✅ API confirmed: zzz_count=1, total=9 currencies in database
+8. ✅ Cleaned up: deleted ZZZ test currency, restored to 8 original currencies
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- regression-f95-currencies-initial.png (8 currencies before test)
+- regression-f95-one-record-created.png (9 currencies, one ZZZ, no duplicates)
+- regression-f95-cleanup-complete.png (restored to 8 currencies)
+
+[Testing] Session complete - Feature #95 regression test PASSED
+
+## Session 2026-02-08 (Feature #49 Regression Test)
+
+### Feature #49: Template detail shows collapsed section list - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin - viewed template #1 (DYNO-MILL 20, 11 sections)
+2. ✅ Template detail shows Sections (11) heading with collapsed section list
+3. ✅ Each section row displays: sequence number, name, and status badge
+4. ✅ Sections in correct sequential order (1-11): Cover Page, Principal Characteristics, General Technical Data, Machine Execution, Product Pump FM-600, Motor Starter Cabinet, Grinding Mills, Onsite Services, Price Summary, Options and Accessories, Terms of Delivery
+5. ✅ All status badges show 'not started' correctly
+6. ✅ Clicking a section row expands it to show additional details (Type, Active, Last updated)
+7. ✅ Expand All / Collapse All buttons work correctly - all 11 sections expanded/collapsed
+8. ✅ Logged in as harry (regular user) - viewed template #85 (KD 600 E, 8 sections)
+9. ✅ Sections correctly displayed in sequence order (0-7) with names and status badges
+10. ✅ Regular user correctly sees Edit/Clone but NOT Delete buttons (role-based access)
+
+### Console Errors
+- Zero console errors throughout entire test
+- Only 2 React Router future flag warnings (expected, non-issue)
+
+### Screenshots
+- regression-f49-login-success.png (admin logged in, templates list)
+- regression-f49-template-detail-top.png (template #1 detail - top with sections header)
+- regression-f49-sections-bottom.png (sections 4-11 in collapsed state)
+- regression-f49-section-expanded.png (section 1 expanded with details)
+- regression-f49-all-expanded.png (all sections expanded)
+- regression-f49-template85-detail.png (template #85 as harry - 8 sections, no delete)
+
+[Testing] Session complete - Feature #49 regression test PASSED
+
+## Session 2026-02-08 (Feature #49 Regression Test)
+
+### Feature #49: Template detail shows collapsed section list - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Tested template #1 (11 sections) and template #24 (9 sections)
+3. ✅ Collapsed section list shows sequence number, section name, and status badge for each section
+4. ✅ Sections displayed in correct sequence order (1-11 and 1-9 respectively)
+5. ✅ Status badges display correctly - both uniform (all 'not started') and mixed ('in process' + 'not started')
+6. ✅ Individual section expand/collapse works (click to toggle)
+7. ✅ Expand All / Collapse All buttons work correctly
+8. ✅ Zero console errors throughout entire test
+
+### Screenshots
+- regression-f49-template-detail-top.png (template header and info)
+- regression-f49-sections-collapsed.png (all 11 sections collapsed with sequence/name/status)
+- regression-f49-section-expanded.png (section 1 expanded showing details)
+- regression-f49-all-expanded.png (all sections expanded via Expand All)
+- regression-f49-template24-sections.png (template #24 with mixed status badges)
+
+[Testing] Session complete - Feature #49 regression test PASSED
+
+## Session 2026-02-09 (Feature #23 Regression Test)
+
+### Feature #23: User can create new product category - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Navigated to Product Categories page (Reference Data > Product Categories) - 3 categories displayed (MIL, MIX, T)
+3. ✅ Clicked '+ Add Category' button - form modal appeared with Abbreviation, Name, Enabled fields
+4. ✅ Entered category abbr 'HW'
+5. ✅ Entered category name 'Hardware'
+6. ✅ Submitted form via Save button
+7. ✅ Success message 'Product category saved successfully' displayed
+8. ✅ New category 'HW - Hardware' appeared in list with Enabled status, correct timestamp by admin
+9. ✅ Cleaned up test data - deleted HW category, restored to 3 original categories
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- regression-f23-product-categories-list.png (initial 3 categories)
+- regression-f23-form-filled.png (form with HW/Hardware entered)
+- regression-f23-category-created-success.png (4 categories after successful create)
+- regression-f23-cleanup-complete.png (restored to 3 original categories)
+
+[Testing] Session complete - Feature #23 regression test PASSED
+
+## Session 2026-02-09 (Feature #65 Regression Test)
+
+### Feature #65: Confirmation dialog for delete operations - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Clicked Delete on JPY currency - confirmation dialog appeared
+3. ✅ Dialog message: 'Are you sure you want to delete this currency?'
+4. ✅ Clicked Cancel - JPY NOT deleted, all 8 currencies intact
+5. ✅ Created test currency ZZZ (no foreign key refs) for clean delete test
+6. ✅ Clicked Delete on ZZZ, confirmed - ZZZ successfully deleted
+7. ✅ Table restored to original 8 currencies after delete
+8. ✅ Note: JPY delete correctly blocked with 400 'referenced by other records' (data integrity)
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- regression-f65-currencies-initial.png (8 currencies before test)
+- regression-f65-cancel-preserved.png (all 8 currencies after cancel)
+- regression-f65-after-confirmed-delete.png (ZZZ deleted, back to 8 currencies)
+
+[Testing] Session complete - Feature #65 regression test PASSED
+
+## Session 2026-02-09 (Feature #35 Regression Test)
+
+### Feature #35: User can filter templates by country - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Navigated to Templates page - 84 enabled templates displayed (82 Switzerland + 2 United States)
+3. ✅ Country filter dropdown present and populated with 8 countries from countries table (China, France, Germany, India, Japan, Switzerland, United Kingdom, United States)
+4. ✅ Selected "United States" - list filtered to 2 rows, both United States (URL updated to ?country_id=1)
+5. ✅ Selected "Switzerland" - list filtered to 82 rows, all Switzerland
+6. ✅ Selected "Japan" - list showed "No templates found. Try adjusting your filters." (correct for 0 matches)
+7. ✅ Clicked "Clear Filters" - filter reset to "All Countries", all 84 templates restored
+
+### Console Errors
+- Zero console errors throughout entire test
+- Only 2 React Router future flag warnings (expected, non-issue)
+
+### Notes
+- Initial test attempt showed stale data due to expired session from backend restart (401 Unauthorized on API calls) - this is expected behavior, not a regression
+- After fresh login, all filter operations worked correctly with proper API calls
+
+### Screenshots
+- regression-f35-us-filtered.png (United States filter showing 2 templates)
+
+[Testing] Session complete - Feature #35 regression test PASSED
