@@ -1,0 +1,19 @@
+
+given document_blob_bersioning_guide.md, review and then do:
+
+i have a set of tables in a database described in the attached.  i am concerned for now with a single operation. i have a csv file with columns plsqt_id and plsqt_name; the names are docx file names are in quotes.
+
+in the database, for every psql_template record that has a value for current_blob_id, update the psql_template.extrn_file_ref field to the value of the psqlt_name field from the document_blob.original_filename value from the corresponding record. 
+
+this should be possible with a single SQL statement. please generate that statement for my review.
+
+
+REply:
+
+UPDATE plsq_templates t
+SET    extrn_file_ref = b.original_filename
+FROM   document_blob b
+WHERE  b.blob_id = t.current_blob_id
+  AND  t.current_blob_id IS NOT NULL;
+
+  

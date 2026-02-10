@@ -1,0 +1,1526 @@
+- generic [ref=e21]:
+  - banner [ref=e22]:
+    - generic [ref=e23]:
+      - generic [ref=e24]:
+        - heading "SalesQuoteMgr" [level=1] [ref=e25]
+        - generic [ref=e26]: XYZ Company (emerald)
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - text: Logged in as
+          - strong [ref=e29]: admin
+          - text: (Admin)
+        - button "Logout" [ref=e30] [cursor=pointer]
+  - generic [ref=e31]:
+    - complementary [ref=e32]:
+      - navigation [ref=e33]:
+        - button "Templates" [ref=e35] [cursor=pointer]:
+          - generic [ref=e36]: Templates
+          - img [ref=e37]
+        - button "Customer Quotes" [ref=e40] [cursor=pointer]:
+          - generic [ref=e41]: Customer Quotes
+          - img [ref=e42]
+        - button "Reference Data" [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: Reference Data
+          - img [ref=e47]
+        - button "Admin" [ref=e50] [cursor=pointer]:
+          - generic [ref=e51]: Admin
+          - img [ref=e52]
+      - generic [ref=e55]: "App: 1.5 Now with big menu | DB: 1.5 Now with customers/contacts"
+    - main [ref=e56]:
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - heading "Templates" [level=2] [ref=e59]
+          - link "+ New Template" [ref=e60] [cursor=pointer]:
+            - /url: /templates/new
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]: Search
+            - textbox "Search by name..." [ref=e65]
+          - generic [ref=e66]:
+            - generic [ref=e67]: Country
+            - combobox [ref=e68]:
+              - option "All Countries" [selected]
+              - option "China"
+              - option "France"
+              - option "Germany"
+              - option "India"
+              - option "Japan"
+              - option "Switzerland"
+              - option "United Kingdom"
+              - option "United States"
+          - generic [ref=e69]:
+            - generic [ref=e70]: Product Category
+            - combobox [ref=e71]:
+              - option "All Categories" [selected]
+              - option "Dyno-Mill Agitator"
+              - option "Dyno-Mix Shaker"
+              - option "Turbula"
+          - generic [ref=e72]:
+            - generic [ref=e73]: Product Line
+            - combobox [ref=e74]:
+              - option "All Lines" [selected]
+              - option "Mill-ECM"
+              - option "Mill-ECO"
+              - option "Mill-KD"
+              - option "Mill-MULtILAB"
+              - option "Mill-NPM (Nano)"
+              - option "Mill-Research-Lab"
+              - option "MILL-UBM"
+              - option "Mill-UNILAB"
+              - option "MIX-CM"
+              - option "Servers"
+              - option "Turbula-a"
+              - option "Turbula-b"
+              - option "Turbula-c"
+          - generic [ref=e75]:
+            - generic [ref=e76]: Active?
+            - combobox [ref=e77]:
+              - option "All" [selected]
+              - option "Active"
+              - option "Inactive"
+          - generic [ref=e78]:
+            - generic [ref=e79]: Enabled
+            - combobox [ref=e80]:
+              - option "Enabled" [selected]
+              - option "Disabled"
+              - option "All"
+          - button "Clear Filters" [ref=e82] [cursor=pointer]
+        - table [ref=e85]:
+          - rowgroup [ref=e86]:
+            - row "Name Country Product Line Sections Status Enabled Actions" [ref=e87]:
+              - columnheader "Name" [ref=e88]
+              - columnheader "Country" [ref=e89]
+              - columnheader "Product Line" [ref=e90]
+              - columnheader "Sections" [ref=e91]
+              - columnheader "Status" [ref=e92]
+              - columnheader "Enabled" [ref=e93]
+              - columnheader "Actions" [ref=e94]
+          - rowgroup [ref=e95]:
+            - 'row "DYNO-MILL 20 FCFC_US_FOB Allendale : USA/USD United States MILL-UBM 11 not started Enabled View Edit Clone Delete" [ref=e96]':
+              - 'cell "DYNO-MILL 20 FCFC_US_FOB Allendale : USA/USD" [ref=e97]':
+                - 'link "DYNO-MILL 20 FCFC_US_FOB Allendale : USA/USD" [ref=e98] [cursor=pointer]':
+                  - /url: /templates/1
+              - cell "United States" [ref=e99]
+              - cell "MILL-UBM" [ref=e100]
+              - cell "11" [ref=e101]
+              - cell "not started" [ref=e102]
+              - cell "Enabled" [ref=e103]
+              - cell "View Edit Clone Delete" [ref=e104]:
+                - generic [ref=e105]:
+                  - link "View" [ref=e106] [cursor=pointer]:
+                    - /url: /templates/1
+                  - link "Edit" [ref=e107] [cursor=pointer]:
+                    - /url: /templates/1/edit
+                  - button "Clone" [ref=e108] [cursor=pointer]
+                  - button "Delete" [ref=e109] [cursor=pointer]
+            - 'row "DYNO-MILL ECM AP 10 KERAMIK MIT WAB VIEW : CH/CHF Switzerland Mill-ECM 9 in process Enabled View Edit Clone Delete" [ref=e110]':
+              - 'cell "DYNO-MILL ECM AP 10 KERAMIK MIT WAB VIEW : CH/CHF" [ref=e111]':
+                - 'link "DYNO-MILL ECM AP 10 KERAMIK MIT WAB VIEW : CH/CHF" [ref=e112] [cursor=pointer]':
+                  - /url: /templates/24
+              - cell "Switzerland" [ref=e113]
+              - cell "Mill-ECM" [ref=e114]
+              - cell "9" [ref=e115]
+              - cell "in process" [ref=e116]
+              - cell "Enabled" [ref=e117]
+              - cell "View Edit Clone Delete" [ref=e118]:
+                - generic [ref=e119]:
+                  - link "View" [ref=e120] [cursor=pointer]:
+                    - /url: /templates/24
+                  - link "Edit" [ref=e121] [cursor=pointer]:
+                    - /url: /templates/24/edit
+                  - button "Clone" [ref=e122] [cursor=pointer]
+                  - button "Delete" [ref=e123] [cursor=pointer]
+            - 'row "DYNO-MILL ECM-AP 10 Ceramic MIT WAB VIEW : USA/USD United States Mill-ECM 11 not started Enabled View Edit Clone Delete" [ref=e124]':
+              - 'cell "DYNO-MILL ECM-AP 10 Ceramic MIT WAB VIEW : USA/USD" [ref=e125]':
+                - 'link "DYNO-MILL ECM-AP 10 Ceramic MIT WAB VIEW : USA/USD" [ref=e126] [cursor=pointer]':
+                  - /url: /templates/23
+              - cell "United States" [ref=e127]
+              - cell "Mill-ECM" [ref=e128]
+              - cell "11" [ref=e129]
+              - cell "not started" [ref=e130]
+              - cell "Enabled" [ref=e131]
+              - cell "View Edit Clone Delete" [ref=e132]:
+                - generic [ref=e133]:
+                  - link "View" [ref=e134] [cursor=pointer]:
+                    - /url: /templates/23
+                  - link "Edit" [ref=e135] [cursor=pointer]:
+                    - /url: /templates/23/edit
+                  - button "Clone" [ref=e136] [cursor=pointer]
+                  - button "Delete" [ref=e137] [cursor=pointer]
+            - 'row "DYNO-MILL UBM 20 FU_FU KERAMIK : CH/CHF Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e138]':
+              - 'cell "DYNO-MILL UBM 20 FU_FU KERAMIK : CH/CHF" [ref=e139]':
+                - 'link "DYNO-MILL UBM 20 FU_FU KERAMIK : CH/CHF" [ref=e140] [cursor=pointer]':
+                  - /url: /templates/21
+              - cell "Switzerland" [ref=e141]
+              - cell "MILL-UBM" [ref=e142]
+              - cell "9" [ref=e143]
+              - cell "not started" [ref=e144]
+              - cell "Enabled" [ref=e145]
+              - cell "View Edit Clone Delete" [ref=e146]:
+                - generic [ref=e147]:
+                  - link "View" [ref=e148] [cursor=pointer]:
+                    - /url: /templates/21
+                  - link "Edit" [ref=e149] [cursor=pointer]:
+                    - /url: /templates/21/edit
+                  - button "Clone" [ref=e150] [cursor=pointer]
+                  - button "Delete" [ref=e151] [cursor=pointer]
+            - row "ECM AP 05 FU KERAMIK E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e152]:
+              - cell "ECM AP 05 FU KERAMIK E" [ref=e153]:
+                - link "ECM AP 05 FU KERAMIK E" [ref=e154] [cursor=pointer]:
+                  - /url: /templates/30
+              - cell "Switzerland" [ref=e155]
+              - cell "Mill-ECM" [ref=e156]
+              - cell "9" [ref=e157]
+              - cell "not started" [ref=e158]
+              - cell "Enabled" [ref=e159]
+              - cell "View Edit Clone Delete" [ref=e160]:
+                - generic [ref=e161]:
+                  - link "View" [ref=e162] [cursor=pointer]:
+                    - /url: /templates/30
+                  - link "Edit" [ref=e163] [cursor=pointer]:
+                    - /url: /templates/30/edit
+                  - button "Clone" [ref=e164] [cursor=pointer]
+                  - button "Delete" [ref=e165] [cursor=pointer]
+            - row "ECM AP 05 FU_FU KERAMIK E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e166]:
+              - cell "ECM AP 05 FU_FU KERAMIK E" [ref=e167]:
+                - link "ECM AP 05 FU_FU KERAMIK E" [ref=e168] [cursor=pointer]:
+                  - /url: /templates/31
+              - cell "Switzerland" [ref=e169]
+              - cell "Mill-ECM" [ref=e170]
+              - cell "9" [ref=e171]
+              - cell "not started" [ref=e172]
+              - cell "Enabled" [ref=e173]
+              - cell "View Edit Clone Delete" [ref=e174]:
+                - generic [ref=e175]:
+                  - link "View" [ref=e176] [cursor=pointer]:
+                    - /url: /templates/31
+                  - link "Edit" [ref=e177] [cursor=pointer]:
+                    - /url: /templates/31/edit
+                  - button "Clone" [ref=e178] [cursor=pointer]
+                  - button "Delete" [ref=e179] [cursor=pointer]
+            - row "ECM AP 05 KERAMIK E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e180]:
+              - cell "ECM AP 05 KERAMIK E" [ref=e181]:
+                - link "ECM AP 05 KERAMIK E" [ref=e182] [cursor=pointer]:
+                  - /url: /templates/32
+              - cell "Switzerland" [ref=e183]
+              - cell "Mill-ECM" [ref=e184]
+              - cell "9" [ref=e185]
+              - cell "not started" [ref=e186]
+              - cell "Enabled" [ref=e187]
+              - cell "View Edit Clone Delete" [ref=e188]:
+                - generic [ref=e189]:
+                  - link "View" [ref=e190] [cursor=pointer]:
+                    - /url: /templates/32
+                  - link "Edit" [ref=e191] [cursor=pointer]:
+                    - /url: /templates/32/edit
+                  - button "Clone" [ref=e192] [cursor=pointer]
+                  - button "Delete" [ref=e193] [cursor=pointer]
+            - row "ECM AP 05 KERAMIK MIT WAB VIEW & FZ PUMPE E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e194]:
+              - cell "ECM AP 05 KERAMIK MIT WAB VIEW & FZ PUMPE E" [ref=e195]:
+                - link "ECM AP 05 KERAMIK MIT WAB VIEW & FZ PUMPE E" [ref=e196] [cursor=pointer]:
+                  - /url: /templates/33
+              - cell "Switzerland" [ref=e197]
+              - cell "Mill-ECM" [ref=e198]
+              - cell "9" [ref=e199]
+              - cell "not started" [ref=e200]
+              - cell "Enabled" [ref=e201]
+              - cell "View Edit Clone Delete" [ref=e202]:
+                - generic [ref=e203]:
+                  - link "View" [ref=e204] [cursor=pointer]:
+                    - /url: /templates/33
+                  - link "Edit" [ref=e205] [cursor=pointer]:
+                    - /url: /templates/33/edit
+                  - button "Clone" [ref=e206] [cursor=pointer]
+                  - button "Delete" [ref=e207] [cursor=pointer]
+            - row "ECM AP 05 M_FU KERAMIK E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e208]:
+              - cell "ECM AP 05 M_FU KERAMIK E" [ref=e209]:
+                - link "ECM AP 05 M_FU KERAMIK E" [ref=e210] [cursor=pointer]:
+                  - /url: /templates/34
+              - cell "Switzerland" [ref=e211]
+              - cell "Mill-ECM" [ref=e212]
+              - cell "9" [ref=e213]
+              - cell "not started" [ref=e214]
+              - cell "Enabled" [ref=e215]
+              - cell "View Edit Clone Delete" [ref=e216]:
+                - generic [ref=e217]:
+                  - link "View" [ref=e218] [cursor=pointer]:
+                    - /url: /templates/34
+                  - link "Edit" [ref=e219] [cursor=pointer]:
+                    - /url: /templates/34/edit
+                  - button "Clone" [ref=e220] [cursor=pointer]
+                  - button "Delete" [ref=e221] [cursor=pointer]
+            - row "ECM AP 05 MIT WAB VIEW E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e222]:
+              - cell "ECM AP 05 MIT WAB VIEW E" [ref=e223]:
+                - link "ECM AP 05 MIT WAB VIEW E" [ref=e224] [cursor=pointer]:
+                  - /url: /templates/35
+              - cell "Switzerland" [ref=e225]
+              - cell "Mill-ECM" [ref=e226]
+              - cell "9" [ref=e227]
+              - cell "not started" [ref=e228]
+              - cell "Enabled" [ref=e229]
+              - cell "View Edit Clone Delete" [ref=e230]:
+                - generic [ref=e231]:
+                  - link "View" [ref=e232] [cursor=pointer]:
+                    - /url: /templates/35
+                  - link "Edit" [ref=e233] [cursor=pointer]:
+                    - /url: /templates/35/edit
+                  - button "Clone" [ref=e234] [cursor=pointer]
+                  - button "Delete" [ref=e235] [cursor=pointer]
+            - row "ECM AP 05 STAHL E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e236]:
+              - cell "ECM AP 05 STAHL E" [ref=e237]:
+                - link "ECM AP 05 STAHL E" [ref=e238] [cursor=pointer]:
+                  - /url: /templates/36
+              - cell "Switzerland" [ref=e239]
+              - cell "Mill-ECM" [ref=e240]
+              - cell "9" [ref=e241]
+              - cell "not started" [ref=e242]
+              - cell "Enabled" [ref=e243]
+              - cell "View Edit Clone Delete" [ref=e244]:
+                - generic [ref=e245]:
+                  - link "View" [ref=e246] [cursor=pointer]:
+                    - /url: /templates/36
+                  - link "Edit" [ref=e247] [cursor=pointer]:
+                    - /url: /templates/36/edit
+                  - button "Clone" [ref=e248] [cursor=pointer]
+                  - button "Delete" [ref=e249] [cursor=pointer]
+            - row "ECM AP 05 STAHL FU E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e250]:
+              - cell "ECM AP 05 STAHL FU E" [ref=e251]:
+                - link "ECM AP 05 STAHL FU E" [ref=e252] [cursor=pointer]:
+                  - /url: /templates/37
+              - cell "Switzerland" [ref=e253]
+              - cell "Mill-ECM" [ref=e254]
+              - cell "9" [ref=e255]
+              - cell "not started" [ref=e256]
+              - cell "Enabled" [ref=e257]
+              - cell "View Edit Clone Delete" [ref=e258]:
+                - generic [ref=e259]:
+                  - link "View" [ref=e260] [cursor=pointer]:
+                    - /url: /templates/37
+                  - link "Edit" [ref=e261] [cursor=pointer]:
+                    - /url: /templates/37/edit
+                  - button "Clone" [ref=e262] [cursor=pointer]
+                  - button "Delete" [ref=e263] [cursor=pointer]
+            - row "ECM AP 05 STAHL FU_FU E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e264]:
+              - cell "ECM AP 05 STAHL FU_FU E" [ref=e265]:
+                - link "ECM AP 05 STAHL FU_FU E" [ref=e266] [cursor=pointer]:
+                  - /url: /templates/38
+              - cell "Switzerland" [ref=e267]
+              - cell "Mill-ECM" [ref=e268]
+              - cell "9" [ref=e269]
+              - cell "not started" [ref=e270]
+              - cell "Enabled" [ref=e271]
+              - cell "View Edit Clone Delete" [ref=e272]:
+                - generic [ref=e273]:
+                  - link "View" [ref=e274] [cursor=pointer]:
+                    - /url: /templates/38
+                  - link "Edit" [ref=e275] [cursor=pointer]:
+                    - /url: /templates/38/edit
+                  - button "Clone" [ref=e276] [cursor=pointer]
+                  - button "Delete" [ref=e277] [cursor=pointer]
+            - row "ECM AP 05 STAHL FU_M E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e278]:
+              - cell "ECM AP 05 STAHL FU_M E" [ref=e279]:
+                - link "ECM AP 05 STAHL FU_M E" [ref=e280] [cursor=pointer]:
+                  - /url: /templates/39
+              - cell "Switzerland" [ref=e281]
+              - cell "Mill-ECM" [ref=e282]
+              - cell "9" [ref=e283]
+              - cell "not started" [ref=e284]
+              - cell "Enabled" [ref=e285]
+              - cell "View Edit Clone Delete" [ref=e286]:
+                - generic [ref=e287]:
+                  - link "View" [ref=e288] [cursor=pointer]:
+                    - /url: /templates/39
+                  - link "Edit" [ref=e289] [cursor=pointer]:
+                    - /url: /templates/39/edit
+                  - button "Clone" [ref=e290] [cursor=pointer]
+                  - button "Delete" [ref=e291] [cursor=pointer]
+            - row "ECM AP 10 FU_FU E - Kopie Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e292]:
+              - cell "ECM AP 10 FU_FU E - Kopie" [ref=e293]:
+                - link "ECM AP 10 FU_FU E - Kopie" [ref=e294] [cursor=pointer]:
+                  - /url: /templates/40
+              - cell "Switzerland" [ref=e295]
+              - cell "Mill-ECM" [ref=e296]
+              - cell "9" [ref=e297]
+              - cell "not started" [ref=e298]
+              - cell "Enabled" [ref=e299]
+              - cell "View Edit Clone Delete" [ref=e300]:
+                - generic [ref=e301]:
+                  - link "View" [ref=e302] [cursor=pointer]:
+                    - /url: /templates/40
+                  - link "Edit" [ref=e303] [cursor=pointer]:
+                    - /url: /templates/40/edit
+                  - button "Clone" [ref=e304] [cursor=pointer]
+                  - button "Delete" [ref=e305] [cursor=pointer]
+            - row "ECM AP 10 KERAMIK MIT WAB VIEW E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e306]:
+              - cell "ECM AP 10 KERAMIK MIT WAB VIEW E" [ref=e307]:
+                - link "ECM AP 10 KERAMIK MIT WAB VIEW E" [ref=e308] [cursor=pointer]:
+                  - /url: /templates/29
+              - cell "Switzerland" [ref=e309]
+              - cell "Mill-ECM" [ref=e310]
+              - cell "9" [ref=e311]
+              - cell "not started" [ref=e312]
+              - cell "Enabled" [ref=e313]
+              - cell "View Edit Clone Delete" [ref=e314]:
+                - generic [ref=e315]:
+                  - link "View" [ref=e316] [cursor=pointer]:
+                    - /url: /templates/29
+                  - link "Edit" [ref=e317] [cursor=pointer]:
+                    - /url: /templates/29/edit
+                  - button "Clone" [ref=e318] [cursor=pointer]
+                  - button "Delete" [ref=e319] [cursor=pointer]
+            - row "ECM AP 2 E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e320]:
+              - cell "ECM AP 2 E" [ref=e321]:
+                - link "ECM AP 2 E" [ref=e322] [cursor=pointer]:
+                  - /url: /templates/41
+              - cell "Switzerland" [ref=e323]
+              - cell "Mill-ECM" [ref=e324]
+              - cell "9" [ref=e325]
+              - cell "not started" [ref=e326]
+              - cell "Enabled" [ref=e327]
+              - cell "View Edit Clone Delete" [ref=e328]:
+                - generic [ref=e329]:
+                  - link "View" [ref=e330] [cursor=pointer]:
+                    - /url: /templates/41
+                  - link "Edit" [ref=e331] [cursor=pointer]:
+                    - /url: /templates/41/edit
+                  - button "Clone" [ref=e332] [cursor=pointer]
+                  - button "Delete" [ref=e333] [cursor=pointer]
+            - row "ECM AP 2 FU KERAMIK E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e334]:
+              - cell "ECM AP 2 FU KERAMIK E" [ref=e335]:
+                - link "ECM AP 2 FU KERAMIK E" [ref=e336] [cursor=pointer]:
+                  - /url: /templates/42
+              - cell "Switzerland" [ref=e337]
+              - cell "Mill-ECM" [ref=e338]
+              - cell "9" [ref=e339]
+              - cell "not started" [ref=e340]
+              - cell "Enabled" [ref=e341]
+              - cell "View Edit Clone Delete" [ref=e342]:
+                - generic [ref=e343]:
+                  - link "View" [ref=e344] [cursor=pointer]:
+                    - /url: /templates/42
+                  - link "Edit" [ref=e345] [cursor=pointer]:
+                    - /url: /templates/42/edit
+                  - button "Clone" [ref=e346] [cursor=pointer]
+                  - button "Delete" [ref=e347] [cursor=pointer]
+            - row "ECM AP 2 FU_FU E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e348]:
+              - cell "ECM AP 2 FU_FU E" [ref=e349]:
+                - link "ECM AP 2 FU_FU E" [ref=e350] [cursor=pointer]:
+                  - /url: /templates/43
+              - cell "Switzerland" [ref=e351]
+              - cell "Mill-ECM" [ref=e352]
+              - cell "9" [ref=e353]
+              - cell "not started" [ref=e354]
+              - cell "Enabled" [ref=e355]
+              - cell "View Edit Clone Delete" [ref=e356]:
+                - generic [ref=e357]:
+                  - link "View" [ref=e358] [cursor=pointer]:
+                    - /url: /templates/43
+                  - link "Edit" [ref=e359] [cursor=pointer]:
+                    - /url: /templates/43/edit
+                  - button "Clone" [ref=e360] [cursor=pointer]
+                  - button "Delete" [ref=e361] [cursor=pointer]
+            - row "ECM AP 2 FU_FU KERAMIK E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e362]:
+              - cell "ECM AP 2 FU_FU KERAMIK E" [ref=e363]:
+                - link "ECM AP 2 FU_FU KERAMIK E" [ref=e364] [cursor=pointer]:
+                  - /url: /templates/44
+              - cell "Switzerland" [ref=e365]
+              - cell "Mill-ECM" [ref=e366]
+              - cell "9" [ref=e367]
+              - cell "not started" [ref=e368]
+              - cell "Enabled" [ref=e369]
+              - cell "View Edit Clone Delete" [ref=e370]:
+                - generic [ref=e371]:
+                  - link "View" [ref=e372] [cursor=pointer]:
+                    - /url: /templates/44
+                  - link "Edit" [ref=e373] [cursor=pointer]:
+                    - /url: /templates/44/edit
+                  - button "Clone" [ref=e374] [cursor=pointer]
+                  - button "Delete" [ref=e375] [cursor=pointer]
+            - row "ECM AP 2 FU_M E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e376]:
+              - cell "ECM AP 2 FU_M E" [ref=e377]:
+                - link "ECM AP 2 FU_M E" [ref=e378] [cursor=pointer]:
+                  - /url: /templates/45
+              - cell "Switzerland" [ref=e379]
+              - cell "Mill-ECM" [ref=e380]
+              - cell "9" [ref=e381]
+              - cell "not started" [ref=e382]
+              - cell "Enabled" [ref=e383]
+              - cell "View Edit Clone Delete" [ref=e384]:
+                - generic [ref=e385]:
+                  - link "View" [ref=e386] [cursor=pointer]:
+                    - /url: /templates/45
+                  - link "Edit" [ref=e387] [cursor=pointer]:
+                    - /url: /templates/45/edit
+                  - button "Clone" [ref=e388] [cursor=pointer]
+                  - button "Delete" [ref=e389] [cursor=pointer]
+            - row "ECM AP 2 KERAMIK ATEX E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e390]:
+              - cell "ECM AP 2 KERAMIK ATEX E" [ref=e391]:
+                - link "ECM AP 2 KERAMIK ATEX E" [ref=e392] [cursor=pointer]:
+                  - /url: /templates/46
+              - cell "Switzerland" [ref=e393]
+              - cell "Mill-ECM" [ref=e394]
+              - cell "9" [ref=e395]
+              - cell "not started" [ref=e396]
+              - cell "Enabled" [ref=e397]
+              - cell "View Edit Clone Delete" [ref=e398]:
+                - generic [ref=e399]:
+                  - link "View" [ref=e400] [cursor=pointer]:
+                    - /url: /templates/46
+                  - link "Edit" [ref=e401] [cursor=pointer]:
+                    - /url: /templates/46/edit
+                  - button "Clone" [ref=e402] [cursor=pointer]
+                  - button "Delete" [ref=e403] [cursor=pointer]
+            - row "ECM AP 2 KERAMIK MIT WAB VIEW E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e404]:
+              - cell "ECM AP 2 KERAMIK MIT WAB VIEW E" [ref=e405]:
+                - link "ECM AP 2 KERAMIK MIT WAB VIEW E" [ref=e406] [cursor=pointer]:
+                  - /url: /templates/47
+              - cell "Switzerland" [ref=e407]
+              - cell "Mill-ECM" [ref=e408]
+              - cell "9" [ref=e409]
+              - cell "not started" [ref=e410]
+              - cell "Enabled" [ref=e411]
+              - cell "View Edit Clone Delete" [ref=e412]:
+                - generic [ref=e413]:
+                  - link "View" [ref=e414] [cursor=pointer]:
+                    - /url: /templates/47
+                  - link "Edit" [ref=e415] [cursor=pointer]:
+                    - /url: /templates/47/edit
+                  - button "Clone" [ref=e416] [cursor=pointer]
+                  - button "Delete" [ref=e417] [cursor=pointer]
+            - row "ECM AP 2 M_FU E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e418]:
+              - cell "ECM AP 2 M_FU E" [ref=e419]:
+                - link "ECM AP 2 M_FU E" [ref=e420] [cursor=pointer]:
+                  - /url: /templates/48
+              - cell "Switzerland" [ref=e421]
+              - cell "Mill-ECM" [ref=e422]
+              - cell "9" [ref=e423]
+              - cell "not started" [ref=e424]
+              - cell "Enabled" [ref=e425]
+              - cell "View Edit Clone Delete" [ref=e426]:
+                - generic [ref=e427]:
+                  - link "View" [ref=e428] [cursor=pointer]:
+                    - /url: /templates/48
+                  - link "Edit" [ref=e429] [cursor=pointer]:
+                    - /url: /templates/48/edit
+                  - button "Clone" [ref=e430] [cursor=pointer]
+                  - button "Delete" [ref=e431] [cursor=pointer]
+            - row "ECM AP 2 MIT WAB VIEW E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e432]:
+              - cell "ECM AP 2 MIT WAB VIEW E" [ref=e433]:
+                - link "ECM AP 2 MIT WAB VIEW E" [ref=e434] [cursor=pointer]:
+                  - /url: /templates/49
+              - cell "Switzerland" [ref=e435]
+              - cell "Mill-ECM" [ref=e436]
+              - cell "9" [ref=e437]
+              - cell "not started" [ref=e438]
+              - cell "Enabled" [ref=e439]
+              - cell "View Edit Clone Delete" [ref=e440]:
+                - generic [ref=e441]:
+                  - link "View" [ref=e442] [cursor=pointer]:
+                    - /url: /templates/49
+                  - link "Edit" [ref=e443] [cursor=pointer]:
+                    - /url: /templates/49/edit
+                  - button "Clone" [ref=e444] [cursor=pointer]
+                  - button "Delete" [ref=e445] [cursor=pointer]
+            - row "ECM AP 20 E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e446]:
+              - cell "ECM AP 20 E" [ref=e447]:
+                - link "ECM AP 20 E" [ref=e448] [cursor=pointer]:
+                  - /url: /templates/50
+              - cell "Switzerland" [ref=e449]
+              - cell "Mill-ECM" [ref=e450]
+              - cell "9" [ref=e451]
+              - cell "not started" [ref=e452]
+              - cell "Enabled" [ref=e453]
+              - cell "View Edit Clone Delete" [ref=e454]:
+                - generic [ref=e455]:
+                  - link "View" [ref=e456] [cursor=pointer]:
+                    - /url: /templates/50
+                  - link "Edit" [ref=e457] [cursor=pointer]:
+                    - /url: /templates/50/edit
+                  - button "Clone" [ref=e458] [cursor=pointer]
+                  - button "Delete" [ref=e459] [cursor=pointer]
+            - row "ECM AP 20 FU KERAMIK E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e460]:
+              - cell "ECM AP 20 FU KERAMIK E" [ref=e461]:
+                - link "ECM AP 20 FU KERAMIK E" [ref=e462] [cursor=pointer]:
+                  - /url: /templates/51
+              - cell "Switzerland" [ref=e463]
+              - cell "Mill-ECM" [ref=e464]
+              - cell "9" [ref=e465]
+              - cell "not started" [ref=e466]
+              - cell "Enabled" [ref=e467]
+              - cell "View Edit Clone Delete" [ref=e468]:
+                - generic [ref=e469]:
+                  - link "View" [ref=e470] [cursor=pointer]:
+                    - /url: /templates/51
+                  - link "Edit" [ref=e471] [cursor=pointer]:
+                    - /url: /templates/51/edit
+                  - button "Clone" [ref=e472] [cursor=pointer]
+                  - button "Delete" [ref=e473] [cursor=pointer]
+            - row "ECM AP 20 FU_FU E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e474]:
+              - cell "ECM AP 20 FU_FU E" [ref=e475]:
+                - link "ECM AP 20 FU_FU E" [ref=e476] [cursor=pointer]:
+                  - /url: /templates/52
+              - cell "Switzerland" [ref=e477]
+              - cell "Mill-ECM" [ref=e478]
+              - cell "9" [ref=e479]
+              - cell "not started" [ref=e480]
+              - cell "Enabled" [ref=e481]
+              - cell "View Edit Clone Delete" [ref=e482]:
+                - generic [ref=e483]:
+                  - link "View" [ref=e484] [cursor=pointer]:
+                    - /url: /templates/52
+                  - link "Edit" [ref=e485] [cursor=pointer]:
+                    - /url: /templates/52/edit
+                  - button "Clone" [ref=e486] [cursor=pointer]
+                  - button "Delete" [ref=e487] [cursor=pointer]
+            - row "ECM AP 20 FU_FU KERAMIK E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e488]:
+              - cell "ECM AP 20 FU_FU KERAMIK E" [ref=e489]:
+                - link "ECM AP 20 FU_FU KERAMIK E" [ref=e490] [cursor=pointer]:
+                  - /url: /templates/53
+              - cell "Switzerland" [ref=e491]
+              - cell "Mill-ECM" [ref=e492]
+              - cell "9" [ref=e493]
+              - cell "not started" [ref=e494]
+              - cell "Enabled" [ref=e495]
+              - cell "View Edit Clone Delete" [ref=e496]:
+                - generic [ref=e497]:
+                  - link "View" [ref=e498] [cursor=pointer]:
+                    - /url: /templates/53
+                  - link "Edit" [ref=e499] [cursor=pointer]:
+                    - /url: /templates/53/edit
+                  - button "Clone" [ref=e500] [cursor=pointer]
+                  - button "Delete" [ref=e501] [cursor=pointer]
+            - row "ECM AP 20 FU_M E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e502]:
+              - cell "ECM AP 20 FU_M E" [ref=e503]:
+                - link "ECM AP 20 FU_M E" [ref=e504] [cursor=pointer]:
+                  - /url: /templates/54
+              - cell "Switzerland" [ref=e505]
+              - cell "Mill-ECM" [ref=e506]
+              - cell "9" [ref=e507]
+              - cell "not started" [ref=e508]
+              - cell "Enabled" [ref=e509]
+              - cell "View Edit Clone Delete" [ref=e510]:
+                - generic [ref=e511]:
+                  - link "View" [ref=e512] [cursor=pointer]:
+                    - /url: /templates/54
+                  - link "Edit" [ref=e513] [cursor=pointer]:
+                    - /url: /templates/54/edit
+                  - button "Clone" [ref=e514] [cursor=pointer]
+                  - button "Delete" [ref=e515] [cursor=pointer]
+            - row "ECM AP 20 KERAMIK E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e516]:
+              - cell "ECM AP 20 KERAMIK E" [ref=e517]:
+                - link "ECM AP 20 KERAMIK E" [ref=e518] [cursor=pointer]:
+                  - /url: /templates/55
+              - cell "Switzerland" [ref=e519]
+              - cell "Mill-ECM" [ref=e520]
+              - cell "9" [ref=e521]
+              - cell "not started" [ref=e522]
+              - cell "Enabled" [ref=e523]
+              - cell "View Edit Clone Delete" [ref=e524]:
+                - generic [ref=e525]:
+                  - link "View" [ref=e526] [cursor=pointer]:
+                    - /url: /templates/55
+                  - link "Edit" [ref=e527] [cursor=pointer]:
+                    - /url: /templates/55/edit
+                  - button "Clone" [ref=e528] [cursor=pointer]
+                  - button "Delete" [ref=e529] [cursor=pointer]
+            - row "ECM AP 20 KERAMIK MIT WAB VIEW E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e530]:
+              - cell "ECM AP 20 KERAMIK MIT WAB VIEW E" [ref=e531]:
+                - link "ECM AP 20 KERAMIK MIT WAB VIEW E" [ref=e532] [cursor=pointer]:
+                  - /url: /templates/56
+              - cell "Switzerland" [ref=e533]
+              - cell "Mill-ECM" [ref=e534]
+              - cell "9" [ref=e535]
+              - cell "not started" [ref=e536]
+              - cell "Enabled" [ref=e537]
+              - cell "View Edit Clone Delete" [ref=e538]:
+                - generic [ref=e539]:
+                  - link "View" [ref=e540] [cursor=pointer]:
+                    - /url: /templates/56
+                  - link "Edit" [ref=e541] [cursor=pointer]:
+                    - /url: /templates/56/edit
+                  - button "Clone" [ref=e542] [cursor=pointer]
+                  - button "Delete" [ref=e543] [cursor=pointer]
+            - row "ECM AP 20 M_FU E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e544]:
+              - cell "ECM AP 20 M_FU E" [ref=e545]:
+                - link "ECM AP 20 M_FU E" [ref=e546] [cursor=pointer]:
+                  - /url: /templates/57
+              - cell "Switzerland" [ref=e547]
+              - cell "Mill-ECM" [ref=e548]
+              - cell "9" [ref=e549]
+              - cell "not started" [ref=e550]
+              - cell "Enabled" [ref=e551]
+              - cell "View Edit Clone Delete" [ref=e552]:
+                - generic [ref=e553]:
+                  - link "View" [ref=e554] [cursor=pointer]:
+                    - /url: /templates/57
+                  - link "Edit" [ref=e555] [cursor=pointer]:
+                    - /url: /templates/57/edit
+                  - button "Clone" [ref=e556] [cursor=pointer]
+                  - button "Delete" [ref=e557] [cursor=pointer]
+            - row "ECM AP 20 MIT WAB VIEW E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e558]:
+              - cell "ECM AP 20 MIT WAB VIEW E" [ref=e559]:
+                - link "ECM AP 20 MIT WAB VIEW E" [ref=e560] [cursor=pointer]:
+                  - /url: /templates/58
+              - cell "Switzerland" [ref=e561]
+              - cell "Mill-ECM" [ref=e562]
+              - cell "9" [ref=e563]
+              - cell "not started" [ref=e564]
+              - cell "Enabled" [ref=e565]
+              - cell "View Edit Clone Delete" [ref=e566]:
+                - generic [ref=e567]:
+                  - link "View" [ref=e568] [cursor=pointer]:
+                    - /url: /templates/58
+                  - link "Edit" [ref=e569] [cursor=pointer]:
+                    - /url: /templates/58/edit
+                  - button "Clone" [ref=e570] [cursor=pointer]
+                  - button "Delete" [ref=e571] [cursor=pointer]
+            - row "ECM AP 60 E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e572]:
+              - cell "ECM AP 60 E" [ref=e573]:
+                - link "ECM AP 60 E" [ref=e574] [cursor=pointer]:
+                  - /url: /templates/59
+              - cell "Switzerland" [ref=e575]
+              - cell "Mill-ECM" [ref=e576]
+              - cell "9" [ref=e577]
+              - cell "not started" [ref=e578]
+              - cell "Enabled" [ref=e579]
+              - cell "View Edit Clone Delete" [ref=e580]:
+                - generic [ref=e581]:
+                  - link "View" [ref=e582] [cursor=pointer]:
+                    - /url: /templates/59
+                  - link "Edit" [ref=e583] [cursor=pointer]:
+                    - /url: /templates/59/edit
+                  - button "Clone" [ref=e584] [cursor=pointer]
+                  - button "Delete" [ref=e585] [cursor=pointer]
+            - row "ECM AP 60 FU_FU E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e586]:
+              - cell "ECM AP 60 FU_FU E" [ref=e587]:
+                - link "ECM AP 60 FU_FU E" [ref=e588] [cursor=pointer]:
+                  - /url: /templates/60
+              - cell "Switzerland" [ref=e589]
+              - cell "Mill-ECM" [ref=e590]
+              - cell "9" [ref=e591]
+              - cell "not started" [ref=e592]
+              - cell "Enabled" [ref=e593]
+              - cell "View Edit Clone Delete" [ref=e594]:
+                - generic [ref=e595]:
+                  - link "View" [ref=e596] [cursor=pointer]:
+                    - /url: /templates/60
+                  - link "Edit" [ref=e597] [cursor=pointer]:
+                    - /url: /templates/60/edit
+                  - button "Clone" [ref=e598] [cursor=pointer]
+                  - button "Delete" [ref=e599] [cursor=pointer]
+            - row "ECM AP 60 MIT WAB VIEW E Switzerland Mill-ECM 9 not started Enabled View Edit Clone Delete" [ref=e600]:
+              - cell "ECM AP 60 MIT WAB VIEW E" [ref=e601]:
+                - link "ECM AP 60 MIT WAB VIEW E" [ref=e602] [cursor=pointer]:
+                  - /url: /templates/61
+              - cell "Switzerland" [ref=e603]
+              - cell "Mill-ECM" [ref=e604]
+              - cell "9" [ref=e605]
+              - cell "not started" [ref=e606]
+              - cell "Enabled" [ref=e607]
+              - cell "View Edit Clone Delete" [ref=e608]:
+                - generic [ref=e609]:
+                  - link "View" [ref=e610] [cursor=pointer]:
+                    - /url: /templates/61
+                  - link "Edit" [ref=e611] [cursor=pointer]:
+                    - /url: /templates/61/edit
+                  - button "Clone" [ref=e612] [cursor=pointer]
+                  - button "Delete" [ref=e613] [cursor=pointer]
+            - row "KD 120 A E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e614]:
+              - cell "KD 120 A E" [ref=e615]:
+                - link "KD 120 A E" [ref=e616] [cursor=pointer]:
+                  - /url: /templates/62
+              - cell "Switzerland" [ref=e617]
+              - cell "Mill-KD" [ref=e618]
+              - cell "10" [ref=e619]
+              - cell "not started" [ref=e620]
+              - cell "Enabled" [ref=e621]
+              - cell "View Edit Clone Delete" [ref=e622]:
+                - generic [ref=e623]:
+                  - link "View" [ref=e624] [cursor=pointer]:
+                    - /url: /templates/62
+                  - link "Edit" [ref=e625] [cursor=pointer]:
+                    - /url: /templates/62/edit
+                  - button "Clone" [ref=e626] [cursor=pointer]
+                  - button "Delete" [ref=e627] [cursor=pointer]
+            - row "KD 190 A E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e628]:
+              - cell "KD 190 A E" [ref=e629]:
+                - link "KD 190 A E" [ref=e630] [cursor=pointer]:
+                  - /url: /templates/63
+              - cell "Switzerland" [ref=e631]
+              - cell "Mill-KD" [ref=e632]
+              - cell "10" [ref=e633]
+              - cell "not started" [ref=e634]
+              - cell "Enabled" [ref=e635]
+              - cell "View Edit Clone Delete" [ref=e636]:
+                - generic [ref=e637]:
+                  - link "View" [ref=e638] [cursor=pointer]:
+                    - /url: /templates/63
+                  - link "Edit" [ref=e639] [cursor=pointer]:
+                    - /url: /templates/63/edit
+                  - button "Clone" [ref=e640] [cursor=pointer]
+                  - button "Delete" [ref=e641] [cursor=pointer]
+            - row "KD 20 B DGD ATEX E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e642]:
+              - cell "KD 20 B DGD ATEX E" [ref=e643]:
+                - link "KD 20 B DGD ATEX E" [ref=e644] [cursor=pointer]:
+                  - /url: /templates/64
+              - cell "Switzerland" [ref=e645]
+              - cell "Mill-KD" [ref=e646]
+              - cell "10" [ref=e647]
+              - cell "not started" [ref=e648]
+              - cell "Enabled" [ref=e649]
+              - cell "View Edit Clone Delete" [ref=e650]:
+                - generic [ref=e651]:
+                  - link "View" [ref=e652] [cursor=pointer]:
+                    - /url: /templates/64
+                  - link "Edit" [ref=e653] [cursor=pointer]:
+                    - /url: /templates/64/edit
+                  - button "Clone" [ref=e654] [cursor=pointer]
+                  - button "Delete" [ref=e655] [cursor=pointer]
+            - row "KD 20 B DGD E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e656]:
+              - cell "KD 20 B DGD E" [ref=e657]:
+                - link "KD 20 B DGD E" [ref=e658] [cursor=pointer]:
+                  - /url: /templates/65
+              - cell "Switzerland" [ref=e659]
+              - cell "Mill-KD" [ref=e660]
+              - cell "10" [ref=e661]
+              - cell "not started" [ref=e662]
+              - cell "Enabled" [ref=e663]
+              - cell "View Edit Clone Delete" [ref=e664]:
+                - generic [ref=e665]:
+                  - link "View" [ref=e666] [cursor=pointer]:
+                    - /url: /templates/65
+                  - link "Edit" [ref=e667] [cursor=pointer]:
+                    - /url: /templates/65/edit
+                  - button "Clone" [ref=e668] [cursor=pointer]
+                  - button "Delete" [ref=e669] [cursor=pointer]
+            - row "KD 20 B E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e670]:
+              - cell "KD 20 B E" [ref=e671]:
+                - link "KD 20 B E" [ref=e672] [cursor=pointer]:
+                  - /url: /templates/66
+              - cell "Switzerland" [ref=e673]
+              - cell "Mill-KD" [ref=e674]
+              - cell "10" [ref=e675]
+              - cell "not started" [ref=e676]
+              - cell "Enabled" [ref=e677]
+              - cell "View Edit Clone Delete" [ref=e678]:
+                - generic [ref=e679]:
+                  - link "View" [ref=e680] [cursor=pointer]:
+                    - /url: /templates/66
+                  - link "Edit" [ref=e681] [cursor=pointer]:
+                    - /url: /templates/66/edit
+                  - button "Clone" [ref=e682] [cursor=pointer]
+                  - button "Delete" [ref=e683] [cursor=pointer]
+            - row "KD 20 B GD ATEX E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e684]:
+              - cell "KD 20 B GD ATEX E" [ref=e685]:
+                - link "KD 20 B GD ATEX E" [ref=e686] [cursor=pointer]:
+                  - /url: /templates/67
+              - cell "Switzerland" [ref=e687]
+              - cell "Mill-KD" [ref=e688]
+              - cell "10" [ref=e689]
+              - cell "not started" [ref=e690]
+              - cell "Enabled" [ref=e691]
+              - cell "View Edit Clone Delete" [ref=e692]:
+                - generic [ref=e693]:
+                  - link "View" [ref=e694] [cursor=pointer]:
+                    - /url: /templates/67
+                  - link "Edit" [ref=e695] [cursor=pointer]:
+                    - /url: /templates/67/edit
+                  - button "Clone" [ref=e696] [cursor=pointer]
+                  - button "Delete" [ref=e697] [cursor=pointer]
+            - row "KD 20 BS DGD E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e698]:
+              - cell "KD 20 BS DGD E" [ref=e699]:
+                - link "KD 20 BS DGD E" [ref=e700] [cursor=pointer]:
+                  - /url: /templates/68
+              - cell "Switzerland" [ref=e701]
+              - cell "Mill-KD" [ref=e702]
+              - cell "10" [ref=e703]
+              - cell "not started" [ref=e704]
+              - cell "Enabled" [ref=e705]
+              - cell "View Edit Clone Delete" [ref=e706]:
+                - generic [ref=e707]:
+                  - link "View" [ref=e708] [cursor=pointer]:
+                    - /url: /templates/68
+                  - link "Edit" [ref=e709] [cursor=pointer]:
+                    - /url: /templates/68/edit
+                  - button "Clone" [ref=e710] [cursor=pointer]
+                  - button "Delete" [ref=e711] [cursor=pointer]
+            - row "KD 25 DGD ATEX E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e712]:
+              - cell "KD 25 DGD ATEX E" [ref=e713]:
+                - link "KD 25 DGD ATEX E" [ref=e714] [cursor=pointer]:
+                  - /url: /templates/69
+              - cell "Switzerland" [ref=e715]
+              - cell "Mill-KD" [ref=e716]
+              - cell "10" [ref=e717]
+              - cell "not started" [ref=e718]
+              - cell "Enabled" [ref=e719]
+              - cell "View Edit Clone Delete" [ref=e720]:
+                - generic [ref=e721]:
+                  - link "View" [ref=e722] [cursor=pointer]:
+                    - /url: /templates/69
+                  - link "Edit" [ref=e723] [cursor=pointer]:
+                    - /url: /templates/69/edit
+                  - button "Clone" [ref=e724] [cursor=pointer]
+                  - button "Delete" [ref=e725] [cursor=pointer]
+            - row "KD 25 DGD E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e726]:
+              - cell "KD 25 DGD E" [ref=e727]:
+                - link "KD 25 DGD E" [ref=e728] [cursor=pointer]:
+                  - /url: /templates/70
+              - cell "Switzerland" [ref=e729]
+              - cell "Mill-KD" [ref=e730]
+              - cell "10" [ref=e731]
+              - cell "not started" [ref=e732]
+              - cell "Enabled" [ref=e733]
+              - cell "View Edit Clone Delete" [ref=e734]:
+                - generic [ref=e735]:
+                  - link "View" [ref=e736] [cursor=pointer]:
+                    - /url: /templates/70
+                  - link "Edit" [ref=e737] [cursor=pointer]:
+                    - /url: /templates/70/edit
+                  - button "Clone" [ref=e738] [cursor=pointer]
+                  - button "Delete" [ref=e739] [cursor=pointer]
+            - row "KD 25 GD ATEX E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e740]:
+              - cell "KD 25 GD ATEX E" [ref=e741]:
+                - link "KD 25 GD ATEX E" [ref=e742] [cursor=pointer]:
+                  - /url: /templates/71
+              - cell "Switzerland" [ref=e743]
+              - cell "Mill-KD" [ref=e744]
+              - cell "10" [ref=e745]
+              - cell "not started" [ref=e746]
+              - cell "Enabled" [ref=e747]
+              - cell "View Edit Clone Delete" [ref=e748]:
+                - generic [ref=e749]:
+                  - link "View" [ref=e750] [cursor=pointer]:
+                    - /url: /templates/71
+                  - link "Edit" [ref=e751] [cursor=pointer]:
+                    - /url: /templates/71/edit
+                  - button "Clone" [ref=e752] [cursor=pointer]
+                  - button "Delete" [ref=e753] [cursor=pointer]
+            - row "KD 25 GD E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e754]:
+              - cell "KD 25 GD E" [ref=e755]:
+                - link "KD 25 GD E" [ref=e756] [cursor=pointer]:
+                  - /url: /templates/72
+              - cell "Switzerland" [ref=e757]
+              - cell "Mill-KD" [ref=e758]
+              - cell "10" [ref=e759]
+              - cell "not started" [ref=e760]
+              - cell "Enabled" [ref=e761]
+              - cell "View Edit Clone Delete" [ref=e762]:
+                - generic [ref=e763]:
+                  - link "View" [ref=e764] [cursor=pointer]:
+                    - /url: /templates/72
+                  - link "Edit" [ref=e765] [cursor=pointer]:
+                    - /url: /templates/72/edit
+                  - button "Clone" [ref=e766] [cursor=pointer]
+                  - button "Delete" [ref=e767] [cursor=pointer]
+            - row "KD 25 S DGD E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e768]:
+              - cell "KD 25 S DGD E" [ref=e769]:
+                - link "KD 25 S DGD E" [ref=e770] [cursor=pointer]:
+                  - /url: /templates/73
+              - cell "Switzerland" [ref=e771]
+              - cell "Mill-KD" [ref=e772]
+              - cell "10" [ref=e773]
+              - cell "not started" [ref=e774]
+              - cell "Enabled" [ref=e775]
+              - cell "View Edit Clone Delete" [ref=e776]:
+                - generic [ref=e777]:
+                  - link "View" [ref=e778] [cursor=pointer]:
+                    - /url: /templates/73
+                  - link "Edit" [ref=e779] [cursor=pointer]:
+                    - /url: /templates/73/edit
+                  - button "Clone" [ref=e780] [cursor=pointer]
+                  - button "Delete" [ref=e781] [cursor=pointer]
+            - row "KD 280 A E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e782]:
+              - cell "KD 280 A E" [ref=e783]:
+                - link "KD 280 A E" [ref=e784] [cursor=pointer]:
+                  - /url: /templates/74
+              - cell "Switzerland" [ref=e785]
+              - cell "Mill-KD" [ref=e786]
+              - cell "10" [ref=e787]
+              - cell "not started" [ref=e788]
+              - cell "Enabled" [ref=e789]
+              - cell "View Edit Clone Delete" [ref=e790]:
+                - generic [ref=e791]:
+                  - link "View" [ref=e792] [cursor=pointer]:
+                    - /url: /templates/74
+                  - link "Edit" [ref=e793] [cursor=pointer]:
+                    - /url: /templates/74/edit
+                  - button "Clone" [ref=e794] [cursor=pointer]
+                  - button "Delete" [ref=e795] [cursor=pointer]
+            - row "KD 45 D ATEX E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e796]:
+              - cell "KD 45 D ATEX E" [ref=e797]:
+                - link "KD 45 D ATEX E" [ref=e798] [cursor=pointer]:
+                  - /url: /templates/75
+              - cell "Switzerland" [ref=e799]
+              - cell "Mill-KD" [ref=e800]
+              - cell "10" [ref=e801]
+              - cell "not started" [ref=e802]
+              - cell "Enabled" [ref=e803]
+              - cell "View Edit Clone Delete" [ref=e804]:
+                - generic [ref=e805]:
+                  - link "View" [ref=e806] [cursor=pointer]:
+                    - /url: /templates/75
+                  - link "Edit" [ref=e807] [cursor=pointer]:
+                    - /url: /templates/75/edit
+                  - button "Clone" [ref=e808] [cursor=pointer]
+                  - button "Delete" [ref=e809] [cursor=pointer]
+            - row "KD 45 D E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e810]:
+              - cell "KD 45 D E" [ref=e811]:
+                - link "KD 45 D E" [ref=e812] [cursor=pointer]:
+                  - /url: /templates/76
+              - cell "Switzerland" [ref=e813]
+              - cell "Mill-KD" [ref=e814]
+              - cell "10" [ref=e815]
+              - cell "not started" [ref=e816]
+              - cell "Enabled" [ref=e817]
+              - cell "View Edit Clone Delete" [ref=e818]:
+                - generic [ref=e819]:
+                  - link "View" [ref=e820] [cursor=pointer]:
+                    - /url: /templates/76
+                  - link "Edit" [ref=e821] [cursor=pointer]:
+                    - /url: /templates/76/edit
+                  - button "Clone" [ref=e822] [cursor=pointer]
+                  - button "Delete" [ref=e823] [cursor=pointer]
+            - row "KD 45 DS E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e824]:
+              - cell "KD 45 DS E" [ref=e825]:
+                - link "KD 45 DS E" [ref=e826] [cursor=pointer]:
+                  - /url: /templates/77
+              - cell "Switzerland" [ref=e827]
+              - cell "Mill-KD" [ref=e828]
+              - cell "10" [ref=e829]
+              - cell "not started" [ref=e830]
+              - cell "Enabled" [ref=e831]
+              - cell "View Edit Clone Delete" [ref=e832]:
+                - generic [ref=e833]:
+                  - link "View" [ref=e834] [cursor=pointer]:
+                    - /url: /templates/77
+                  - link "Edit" [ref=e835] [cursor=pointer]:
+                    - /url: /templates/77/edit
+                  - button "Clone" [ref=e836] [cursor=pointer]
+                  - button "Delete" [ref=e837] [cursor=pointer]
+            - row "KD 6(6) ATEX E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e838]:
+              - cell "KD 6(6) ATEX E" [ref=e839]:
+                - link "KD 6(6) ATEX E" [ref=e840] [cursor=pointer]:
+                  - /url: /templates/78
+              - cell "Switzerland" [ref=e841]
+              - cell "Mill-KD" [ref=e842]
+              - cell "10" [ref=e843]
+              - cell "not started" [ref=e844]
+              - cell "Enabled" [ref=e845]
+              - cell "View Edit Clone Delete" [ref=e846]:
+                - generic [ref=e847]:
+                  - link "View" [ref=e848] [cursor=pointer]:
+                    - /url: /templates/78
+                  - link "Edit" [ref=e849] [cursor=pointer]:
+                    - /url: /templates/78/edit
+                  - button "Clone" [ref=e850] [cursor=pointer]
+                  - button "Delete" [ref=e851] [cursor=pointer]
+            - row "KD 6(6) E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e852]:
+              - cell "KD 6(6) E" [ref=e853]:
+                - link "KD 6(6) E" [ref=e854] [cursor=pointer]:
+                  - /url: /templates/79
+              - cell "Switzerland" [ref=e855]
+              - cell "Mill-KD" [ref=e856]
+              - cell "10" [ref=e857]
+              - cell "not started" [ref=e858]
+              - cell "Enabled" [ref=e859]
+              - cell "View Edit Clone Delete" [ref=e860]:
+                - generic [ref=e861]:
+                  - link "View" [ref=e862] [cursor=pointer]:
+                    - /url: /templates/79
+                  - link "Edit" [ref=e863] [cursor=pointer]:
+                    - /url: /templates/79/edit
+                  - button "Clone" [ref=e864] [cursor=pointer]
+                  - button "Delete" [ref=e865] [cursor=pointer]
+            - row "KD 6(8) ATEX E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e866]:
+              - cell "KD 6(8) ATEX E" [ref=e867]:
+                - link "KD 6(8) ATEX E" [ref=e868] [cursor=pointer]:
+                  - /url: /templates/80
+              - cell "Switzerland" [ref=e869]
+              - cell "Mill-KD" [ref=e870]
+              - cell "10" [ref=e871]
+              - cell "not started" [ref=e872]
+              - cell "Enabled" [ref=e873]
+              - cell "View Edit Clone Delete" [ref=e874]:
+                - generic [ref=e875]:
+                  - link "View" [ref=e876] [cursor=pointer]:
+                    - /url: /templates/80
+                  - link "Edit" [ref=e877] [cursor=pointer]:
+                    - /url: /templates/80/edit
+                  - button "Clone" [ref=e878] [cursor=pointer]
+                  - button "Delete" [ref=e879] [cursor=pointer]
+            - row "KD 6(8) E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e880]:
+              - cell "KD 6(8) E" [ref=e881]:
+                - link "KD 6(8) E" [ref=e882] [cursor=pointer]:
+                  - /url: /templates/81
+              - cell "Switzerland" [ref=e883]
+              - cell "Mill-KD" [ref=e884]
+              - cell "10" [ref=e885]
+              - cell "not started" [ref=e886]
+              - cell "Enabled" [ref=e887]
+              - cell "View Edit Clone Delete" [ref=e888]:
+                - generic [ref=e889]:
+                  - link "View" [ref=e890] [cursor=pointer]:
+                    - /url: /templates/81
+                  - link "Edit" [ref=e891] [cursor=pointer]:
+                    - /url: /templates/81/edit
+                  - button "Clone" [ref=e892] [cursor=pointer]
+                  - button "Delete" [ref=e893] [cursor=pointer]
+            - row "KD 60 ATEX E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e894]:
+              - cell "KD 60 ATEX E" [ref=e895]:
+                - link "KD 60 ATEX E" [ref=e896] [cursor=pointer]:
+                  - /url: /templates/82
+              - cell "Switzerland" [ref=e897]
+              - cell "Mill-KD" [ref=e898]
+              - cell "10" [ref=e899]
+              - cell "not started" [ref=e900]
+              - cell "Enabled" [ref=e901]
+              - cell "View Edit Clone Delete" [ref=e902]:
+                - generic [ref=e903]:
+                  - link "View" [ref=e904] [cursor=pointer]:
+                    - /url: /templates/82
+                  - link "Edit" [ref=e905] [cursor=pointer]:
+                    - /url: /templates/82/edit
+                  - button "Clone" [ref=e906] [cursor=pointer]
+                  - button "Delete" [ref=e907] [cursor=pointer]
+            - row "KD 60 E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e908]:
+              - cell "KD 60 E" [ref=e909]:
+                - link "KD 60 E" [ref=e910] [cursor=pointer]:
+                  - /url: /templates/83
+              - cell "Switzerland" [ref=e911]
+              - cell "Mill-KD" [ref=e912]
+              - cell "10" [ref=e913]
+              - cell "not started" [ref=e914]
+              - cell "Enabled" [ref=e915]
+              - cell "View Edit Clone Delete" [ref=e916]:
+                - generic [ref=e917]:
+                  - link "View" [ref=e918] [cursor=pointer]:
+                    - /url: /templates/83
+                  - link "Edit" [ref=e919] [cursor=pointer]:
+                    - /url: /templates/83/edit
+                  - button "Clone" [ref=e920] [cursor=pointer]
+                  - button "Delete" [ref=e921] [cursor=pointer]
+            - row "KD 60 S E Switzerland Mill-KD 10 not started Enabled View Edit Clone Delete" [ref=e922]:
+              - cell "KD 60 S E" [ref=e923]:
+                - link "KD 60 S E" [ref=e924] [cursor=pointer]:
+                  - /url: /templates/84
+              - cell "Switzerland" [ref=e925]
+              - cell "Mill-KD" [ref=e926]
+              - cell "10" [ref=e927]
+              - cell "not started" [ref=e928]
+              - cell "Enabled" [ref=e929]
+              - cell "View Edit Clone Delete" [ref=e930]:
+                - generic [ref=e931]:
+                  - link "View" [ref=e932] [cursor=pointer]:
+                    - /url: /templates/84
+                  - link "Edit" [ref=e933] [cursor=pointer]:
+                    - /url: /templates/84/edit
+                  - button "Clone" [ref=e934] [cursor=pointer]
+                  - button "Delete" [ref=e935] [cursor=pointer]
+            - row "KD 600 E Switzerland Mill-KD 8 not started Enabled View Edit Clone Delete" [ref=e936]:
+              - cell "KD 600 E" [ref=e937]:
+                - link "KD 600 E" [ref=e938] [cursor=pointer]:
+                  - /url: /templates/85
+              - cell "Switzerland" [ref=e939]
+              - cell "Mill-KD" [ref=e940]
+              - cell "8" [ref=e941]
+              - cell "not started" [ref=e942]
+              - cell "Enabled" [ref=e943]
+              - cell "View Edit Clone Delete" [ref=e944]:
+                - generic [ref=e945]:
+                  - link "View" [ref=e946] [cursor=pointer]:
+                    - /url: /templates/85
+                  - link "Edit" [ref=e947] [cursor=pointer]:
+                    - /url: /templates/85/edit
+                  - button "Clone" [ref=e948] [cursor=pointer]
+                  - button "Delete" [ref=e949] [cursor=pointer]
+            - row "UBM 100 FU_FU E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e950]:
+              - cell "UBM 100 FU_FU E" [ref=e951]:
+                - link "UBM 100 FU_FU E" [ref=e952] [cursor=pointer]:
+                  - /url: /templates/87
+              - cell "Switzerland" [ref=e953]
+              - cell "MILL-UBM" [ref=e954]
+              - cell "9" [ref=e955]
+              - cell "not started" [ref=e956]
+              - cell "Enabled" [ref=e957]
+              - cell "View Edit Clone Delete" [ref=e958]:
+                - generic [ref=e959]:
+                  - link "View" [ref=e960] [cursor=pointer]:
+                    - /url: /templates/87
+                  - link "Edit" [ref=e961] [cursor=pointer]:
+                    - /url: /templates/87/edit
+                  - button "Clone" [ref=e962] [cursor=pointer]
+                  - button "Delete" [ref=e963] [cursor=pointer]
+            - row "UBM 100 FU_FU E - Kopie Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e964]:
+              - cell "UBM 100 FU_FU E - Kopie" [ref=e965]:
+                - link "UBM 100 FU_FU E - Kopie" [ref=e966] [cursor=pointer]:
+                  - /url: /templates/86
+              - cell "Switzerland" [ref=e967]
+              - cell "MILL-UBM" [ref=e968]
+              - cell "9" [ref=e969]
+              - cell "not started" [ref=e970]
+              - cell "Enabled" [ref=e971]
+              - cell "View Edit Clone Delete" [ref=e972]:
+                - generic [ref=e973]:
+                  - link "View" [ref=e974] [cursor=pointer]:
+                    - /url: /templates/86
+                  - link "Edit" [ref=e975] [cursor=pointer]:
+                    - /url: /templates/86/edit
+                  - button "Clone" [ref=e976] [cursor=pointer]
+                  - button "Delete" [ref=e977] [cursor=pointer]
+            - row "UBM 100 FU_M E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e978]:
+              - cell "UBM 100 FU_M E" [ref=e979]:
+                - link "UBM 100 FU_M E" [ref=e980] [cursor=pointer]:
+                  - /url: /templates/89
+              - cell "Switzerland" [ref=e981]
+              - cell "MILL-UBM" [ref=e982]
+              - cell "9" [ref=e983]
+              - cell "not started" [ref=e984]
+              - cell "Enabled" [ref=e985]
+              - cell "View Edit Clone Delete" [ref=e986]:
+                - generic [ref=e987]:
+                  - link "View" [ref=e988] [cursor=pointer]:
+                    - /url: /templates/89
+                  - link "Edit" [ref=e989] [cursor=pointer]:
+                    - /url: /templates/89/edit
+                  - button "Clone" [ref=e990] [cursor=pointer]
+                  - button "Delete" [ref=e991] [cursor=pointer]
+            - row "UBM 100 FU_M E - Kopie Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e992]:
+              - cell "UBM 100 FU_M E - Kopie" [ref=e993]:
+                - link "UBM 100 FU_M E - Kopie" [ref=e994] [cursor=pointer]:
+                  - /url: /templates/88
+              - cell "Switzerland" [ref=e995]
+              - cell "MILL-UBM" [ref=e996]
+              - cell "9" [ref=e997]
+              - cell "not started" [ref=e998]
+              - cell "Enabled" [ref=e999]
+              - cell "View Edit Clone Delete" [ref=e1000]:
+                - generic [ref=e1001]:
+                  - link "View" [ref=e1002] [cursor=pointer]:
+                    - /url: /templates/88
+                  - link "Edit" [ref=e1003] [cursor=pointer]:
+                    - /url: /templates/88/edit
+                  - button "Clone" [ref=e1004] [cursor=pointer]
+                  - button "Delete" [ref=e1005] [cursor=pointer]
+            - row "UBM 100 MIT WAB VIEW E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1006]:
+              - cell "UBM 100 MIT WAB VIEW E" [ref=e1007]:
+                - link "UBM 100 MIT WAB VIEW E" [ref=e1008] [cursor=pointer]:
+                  - /url: /templates/90
+              - cell "Switzerland" [ref=e1009]
+              - cell "MILL-UBM" [ref=e1010]
+              - cell "9" [ref=e1011]
+              - cell "not started" [ref=e1012]
+              - cell "Enabled" [ref=e1013]
+              - cell "View Edit Clone Delete" [ref=e1014]:
+                - generic [ref=e1015]:
+                  - link "View" [ref=e1016] [cursor=pointer]:
+                    - /url: /templates/90
+                  - link "Edit" [ref=e1017] [cursor=pointer]:
+                    - /url: /templates/90/edit
+                  - button "Clone" [ref=e1018] [cursor=pointer]
+                  - button "Delete" [ref=e1019] [cursor=pointer]
+            - row "UBM 100 PUR FU_FU NON ATEX E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1020]:
+              - cell "UBM 100 PUR FU_FU NON ATEX E" [ref=e1021]:
+                - link "UBM 100 PUR FU_FU NON ATEX E" [ref=e1022] [cursor=pointer]:
+                  - /url: /templates/91
+              - cell "Switzerland" [ref=e1023]
+              - cell "MILL-UBM" [ref=e1024]
+              - cell "9" [ref=e1025]
+              - cell "not started" [ref=e1026]
+              - cell "Enabled" [ref=e1027]
+              - cell "View Edit Clone Delete" [ref=e1028]:
+                - generic [ref=e1029]:
+                  - link "View" [ref=e1030] [cursor=pointer]:
+                    - /url: /templates/91
+                  - link "Edit" [ref=e1031] [cursor=pointer]:
+                    - /url: /templates/91/edit
+                  - button "Clone" [ref=e1032] [cursor=pointer]
+                  - button "Delete" [ref=e1033] [cursor=pointer]
+            - row "UBM 100 PUR FU_M NON ATEX E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1034]:
+              - cell "UBM 100 PUR FU_M NON ATEX E" [ref=e1035]:
+                - link "UBM 100 PUR FU_M NON ATEX E" [ref=e1036] [cursor=pointer]:
+                  - /url: /templates/92
+              - cell "Switzerland" [ref=e1037]
+              - cell "MILL-UBM" [ref=e1038]
+              - cell "9" [ref=e1039]
+              - cell "not started" [ref=e1040]
+              - cell "Enabled" [ref=e1041]
+              - cell "View Edit Clone Delete" [ref=e1042]:
+                - generic [ref=e1043]:
+                  - link "View" [ref=e1044] [cursor=pointer]:
+                    - /url: /templates/92
+                  - link "Edit" [ref=e1045] [cursor=pointer]:
+                    - /url: /templates/92/edit
+                  - button "Clone" [ref=e1046] [cursor=pointer]
+                  - button "Delete" [ref=e1047] [cursor=pointer]
+            - row "UBM 20 FU_FU E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1048]:
+              - cell "UBM 20 FU_FU E" [ref=e1049]:
+                - link "UBM 20 FU_FU E" [ref=e1050] [cursor=pointer]:
+                  - /url: /templates/28
+              - cell "Switzerland" [ref=e1051]
+              - cell "MILL-UBM" [ref=e1052]
+              - cell "9" [ref=e1053]
+              - cell "not started" [ref=e1054]
+              - cell "Enabled" [ref=e1055]
+              - cell "View Edit Clone Delete" [ref=e1056]:
+                - generic [ref=e1057]:
+                  - link "View" [ref=e1058] [cursor=pointer]:
+                    - /url: /templates/28
+                  - link "Edit" [ref=e1059] [cursor=pointer]:
+                    - /url: /templates/28/edit
+                  - button "Clone" [ref=e1060] [cursor=pointer]
+                  - button "Delete" [ref=e1061] [cursor=pointer]
+            - row "UBM 5 FU_FU E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1062]:
+              - cell "UBM 5 FU_FU E" [ref=e1063]:
+                - link "UBM 5 FU_FU E" [ref=e1064] [cursor=pointer]:
+                  - /url: /templates/93
+              - cell "Switzerland" [ref=e1065]
+              - cell "MILL-UBM" [ref=e1066]
+              - cell "9" [ref=e1067]
+              - cell "not started" [ref=e1068]
+              - cell "Enabled" [ref=e1069]
+              - cell "View Edit Clone Delete" [ref=e1070]:
+                - generic [ref=e1071]:
+                  - link "View" [ref=e1072] [cursor=pointer]:
+                    - /url: /templates/93
+                  - link "Edit" [ref=e1073] [cursor=pointer]:
+                    - /url: /templates/93/edit
+                  - button "Clone" [ref=e1074] [cursor=pointer]
+                  - button "Delete" [ref=e1075] [cursor=pointer]
+            - row "UBM 5 FU_FU KERAMIK E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1076]:
+              - cell "UBM 5 FU_FU KERAMIK E" [ref=e1077]:
+                - link "UBM 5 FU_FU KERAMIK E" [ref=e1078] [cursor=pointer]:
+                  - /url: /templates/94
+              - cell "Switzerland" [ref=e1079]
+              - cell "MILL-UBM" [ref=e1080]
+              - cell "9" [ref=e1081]
+              - cell "not started" [ref=e1082]
+              - cell "Enabled" [ref=e1083]
+              - cell "View Edit Clone Delete" [ref=e1084]:
+                - generic [ref=e1085]:
+                  - link "View" [ref=e1086] [cursor=pointer]:
+                    - /url: /templates/94
+                  - link "Edit" [ref=e1087] [cursor=pointer]:
+                    - /url: /templates/94/edit
+                  - button "Clone" [ref=e1088] [cursor=pointer]
+                  - button "Delete" [ref=e1089] [cursor=pointer]
+            - row "UBM 5 FU_M E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1090]:
+              - cell "UBM 5 FU_M E" [ref=e1091]:
+                - link "UBM 5 FU_M E" [ref=e1092] [cursor=pointer]:
+                  - /url: /templates/95
+              - cell "Switzerland" [ref=e1093]
+              - cell "MILL-UBM" [ref=e1094]
+              - cell "9" [ref=e1095]
+              - cell "not started" [ref=e1096]
+              - cell "Enabled" [ref=e1097]
+              - cell "View Edit Clone Delete" [ref=e1098]:
+                - generic [ref=e1099]:
+                  - link "View" [ref=e1100] [cursor=pointer]:
+                    - /url: /templates/95
+                  - link "Edit" [ref=e1101] [cursor=pointer]:
+                    - /url: /templates/95/edit
+                  - button "Clone" [ref=e1102] [cursor=pointer]
+                  - button "Delete" [ref=e1103] [cursor=pointer]
+            - row "UBM 5 FU_M KERAMIK E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1104]:
+              - cell "UBM 5 FU_M KERAMIK E" [ref=e1105]:
+                - link "UBM 5 FU_M KERAMIK E" [ref=e1106] [cursor=pointer]:
+                  - /url: /templates/96
+              - cell "Switzerland" [ref=e1107]
+              - cell "MILL-UBM" [ref=e1108]
+              - cell "9" [ref=e1109]
+              - cell "not started" [ref=e1110]
+              - cell "Enabled" [ref=e1111]
+              - cell "View Edit Clone Delete" [ref=e1112]:
+                - generic [ref=e1113]:
+                  - link "View" [ref=e1114] [cursor=pointer]:
+                    - /url: /templates/96
+                  - link "Edit" [ref=e1115] [cursor=pointer]:
+                    - /url: /templates/96/edit
+                  - button "Clone" [ref=e1116] [cursor=pointer]
+                  - button "Delete" [ref=e1117] [cursor=pointer]
+            - row "UBM 5 KERAMIK MIT VIEW & FP600 PUMPE E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1118]:
+              - cell "UBM 5 KERAMIK MIT VIEW & FP600 PUMPE E" [ref=e1119]:
+                - link "UBM 5 KERAMIK MIT VIEW & FP600 PUMPE E" [ref=e1120] [cursor=pointer]:
+                  - /url: /templates/97
+              - cell "Switzerland" [ref=e1121]
+              - cell "MILL-UBM" [ref=e1122]
+              - cell "9" [ref=e1123]
+              - cell "not started" [ref=e1124]
+              - cell "Enabled" [ref=e1125]
+              - cell "View Edit Clone Delete" [ref=e1126]:
+                - generic [ref=e1127]:
+                  - link "View" [ref=e1128] [cursor=pointer]:
+                    - /url: /templates/97
+                  - link "Edit" [ref=e1129] [cursor=pointer]:
+                    - /url: /templates/97/edit
+                  - button "Clone" [ref=e1130] [cursor=pointer]
+                  - button "Delete" [ref=e1131] [cursor=pointer]
+            - row "UBM 5 MIT WAB VIEW E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1132]:
+              - cell "UBM 5 MIT WAB VIEW E" [ref=e1133]:
+                - link "UBM 5 MIT WAB VIEW E" [ref=e1134] [cursor=pointer]:
+                  - /url: /templates/98
+              - cell "Switzerland" [ref=e1135]
+              - cell "MILL-UBM" [ref=e1136]
+              - cell "9" [ref=e1137]
+              - cell "not started" [ref=e1138]
+              - cell "Enabled" [ref=e1139]
+              - cell "View Edit Clone Delete" [ref=e1140]:
+                - generic [ref=e1141]:
+                  - link "View" [ref=e1142] [cursor=pointer]:
+                    - /url: /templates/98
+                  - link "Edit" [ref=e1143] [cursor=pointer]:
+                    - /url: /templates/98/edit
+                  - button "Clone" [ref=e1144] [cursor=pointer]
+                  - button "Delete" [ref=e1145] [cursor=pointer]
+            - row "UBM 5 PUR FU_FU NON ATEX E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1146]:
+              - cell "UBM 5 PUR FU_FU NON ATEX E" [ref=e1147]:
+                - link "UBM 5 PUR FU_FU NON ATEX E" [ref=e1148] [cursor=pointer]:
+                  - /url: /templates/99
+              - cell "Switzerland" [ref=e1149]
+              - cell "MILL-UBM" [ref=e1150]
+              - cell "9" [ref=e1151]
+              - cell "not started" [ref=e1152]
+              - cell "Enabled" [ref=e1153]
+              - cell "View Edit Clone Delete" [ref=e1154]:
+                - generic [ref=e1155]:
+                  - link "View" [ref=e1156] [cursor=pointer]:
+                    - /url: /templates/99
+                  - link "Edit" [ref=e1157] [cursor=pointer]:
+                    - /url: /templates/99/edit
+                  - button "Clone" [ref=e1158] [cursor=pointer]
+                  - button "Delete" [ref=e1159] [cursor=pointer]
+            - row "UBM 5 PUR FU_M NON ATEX E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1160]:
+              - cell "UBM 5 PUR FU_M NON ATEX E" [ref=e1161]:
+                - link "UBM 5 PUR FU_M NON ATEX E" [ref=e1162] [cursor=pointer]:
+                  - /url: /templates/100
+              - cell "Switzerland" [ref=e1163]
+              - cell "MILL-UBM" [ref=e1164]
+              - cell "9" [ref=e1165]
+              - cell "not started" [ref=e1166]
+              - cell "Enabled" [ref=e1167]
+              - cell "View Edit Clone Delete" [ref=e1168]:
+                - generic [ref=e1169]:
+                  - link "View" [ref=e1170] [cursor=pointer]:
+                    - /url: /templates/100
+                  - link "Edit" [ref=e1171] [cursor=pointer]:
+                    - /url: /templates/100/edit
+                  - button "Clone" [ref=e1172] [cursor=pointer]
+                  - button "Delete" [ref=e1173] [cursor=pointer]
+            - row "UBM 5 PUR MIT WAB VIEW NON ATEX E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1174]:
+              - cell "UBM 5 PUR MIT WAB VIEW NON ATEX E" [ref=e1175]:
+                - link "UBM 5 PUR MIT WAB VIEW NON ATEX E" [ref=e1176] [cursor=pointer]:
+                  - /url: /templates/101
+              - cell "Switzerland" [ref=e1177]
+              - cell "MILL-UBM" [ref=e1178]
+              - cell "9" [ref=e1179]
+              - cell "not started" [ref=e1180]
+              - cell "Enabled" [ref=e1181]
+              - cell "View Edit Clone Delete" [ref=e1182]:
+                - generic [ref=e1183]:
+                  - link "View" [ref=e1184] [cursor=pointer]:
+                    - /url: /templates/101
+                  - link "Edit" [ref=e1185] [cursor=pointer]:
+                    - /url: /templates/101/edit
+                  - button "Clone" [ref=e1186] [cursor=pointer]
+                  - button "Delete" [ref=e1187] [cursor=pointer]
+            - row "UBM 50 FU_FU E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1188]:
+              - cell "UBM 50 FU_FU E" [ref=e1189]:
+                - link "UBM 50 FU_FU E" [ref=e1190] [cursor=pointer]:
+                  - /url: /templates/102
+              - cell "Switzerland" [ref=e1191]
+              - cell "MILL-UBM" [ref=e1192]
+              - cell "9" [ref=e1193]
+              - cell "not started" [ref=e1194]
+              - cell "Enabled" [ref=e1195]
+              - cell "View Edit Clone Delete" [ref=e1196]:
+                - generic [ref=e1197]:
+                  - link "View" [ref=e1198] [cursor=pointer]:
+                    - /url: /templates/102
+                  - link "Edit" [ref=e1199] [cursor=pointer]:
+                    - /url: /templates/102/edit
+                  - button "Clone" [ref=e1200] [cursor=pointer]
+                  - button "Delete" [ref=e1201] [cursor=pointer]
+            - row "UBM 50 FU_M E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1202]:
+              - cell "UBM 50 FU_M E" [ref=e1203]:
+                - link "UBM 50 FU_M E" [ref=e1204] [cursor=pointer]:
+                  - /url: /templates/103
+              - cell "Switzerland" [ref=e1205]
+              - cell "MILL-UBM" [ref=e1206]
+              - cell "9" [ref=e1207]
+              - cell "not started" [ref=e1208]
+              - cell "Enabled" [ref=e1209]
+              - cell "View Edit Clone Delete" [ref=e1210]:
+                - generic [ref=e1211]:
+                  - link "View" [ref=e1212] [cursor=pointer]:
+                    - /url: /templates/103
+                  - link "Edit" [ref=e1213] [cursor=pointer]:
+                    - /url: /templates/103/edit
+                  - button "Clone" [ref=e1214] [cursor=pointer]
+                  - button "Delete" [ref=e1215] [cursor=pointer]
+            - row "UBM 50 MIT WAB VIEW E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1216]:
+              - cell "UBM 50 MIT WAB VIEW E" [ref=e1217]:
+                - link "UBM 50 MIT WAB VIEW E" [ref=e1218] [cursor=pointer]:
+                  - /url: /templates/104
+              - cell "Switzerland" [ref=e1219]
+              - cell "MILL-UBM" [ref=e1220]
+              - cell "9" [ref=e1221]
+              - cell "not started" [ref=e1222]
+              - cell "Enabled" [ref=e1223]
+              - cell "View Edit Clone Delete" [ref=e1224]:
+                - generic [ref=e1225]:
+                  - link "View" [ref=e1226] [cursor=pointer]:
+                    - /url: /templates/104
+                  - link "Edit" [ref=e1227] [cursor=pointer]:
+                    - /url: /templates/104/edit
+                  - button "Clone" [ref=e1228] [cursor=pointer]
+                  - button "Delete" [ref=e1229] [cursor=pointer]
+            - row "UBM 50 PUR FU_FU NON ATEX E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1230]:
+              - cell "UBM 50 PUR FU_FU NON ATEX E" [ref=e1231]:
+                - link "UBM 50 PUR FU_FU NON ATEX E" [ref=e1232] [cursor=pointer]:
+                  - /url: /templates/105
+              - cell "Switzerland" [ref=e1233]
+              - cell "MILL-UBM" [ref=e1234]
+              - cell "9" [ref=e1235]
+              - cell "not started" [ref=e1236]
+              - cell "Enabled" [ref=e1237]
+              - cell "View Edit Clone Delete" [ref=e1238]:
+                - generic [ref=e1239]:
+                  - link "View" [ref=e1240] [cursor=pointer]:
+                    - /url: /templates/105
+                  - link "Edit" [ref=e1241] [cursor=pointer]:
+                    - /url: /templates/105/edit
+                  - button "Clone" [ref=e1242] [cursor=pointer]
+                  - button "Delete" [ref=e1243] [cursor=pointer]
+            - row "UBM 50 PUR FU_M NON ATEX E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1244]:
+              - cell "UBM 50 PUR FU_M NON ATEX E" [ref=e1245]:
+                - link "UBM 50 PUR FU_M NON ATEX E" [ref=e1246] [cursor=pointer]:
+                  - /url: /templates/106
+              - cell "Switzerland" [ref=e1247]
+              - cell "MILL-UBM" [ref=e1248]
+              - cell "9" [ref=e1249]
+              - cell "not started" [ref=e1250]
+              - cell "Enabled" [ref=e1251]
+              - cell "View Edit Clone Delete" [ref=e1252]:
+                - generic [ref=e1253]:
+                  - link "View" [ref=e1254] [cursor=pointer]:
+                    - /url: /templates/106
+                  - link "Edit" [ref=e1255] [cursor=pointer]:
+                    - /url: /templates/106/edit
+                  - button "Clone" [ref=e1256] [cursor=pointer]
+                  - button "Delete" [ref=e1257] [cursor=pointer]
+            - row "UBM 50 PUR MIT WAB VIEW NON ATEX E Switzerland MILL-UBM 9 not started Enabled View Edit Clone Delete" [ref=e1258]:
+              - cell "UBM 50 PUR MIT WAB VIEW NON ATEX E" [ref=e1259]:
+                - link "UBM 50 PUR MIT WAB VIEW NON ATEX E" [ref=e1260] [cursor=pointer]:
+                  - /url: /templates/107
+              - cell "Switzerland" [ref=e1261]
+              - cell "MILL-UBM" [ref=e1262]
+              - cell "9" [ref=e1263]
+              - cell "not started" [ref=e1264]
+              - cell "Enabled" [ref=e1265]
+              - cell "View Edit Clone Delete" [ref=e1266]:
+                - generic [ref=e1267]:
+                  - link "View" [ref=e1268] [cursor=pointer]:
+                    - /url: /templates/107
+                  - link "Edit" [ref=e1269] [cursor=pointer]:
+                    - /url: /templates/107/edit
+                  - button "Clone" [ref=e1270] [cursor=pointer]
+                  - button "Delete" [ref=e1271] [cursor=pointer]
