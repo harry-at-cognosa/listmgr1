@@ -1,3 +1,35 @@
+## Session 2026-02-11 (Feature #129)
+
+### Feature #129: Express proxy routes for template loader service - VERIFIED PASSING
+
+### What Was Built
+- Created `backend/routes/loadTemplate.js` with two proxy routes:
+  1. GET /api/load-template/health - proxies to FastAPI /health endpoint
+  2. POST /api/load-template - proxies multipart form data to FastAPI POST /api/v1/templates/load
+- Both routes protected by `requireAuth` middleware
+- Configurable via TEMPLATE_LOADER_URL env var (defaults to http://127.0.0.1:8000)
+- Registered routes in `backend/index.js`
+- Added TEMPLATE_LOADER_URL to backend/.env
+
+### Verification Steps Completed
+1. ✅ GET /api/load-template/health without auth → 401 Authentication required
+2. ✅ POST /api/load-template without auth → 401 Authentication required
+3. ✅ POST /api/load-template with auth but wrong Content-Type → 400 Content-Type must be multipart/form-data
+4. ✅ GET /api/load-template/health with auth, FastAPI down → 503 with error detail
+5. ✅ POST /api/load-template with auth and multipart data, FastAPI down → 503 with error detail
+6. ✅ Browser-based testing: both endpoints work through Vite proxy with session cookies
+7. ✅ Zero console errors in browser
+8. ✅ Existing app functionality unaffected (templates page loads, login works)
+9. ✅ No mock data patterns found in code
+
+### Console Errors: Zero errors throughout entire test
+
+### Commit: febd9ae - Feature #129: Express proxy routes for template loader service
+
+### Stats: 129/131 features passing (98.5%)
+
+[Testing] Session complete - Feature #129 PASSED
+
 ## Session 2026-02-09 (Feature #12 Regression Test)
 
 ### Feature #12: API returns 403 for unauthorized role access - VERIFIED PASSING
@@ -2295,3 +2327,6 @@ Migration includes:
 - regression-f77-cleanup-complete.png (restored to 8 original currencies)
 
 [Testing] Session complete - Feature #77 regression test PASSED
+
+## Session 2026-02-11 (Feature #40 Regression Test)
+
