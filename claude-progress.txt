@@ -1,3 +1,46 @@
+## Session 2026-02-11 (Feature #130 Implementation)
+
+### Feature #130: Load Quote Template page with .docx upload form - IMPLEMENTED AND PASSING
+
+### What Was Done
+1. Created LoadQuoteTemplate.jsx component with full form functionality
+2. Added route definition /templates/load in React router (App.jsx)
+3. Enabled sidebar navigation link (Layout.jsx - replaced disabled span with NavLink)
+4. Fixed health check proxy in backend (loadTemplate.js) to detect running service even without /health endpoint
+
+### Verification Steps Completed
+1. ✅ Logged in as admin - navigated to /templates/load
+2. ✅ Health check correctly detected FastAPI service as available (green banner)
+3. ✅ Country dropdown shows all countries (enabled first, disabled with "(Disabled)" label for admin)
+4. ✅ Non-admin user (harry) sees only enabled countries and categories
+5. ✅ Selecting country shows associated currency read-only (CHE→CHF, USA→USD)
+6. ✅ Product Category dropdown populated correctly with role-based filtering
+7. ✅ Product Line dropdown disabled until Product Category selected
+8. ✅ Product Line filtered by selected category (MIL→ECM/KD/UBM, MIX→MIX-CM, T→SRV/TUR/TU2)
+9. ✅ Changing Product Category resets Product Line selection
+10. ✅ File picker accepts .docx files, shows selected file name and size
+11. ✅ Upload button submits form data to POST /api/load-template
+12. ✅ Error from FastAPI displayed in red banner
+13. ✅ When service unavailable: warning banner shown, all form controls disabled
+14. ✅ Unauthenticated access to /templates/load redirects to login
+15. ✅ Sidebar nav link active and highlighted when on page
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- f130-load-template-service-unavailable.png (form disabled state)
+- f130-sidebar-nav-link.png (sidebar with active link)
+- f130-load-template-non-admin-harry.png (non-admin sees only enabled items)
+- f130-service-available-form-enabled.png (form enabled with green banner)
+- f130-form-complete-ready-to-upload.png (fully filled form)
+- f130-upload-error-improved.png (error display from FastAPI)
+
+### Commit: e8e9bb5 - Feature #130: Load Quote Template page with .docx upload form
+
+### Current Progress: 129/131 features passing (98.5%)
+
+---
+
 ## Session 2026-02-12 (Feature #46 Re-verification)
 
 ### Feature #46: User can clone template - RE-VERIFIED PASSING
@@ -2383,3 +2426,88 @@ Migration includes:
 
 ## Session 2026-02-11 (Feature #40 Regression Test)
 
+
+## Session 2026-02-11 (Feature #95 Regression Test)
+
+### Feature #95: Double-click submit creates only one record - VERIFIED PASSING
+
+### Verification Steps Completed
+1. ✅ Logged in as admin - navigated to Currencies page (8 currencies initially)
+2. ✅ Clicked '+ Add Currency' - form appeared with Symbol, Name, Enabled fields
+3. ✅ Filled form with unique values: Symbol=ZZZ, Name='Test Double Click F95'
+4. ✅ Rapidly double-clicked Save button (dblclick) - success message displayed
+5. ✅ Verified table shows exactly 9 currencies (8 original + 1 new ZZZ)
+6. ✅ Confirmed only ONE ZZZ record exists via DOM inspection (zzzCount=1)
+7. ✅ No duplicate records created by double-click - idempotency working
+8. ✅ Cleaned up test data - deleted ZZZ currency, restored to 8 original currencies
+9. ✅ Final state matches initial state exactly
+
+### Console Errors: Zero errors throughout entire test (0 errors, 2 React Router warnings - expected)
+
+### Screenshots
+- regression-f95-initial-currencies.png (8 currencies before test)
+- regression-f95-after-doubleclick.png (9 currencies after double-click, only 1 ZZZ)
+- regression-f95-cleanup-complete.png (8 currencies restored after cleanup)
+
+[Testing] Session complete - Feature #95 regression test PASSED
+
+
+## Session 2026-02-11 (Feature #91 Regression Test)
+
+### Feature #91: Form fields have associated labels - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Login form: 2 fields (username, password) - all have label[for] associations
+2. Currency create form: 3 fields (symbol, name, enabled) - all have label[for] associations
+3. Template create form: 16 fields (name, country, currency, product_cat, product_line, status, order_codes, fbo_location, as_of_date, version, description, content, comment, ext_file_ref, active, enabled) - all have label[for] associations
+4. Country create form: 4 fields (abbr, name, currency, enabled) - all have label[for] associations
+5. Product Category create form: 3 fields (abbr, name, enabled) - all have label[for] associations
+6. Product Line create form: 4 fields (product_cat, abbr, name, enabled) - all have label[for] associations
+7. User Management create form: 4 fields (username, password, role, enabled) - all have label[for] associations
+
+### Programmatic Verification
+- Used JavaScript evaluation to check every input/select/textarea on each form
+- Verified each field has a unique id attribute
+- Verified each field has a matching label[for] element
+- All 36 total form fields across 7 forms pass accessibility label checks
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- regression-f91-product-lines-form.png (Product Lines add form with labels visible)
+
+[Testing] Session complete - Feature #91 regression test PASSED
+
+## Session 2026-02-11 (Feature #53 Regression Test)
+
+### Feature #53: User can clone individual section - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Logged in as admin - navigated to Templates page
+2. Navigated to template #114 (DYNO-MILL 20 FCFC_US_FOB Allendale) - 11 sections
+3. Clicked Clone on section #5 Product Pump - success message displayed
+4. New section #12 Product Pump created with new ID at end of list
+5. New section has status cloned (green badge)
+6. Template section_count incremented from 11 to 12
+7. Cleaned up - deleted cloned section, restored to 11 sections
+8. Zero console errors throughout test
+
+[Testing] Session complete - Feature #53 regression test PASSED
+
+## Session 2026-02-11 (Feature #95 Regression Test)
+
+### Feature #95: Double-click submit creates only one record - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Logged in as admin on port 5173 with Vite proxy to backend 3001
+2. Navigated to Currencies page - baseline of 8 currencies confirmed
+3. Opened Add Currency form, filled Symbol=XYZ, Name=Test DblClick F95
+4. Performed rapid double-click (dblclick) on Save button
+5. Currency saved successfully - only ONE XYZ record created
+6. API verification confirmed exactly 1 XYZ record in database
+7. Cleaned up test data - restored original 8 currencies
+
+### Console Errors: Zero errors throughout entire test
+
+[Testing] Session complete - Feature #95 regression test PASSED
+[Testing] Session 2026-02-11 - Feature #68 (Field length limits enforced) regression test PASSED. All maxLength attrs verified on Template, Country, Currency, Product Category forms. Zero console errors.
