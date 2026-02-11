@@ -15,6 +15,7 @@ import SectionTypes from './pages/SectionTypes'
 import Users from './pages/Users'
 import PriceConversion from './pages/PriceConversion'
 import CustomerContacts from './pages/CustomerContacts'
+import LoadQuoteTemplate from './pages/LoadQuoteTemplate'
 import NotFound from './pages/NotFound'
 
 function PrivateRoute({ children }) {
@@ -64,6 +65,7 @@ function App() {
             <Route path="templates/new" element={<TemplateForm />} />
             <Route path="templates/:id" element={<TemplateDetail />} />
             <Route path="templates/:id/edit" element={<TemplateForm />} />
+            <Route path="templates/load" element={<LoadQuoteTemplate />} />
             <Route path="reference/currencies" element={<Currencies />} />
             <Route path="reference/countries" element={<Countries />} />
             <Route path="reference/product-categories" element={<ProductCategories />} />

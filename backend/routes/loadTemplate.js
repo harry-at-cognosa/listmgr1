@@ -46,13 +46,26 @@ router.get('/health', function(req, res) {
         body += chunk;
       });
       proxyRes.on('end', function() {
-        // Forward the status code and response from FastAPI
+        // Any response from the service means it is reachable.
+        // The /health endpoint may not exist on the FastAPI service,
+        // so a 404 still indicates the service is up and accepting connections.
         try {
           var parsed = JSON.parse(body);
-          res.status(proxyRes.statusCode).json(parsed);
+          if (parsed.status === 'healthy' || (proxyRes.statusCode >= 200 && proxyRes.statusCode < 500)) {
+            // Service is reachable (even 404 means the server is running)
+            res.json({ status: 'healthy', service_url: TEMPLATE_LOADER_URL });
+          } else {
+            // 5xx from the service itself means unhealthy
+            res.status(proxyRes.statusCode).json({
+              status: 'unhealthy',
+              error: parsed.error || parsed.detail || 'Service reported unhealthy',
+              statusCode: proxyRes.statusCode
+            });
+          }
         } catch (e) {
           // If FastAPI returns non-JSON (e.g. HTML docs page), still report healthy
-          if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 400) {
+          // since the service responded
+          if (proxyRes.statusCode < 500) {
             res.json({ status: 'healthy', service_url: TEMPLATE_LOADER_URL });
           } else {
             res.status(proxyRes.statusCode).json({

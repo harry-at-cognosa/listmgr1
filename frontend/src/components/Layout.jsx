@@ -119,7 +119,9 @@ function Layout() {
                   <NavLink to="/templates" className={subNavLinkClass} onClick={closeMobileMenu}>
                     Manage Quote Templates
                   </NavLink>
-                  <span className={disabledSubNavClass}>Load Quote Template</span>
+                  <NavLink to="/templates/load" className={subNavLinkClass} onClick={closeMobileMenu}>
+                    Load Quote Template
+                  </NavLink>
                   <span className={disabledSubNavClass}>Generate Quote Templates</span>
                   <span className={disabledSubNavClass}>Export Quote Templates</span>
                 </div>
