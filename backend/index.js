@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:5176'],
+  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:5176', 'http://localhost:5177', 'http://localhost:5178'],
   credentials: true
 }));
 app.use(express.json());
@@ -56,6 +56,7 @@ const appSettingsRoutes = require('./routes/appSettings');
 const priceConversionRoutes = require('./routes/priceConversion');
 const customerContactsRoutes = require('./routes/customerContacts');
 const documentBlobsRoutes = require('./routes/documentBlobs');
+const loadTemplateRoutes = require('./routes/loadTemplate');
 
 // Public settings endpoint (unauthenticated) - for login page
 app.get('/api/public-settings', async (req, res) => {
@@ -91,6 +92,7 @@ app.use('/api/app-settings', requireAuth, appSettingsRoutes);
 app.use('/api/price-conversion', requireAdmin, priceConversionRoutes);
 app.use('/api/customer-contacts', requireAuth, customerContactsRoutes);
 app.use('/api/templates', requireAuth, documentBlobsRoutes);
+app.use('/api/load-template', requireAuth, loadTemplateRoutes);
 
 // Health check
 app.get('/api/health', async (req, res) => {
