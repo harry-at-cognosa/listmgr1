@@ -1,3 +1,34 @@
+## Session 2026-02-12 (Feature #46 Re-verification)
+
+### Feature #46: User can clone template - RE-VERIFIED PASSING
+
+### Background
+Feature #46 was previously passing (commit 64ce983) but was marked as failing during regression testing.
+Re-verification confirmed the clone functionality works correctly end-to-end.
+
+### Verification Steps Completed
+1. ✅ Logged in as admin
+2. ✅ Filtered templates by United States - found template 114 with 11 sections
+3. ✅ Clicked Clone on template 114 - success message "Template cloned successfully"
+4. ✅ New template created with ID 118 (different from original 114)
+5. ✅ New template name: "DYNO-MILL 20 FCFC_US_FOB Allendale (Clone)"
+6. ✅ New template status: "cloned"
+7. ✅ All 11 sections copied with "cloned" status
+8. ✅ Original template 114 unchanged - still "in process" with 11 "in process" sections
+9. ✅ Original template last_update_datetime unchanged (2026-02-09T09:23:00.000Z)
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- f46-clone-success.png (clone success with new template in list)
+- f46-cloned-template-detail.png (cloned template detail view)
+- f46-cloned-sections-status.png (all 11 sections with "cloned" status)
+- f46-original-unchanged.png (original template 114 unchanged)
+
+### Current Progress: 128/131 features passing (97.7%)
+
+[Testing] Session complete - Feature #46 re-verification PASSED
+
 ## Session 2026-02-11 (Feature #129)
 
 ### Feature #129: Express proxy routes for template loader service - VERIFIED PASSING
@@ -2301,6 +2332,28 @@ Migration includes:
 - regression-f74-deleted-user-login-fails.png (login fails for deleted user)
 
 [Testing] Session complete - Feature #74 regression test PASSED
+
+## Session 2026-02-11 (Feature #40 Regression Test)
+
+### Feature #40: Combined filters and search work together - VERIFIED PASSING
+
+### Verification Steps Completed
+1. Logged in as admin - Templates page loaded with all filter controls
+2. Navigated to Templates page - full list of templates displayed
+3. Selected "United States" country filter - 2 results, both United States (URL: ?country_id=1)
+4. Added "Dyno-Mill Agitator" product category filter - combined filtering, still 2 matching US results (URL: ?country_id=1&product_cat_id=1)
+5. Entered "Allendale" search keyword - narrowed to Allendale templates only (URL: ?country_id=1&product_cat_id=1&search=Allendale)
+6. Verified results match ALL criteria: country=United States, category=Dyno-Mill Agitator (MILL-UBM), name contains "Allendale"
+7. Clicked "Clear Filters" - all filters reset to defaults (All Countries, All Categories, All Lines, All, Enabled), full template list restored
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- regression-f40-clean-login.png (admin logged in, templates page, no errors)
+- regression-f40-combined-filters.png (country + category + search "Allendale" combined)
+- regression-f40-filters-cleared.png (all filters cleared, full list restored)
+
+[Testing] Session complete - Feature #40 regression test PASSED
 
 ## Session 2026-02-09 (Feature #77 Regression Test)
 
