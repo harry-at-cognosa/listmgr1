@@ -1,0 +1,142 @@
+- generic [ref=e5]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - heading "SalesQuoteMgr" [level=1] [ref=e9]
+        - generic [ref=e10]: XYZ Company (emerald)
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - text: Logged in as
+          - strong [ref=e13]: admin
+          - text: (Admin)
+        - button "Logout" [ref=e14] [cursor=pointer]
+  - generic [ref=e15]:
+    - complementary [ref=e16]:
+      - navigation [ref=e17]:
+        - button "Templates" [ref=e19] [cursor=pointer]:
+          - generic [ref=e20]: Templates
+          - img [ref=e21]
+        - button "Customer Quotes" [ref=e24] [cursor=pointer]:
+          - generic [ref=e25]: Customer Quotes
+          - img [ref=e26]
+        - button "Reference Data" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: Reference Data
+          - img [ref=e31]
+        - button "Admin" [ref=e34] [cursor=pointer]:
+          - generic [ref=e35]: Admin
+          - img [ref=e36]
+      - generic [ref=e39]: "App: 1.7 Now with full menu, upload / download docx in UI | DB: 1.7 Now with front-end docx load+un, cust/cont, RL- &KD- & TUR (BLUE)"
+    - main [ref=e40]:
+      - generic [ref=e1344]:
+        - navigation [ref=e1345]:
+          - link "Home" [ref=e1346] [cursor=pointer]:
+            - /url: /templates
+          - text: ">"
+          - link "Templates" [ref=e1347] [cursor=pointer]:
+            - /url: /templates
+          - text: ">New Template"
+        - generic [ref=e1348]:
+          - heading "Create New Template" [level=2] [ref=e1349]
+          - generic [ref=e1350]:
+            - generic [ref=e1351]:
+              - generic [ref=e1352]:
+                - generic [ref=e1353]: Template Name *
+                - textbox "Template Name *" [ref=e1354]
+                - paragraph [ref=e1355]: 0/250 characters
+              - generic [ref=e1356]:
+                - generic [ref=e1357]: Country
+                - combobox "Country" [ref=e1358]:
+                  - option "Select Country" [selected]
+                  - option "China"
+                  - option "France"
+                  - option "Germany"
+                  - option "India"
+                  - option "Japan"
+                  - option "Switzerland"
+                  - option "United Kingdom"
+                  - option "United States"
+              - generic [ref=e1359]:
+                - generic [ref=e1360]: Currency
+                - combobox "Currency" [ref=e1361]:
+                  - option "Select Currency" [selected]
+                  - option "CAD - Canadian Dollar"
+                  - option "CHF - Swiss Franc"
+                  - option "CNY - Renminbi"
+                  - option "EUR - Euro"
+                  - option "GBP - British Pound"
+                  - option "INR - Indian rupee"
+                  - option "JPY - Japanese Yen"
+                  - option "USD - US Dollar"
+              - generic [ref=e1362]:
+                - generic [ref=e1363]: Product Category
+                - combobox "Product Category" [ref=e1364]:
+                  - option "Select Category" [selected]
+                  - option "Dyno-Mill Agitator"
+                  - option "Dyno-Mix Shaker"
+                  - option "Turbula"
+              - generic [ref=e1365]:
+                - generic [ref=e1366]: Product Line
+                - combobox "Product Line" [ref=e1367]:
+                  - option "Select Product Line" [selected]
+                  - option "Mill-ECM"
+                  - option "Mill-ECO"
+                  - option "Mill-KD"
+                  - option "Mill-MULtILAB"
+                  - option "Mill-NPM (Nano)"
+                  - option "Mill-Research-Lab"
+                  - option "MILL-UBM"
+                  - option "Mill-UNILAB"
+                  - option "MIX-CM"
+                  - option "Servers"
+                  - option "Turbula"
+                  - option "Turbula-b"
+                  - option "Turbula-c"
+              - generic [ref=e1368]:
+                - generic [ref=e1369]: Status
+                - combobox "Status" [ref=e1370]:
+                  - option "not started" [selected]
+                  - option "in process"
+                  - option "in review"
+                  - option "approved"
+                  - option "cloned"
+              - generic [ref=e1371]:
+                - generic [ref=e1372]: Order Codes
+                - textbox "Order Codes" [ref=e1373]
+                - paragraph [ref=e1374]: 0/250 characters
+              - generic [ref=e1375]:
+                - generic [ref=e1376]: FBO Location
+                - textbox "FBO Location" [ref=e1377]
+                - paragraph [ref=e1378]: 0/250 characters
+              - generic [ref=e1379]:
+                - generic [ref=e1380]: As Of Date
+                - textbox "As Of Date" [ref=e1381]
+              - generic [ref=e1382]:
+                - generic [ref=e1383]: Version
+                - textbox "Version" [ref=e1384]
+                - paragraph [ref=e1385]: 0/200 characters
+              - generic [ref=e1386]:
+                - generic [ref=e1387]: Description
+                - textbox "Description" [ref=e1388]
+                - paragraph [ref=e1389]: 0/2000 characters
+              - generic [ref=e1390]:
+                - generic [ref=e1391]: Content
+                - textbox "Content" [ref=e1392]
+                - paragraph [ref=e1393]: 0/10000 characters
+              - generic [ref=e1394]:
+                - generic [ref=e1395]: Comment
+                - textbox "Comment" [ref=e1396]
+                - paragraph [ref=e1397]: 0/2000 characters
+              - generic [ref=e1398]:
+                - generic [ref=e1399]: External File Reference
+                - textbox "External File Reference" [ref=e1400]
+                - paragraph [ref=e1401]: 0/1000 characters
+              - generic [ref=e1402]:
+                - checkbox "Active" [checked] [ref=e1403]
+                - generic [ref=e1404]: Active
+              - generic [ref=e1405]:
+                - checkbox "Enabled(Admin only - disabling hides Edit from non-admins)" [checked] [ref=e1406]
+                - generic [ref=e1407]: Enabled(Admin only - disabling hides Edit from non-admins)
+            - generic [ref=e1408]:
+              - button "Create Template" [ref=e1409] [cursor=pointer]
+              - link "Cancel" [ref=e1410] [cursor=pointer]:
+                - /url: /templates

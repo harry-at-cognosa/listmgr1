@@ -1,0 +1,140 @@
+- generic [ref=e21]:
+  - banner [ref=e22]:
+    - generic [ref=e23]:
+      - generic [ref=e24]:
+        - heading "SalesQuoteMgr" [level=1] [ref=e25]
+        - generic [ref=e26]: XYZ Company (emerald)
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - text: Logged in as
+          - strong [ref=e29]: admin
+          - text: (Admin)
+        - button "Logout" [ref=e30] [cursor=pointer]
+  - generic [ref=e31]:
+    - complementary [ref=e32]:
+      - navigation [ref=e33]:
+        - button "Templates" [ref=e35] [cursor=pointer]:
+          - generic [ref=e36]: Templates
+          - img [ref=e37]
+        - button "Customer Quotes" [ref=e40] [cursor=pointer]:
+          - generic [ref=e41]: Customer Quotes
+          - img [ref=e42]
+        - button "Reference Data" [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: Reference Data
+          - img [ref=e47]
+        - button "Admin" [ref=e50] [cursor=pointer]:
+          - generic [ref=e51]: Admin
+          - img [ref=e52]
+      - generic [ref=e55]: "App: 1.7 Now with full menu, upload / download docx in UI | DB: 1.7 Now with front-end docx load+un, cust/cont, RL- &KD- & TUR (BLUE)"
+    - main [ref=e56]:
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - heading "Templates" [level=2] [ref=e59]
+          - link "+ New Template" [ref=e60] [cursor=pointer]:
+            - /url: /templates/new
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]: Search
+            - textbox "Search by name..." [active] [ref=e65]: Allendale
+          - generic [ref=e66]:
+            - generic [ref=e67]: Country
+            - combobox [ref=e68]:
+              - option "All Countries"
+              - option "China"
+              - option "France"
+              - option "Germany"
+              - option "India"
+              - option "Japan"
+              - option "Switzerland"
+              - option "United Kingdom"
+              - option "United States" [selected]
+          - generic [ref=e69]:
+            - generic [ref=e70]: Product Category
+            - combobox [ref=e71]:
+              - option "All Categories"
+              - option "Dyno-Mill Agitator" [selected]
+              - option "Dyno-Mix Shaker"
+              - option "Turbula"
+          - generic [ref=e72]:
+            - generic [ref=e73]: Product Line
+            - combobox [ref=e74]:
+              - option "All Lines" [selected]
+              - option "Mill-ECM"
+              - option "Mill-ECO"
+              - option "Mill-KD"
+              - option "Mill-MULtILAB"
+              - option "Mill-NPM (Nano)"
+              - option "Mill-Research-Lab"
+              - option "MILL-UBM"
+              - option "Mill-UNILAB"
+              - option "MIX-CM"
+              - option "Servers"
+              - option "Turbula"
+              - option "Turbula-b"
+              - option "Turbula-c"
+          - generic [ref=e75]:
+            - generic [ref=e76]: Active?
+            - combobox [ref=e77]:
+              - option "All" [selected]
+              - option "Active"
+              - option "Inactive"
+          - generic [ref=e78]:
+            - generic [ref=e79]: Enabled
+            - combobox [ref=e80]:
+              - option "Enabled" [selected]
+              - option "Disabled"
+              - option "All"
+          - generic [ref=e81]:
+            - generic [ref=e82]: Sort By
+            - combobox [ref=e83]:
+              - option "Newest first" [selected]
+              - option "Oldest first"
+          - button "Clear Filters" [ref=e85] [cursor=pointer]
+        - table [ref=e1459]:
+          - rowgroup [ref=e1460]:
+            - row "Name Country Product Line Sections Status Last Updated Enabled Actions" [ref=e1461]:
+              - columnheader "Name" [ref=e1462]
+              - columnheader "Country" [ref=e1463]
+              - columnheader "Product Line" [ref=e1464]
+              - columnheader "Sections" [ref=e1465]
+              - columnheader "Status" [ref=e1466]
+              - columnheader "Last Updated" [ref=e1467]
+              - columnheader "Enabled" [ref=e1468]
+              - columnheader "Actions" [ref=e1469]
+          - rowgroup [ref=e1470]:
+            - row "DYNO-MILL 20 FCFC_US_FOB Allendale (Clone) United States MILL-UBM 11 cloned 11/02/2026 21:21 Enabled View Edit Clone Delete" [ref=e1471]:
+              - cell "DYNO-MILL 20 FCFC_US_FOB Allendale (Clone)" [ref=e1472]:
+                - link "DYNO-MILL 20 FCFC_US_FOB Allendale (Clone)" [ref=e1473] [cursor=pointer]:
+                  - /url: /templates/116
+              - cell "United States" [ref=e1474]
+              - cell "MILL-UBM" [ref=e1475]
+              - cell "11" [ref=e1476]
+              - cell "cloned" [ref=e1477]
+              - cell "11/02/2026 21:21" [ref=e1478]
+              - cell "Enabled" [ref=e1479]
+              - cell "View Edit Clone Delete" [ref=e1480]:
+                - generic [ref=e1481]:
+                  - link "View" [ref=e1482] [cursor=pointer]:
+                    - /url: /templates/116
+                  - link "Edit" [ref=e1483] [cursor=pointer]:
+                    - /url: /templates/116/edit
+                  - button "Clone" [ref=e1484] [cursor=pointer]
+                  - button "Delete" [ref=e1485] [cursor=pointer]
+            - row "DYNO-MILL 20 FCFC_US_FOB Allendale United States MILL-UBM 11 in process 09/02/2026 01:23 Enabled View Edit Clone Delete" [ref=e1486]:
+              - cell "DYNO-MILL 20 FCFC_US_FOB Allendale" [ref=e1487]:
+                - link "DYNO-MILL 20 FCFC_US_FOB Allendale" [ref=e1488] [cursor=pointer]:
+                  - /url: /templates/114
+              - cell "United States" [ref=e1489]
+              - cell "MILL-UBM" [ref=e1490]
+              - cell "11" [ref=e1491]
+              - cell "in process" [ref=e1492]
+              - cell "09/02/2026 01:23" [ref=e1493]
+              - cell "Enabled" [ref=e1494]
+              - cell "View Edit Clone Delete" [ref=e1495]:
+                - generic [ref=e1496]:
+                  - link "View" [ref=e1497] [cursor=pointer]:
+                    - /url: /templates/114
+                  - link "Edit" [ref=e1498] [cursor=pointer]:
+                    - /url: /templates/114/edit
+                  - button "Clone" [ref=e1499] [cursor=pointer]
+                  - button "Delete" [ref=e1500] [cursor=pointer]

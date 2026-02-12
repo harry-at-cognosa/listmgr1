@@ -1,0 +1,204 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - heading "SalesQuoteMgr" [level=1] [ref=e7]
+        - generic [ref=e8]: XYZ Company (emerald)
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - text: Logged in as
+          - strong [ref=e11]: admin
+          - text: (Admin)
+        - button "Logout" [ref=e12] [cursor=pointer]
+  - generic [ref=e13]:
+    - complementary [ref=e14]:
+      - navigation [ref=e15]:
+        - button "Templates" [ref=e17] [cursor=pointer]:
+          - generic [ref=e18]: Templates
+          - img [ref=e19]
+        - button "Customer Quotes" [ref=e22] [cursor=pointer]:
+          - generic [ref=e23]: Customer Quotes
+          - img [ref=e24]
+        - button "Reference Data" [ref=e27] [cursor=pointer]:
+          - generic [ref=e28]: Reference Data
+          - img [ref=e29]
+        - button "Admin" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]: Admin
+          - img [ref=e34]
+      - generic [ref=e37]: "App: 1.7 Now with full menu, upload / download docx in UI | DB: 1.7 Now with front-end docx load+un, cust/cont, RL- &KD- & TUR (BLUE)"
+    - main [ref=e38]:
+      - generic [ref=e39]:
+        - navigation [ref=e41]:
+          - link "Home" [ref=e42] [cursor=pointer]:
+            - /url: /templates
+          - text: ">"
+          - link "Templates" [ref=e43] [cursor=pointer]:
+            - /url: /templates
+          - text: ">ECM AP 2 E"
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - heading "ECM AP 2 E" [level=2] [ref=e47]
+              - generic [ref=e48]:
+                - generic [ref=e49]: not started
+                - button "Change Status" [ref=e50] [cursor=pointer]
+                - generic [ref=e51]: "Country: Switzerland"
+                - generic [ref=e52]: "Product Line: Mill-ECM"
+                - generic [ref=e53]: "Sections: 9"
+            - generic [ref=e54]:
+              - link "Edit Template" [ref=e55] [cursor=pointer]:
+                - /url: /templates/41/edit
+              - generic [ref=e56]: "Enabled: Yes"
+          - generic [ref=e57]:
+            - generic [ref=e58]: "Currency: CHF"
+            - generic [ref=e59]: "Category: Dyno-Mill Agitator"
+            - generic [ref=e60]: "Version: v1-test"
+            - generic [ref=e61]: "Active: Yes"
+          - generic [ref=e62]: "Last updated: 2026-02-12T05:36:00.000Z by admin"
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - heading "Document" [level=3] [ref=e65]
+            - generic [ref=e66]: (optional)
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - img [ref=e71]
+              - generic [ref=e73]:
+                - paragraph [ref=e74]: ECM AP 2 E.docx
+                - paragraph [ref=e75]: 929.2 KB · Uploaded 06/02/2026, 20:48:44
+                - paragraph [ref=e76]: "Blob ID: 14"
+            - generic [ref=e77]:
+              - button "Download" [ref=e78] [cursor=pointer]:
+                - img [ref=e79]
+                - text: Download
+              - button "Replace" [ref=e81] [cursor=pointer]
+              - button "Remove" [ref=e82] [cursor=pointer]
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - heading "Sections (9)" [level=3] [ref=e85]
+            - generic [ref=e86]:
+              - button "Expand All" [ref=e87] [cursor=pointer]
+              - button "Collapse All" [ref=e88] [cursor=pointer]
+              - button "Resequence" [ref=e89] [cursor=pointer]
+              - button "+ Add Section" [ref=e90] [cursor=pointer]
+          - generic [ref=e91]:
+            - generic [ref=e93] [cursor=pointer]:
+              - generic [ref=e94]:
+                - generic [ref=e95]: "0"
+                - generic [ref=e96]: Cover Page
+                - generic [ref=e97]: not started
+              - generic [ref=e98]:
+                - button "Edit" [ref=e99]
+                - button "Clone" [ref=e100]
+                - button "Delete" [ref=e101]
+                - img [ref=e102]
+            - generic [ref=e105] [cursor=pointer]:
+              - generic [ref=e106]:
+                - generic [ref=e107]: "1"
+                - generic [ref=e108]: Principal Characteristics
+                - generic [ref=e109]: not started
+              - generic [ref=e110]:
+                - button "Edit" [ref=e111]
+                - button "Clone" [ref=e112]
+                - button "Delete" [ref=e113]
+                - img [ref=e114]
+            - generic [ref=e117] [cursor=pointer]:
+              - generic [ref=e118]:
+                - generic [ref=e119]: "2"
+                - generic [ref=e120]: General Technical Data
+                - generic [ref=e121]: not started
+              - generic [ref=e122]:
+                - button "Edit" [ref=e123]
+                - button "Clone" [ref=e124]
+                - button "Delete" [ref=e125]
+                - img [ref=e126]
+            - generic [ref=e129] [cursor=pointer]:
+              - generic [ref=e130]:
+                - generic [ref=e131]: "3"
+                - generic [ref=e132]: Machine Execution
+                - generic [ref=e133]: not started
+              - generic [ref=e134]:
+                - button "Edit" [ref=e135]
+                - button "Clone" [ref=e136]
+                - button "Delete" [ref=e137]
+                - img [ref=e138]
+            - generic [ref=e141] [cursor=pointer]:
+              - generic [ref=e142]:
+                - generic [ref=e143]: "4"
+                - generic [ref=e144]: Product Pump
+                - generic [ref=e145]: not started
+              - generic [ref=e146]:
+                - button "Edit" [ref=e147]
+                - button "Clone" [ref=e148]
+                - button "Delete" [ref=e149]
+                - img [ref=e150]
+            - generic [ref=e153] [cursor=pointer]:
+              - generic [ref=e154]:
+                - generic [ref=e155]: "5"
+                - generic [ref=e156]: Motor Starter Cabinet
+                - generic [ref=e157]: not started
+              - generic [ref=e158]:
+                - button "Edit" [ref=e159]
+                - button "Clone" [ref=e160]
+                - button "Delete" [ref=e161]
+                - img [ref=e162]
+            - generic [ref=e165] [cursor=pointer]:
+              - generic [ref=e166]:
+                - generic [ref=e167]: "6"
+                - generic [ref=e168]: Price Summary
+                - generic [ref=e169]: not started
+              - generic [ref=e170]:
+                - button "Edit" [ref=e171]
+                - button "Clone" [ref=e172]
+                - button "Delete" [ref=e173]
+                - img [ref=e174]
+            - generic [ref=e177] [cursor=pointer]:
+              - generic [ref=e178]:
+                - generic [ref=e179]: "7"
+                - generic [ref=e180]: Options and Accessories
+                - generic [ref=e181]: not started
+              - generic [ref=e182]:
+                - button "Edit" [ref=e183]
+                - button "Clone" [ref=e184]
+                - button "Delete" [ref=e185]
+                - img [ref=e186]
+            - generic [ref=e189] [cursor=pointer]:
+              - generic [ref=e190]:
+                - generic [ref=e191]: "8"
+                - generic [ref=e192]: Terms of Delivery - FOB Allendale
+                - generic [ref=e193]: not started
+              - generic [ref=e194]:
+                - button "Edit" [ref=e195]
+                - button "Clone" [ref=e196]
+                - button "Delete" [ref=e197]
+                - img [ref=e198]
+        - generic [ref=e200]:
+          - heading "Section Editor (Tabs)" [level=3] [ref=e201]
+          - navigation "Section tabs" [ref=e203]:
+            - button "0.Cover Page" [ref=e204] [cursor=pointer]:
+              - generic [ref=e205]: "0."
+              - text: Cover Page
+            - button "1.Principal Characteristics" [ref=e206] [cursor=pointer]:
+              - generic [ref=e207]: "1."
+              - text: Principal Characteristics
+            - button "2.General Technical Data" [ref=e208] [cursor=pointer]:
+              - generic [ref=e209]: "2."
+              - text: General Technical Data
+            - button "3.Machine Execution" [ref=e210] [cursor=pointer]:
+              - generic [ref=e211]: "3."
+              - text: Machine Execution
+            - button "4.Product Pump" [ref=e212] [cursor=pointer]:
+              - generic [ref=e213]: "4."
+              - text: Product Pump
+            - button "5.Motor Starter Cabinet" [ref=e214] [cursor=pointer]:
+              - generic [ref=e215]: "5."
+              - text: Motor Starter Cabinet
+            - button "6.Price Summary" [ref=e216] [cursor=pointer]:
+              - generic [ref=e217]: "6."
+              - text: Price Summary
+            - button "7.Options and Accessories" [ref=e218] [cursor=pointer]:
+              - generic [ref=e219]: "7."
+              - text: Options and Accessories
+            - button "8.Terms of Delivery - FOB Allendale" [ref=e220] [cursor=pointer]:
+              - generic [ref=e221]: "8."
+              - text: Terms of Delivery - FOB Allendale
+          - generic [ref=e222]: Click a tab above to edit that section
