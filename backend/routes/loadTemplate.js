@@ -189,4 +189,93 @@ router.post('/', function(req, res) {
   });
 });
 
+/**
+ * GET /api/load-template/:plsqt_id/sections/:seqn/docx
+ *
+ * Proxies to FastAPI GET /api/v1/templates/{plsqt_id}/sections/{seqn}/docx
+ * which returns a binary .docx file containing a single section with full
+ * Word formatting preserved.
+ *
+ * Forwards the binary response body and all response headers
+ * (Content-Type, Content-Disposition, X-Section-Count, X-Content-Length)
+ * back to the client unchanged.
+ *
+ * Forwards HTTP error status codes (404, 422, 500) and their JSON error
+ * bodies back to the client unchanged.
+ *
+ * Handles connection errors (503) and timeouts (504).
+ */
+router.get('/:plsqt_id/sections/:seqn/docx', function(req, res) {
+  var config = getServiceConfig();
+  var plsqtId = req.params.plsqt_id;
+  var seqn = req.params.seqn;
+
+  var targetPath = '/api/v1/templates/' + encodeURIComponent(plsqtId) +
+    '/sections/' + encodeURIComponent(seqn) + '/docx';
+
+  var proxyReq = http.request(
+    {
+      hostname: config.hostname,
+      port: config.port,
+      path: targetPath,
+      method: 'GET',
+      timeout: 30000 // 30 seconds
+    },
+    function(proxyRes) {
+      var responseChunks = [];
+      proxyRes.on('data', function(chunk) {
+        responseChunks.push(chunk);
+      });
+      proxyRes.on('end', function() {
+        var responseBuffer = Buffer.concat(responseChunks);
+
+        // Forward specific headers from FastAPI if present
+        var headersToForward = [
+          'content-type',
+          'content-disposition',
+          'x-section-count',
+          'x-content-length'
+        ];
+        headersToForward.forEach(function(header) {
+          var value = proxyRes.headers[header];
+          if (value) {
+            res.setHeader(header, value);
+          }
+        });
+
+        // For error responses (4xx, 5xx), try to parse and forward JSON error body
+        if (proxyRes.statusCode >= 400) {
+          try {
+            var parsed = JSON.parse(responseBuffer.toString('utf-8'));
+            return res.status(proxyRes.statusCode).json(parsed);
+          } catch (e) {
+            // Non-JSON error response - forward as-is
+            return res.status(proxyRes.statusCode).send(responseBuffer.toString('utf-8'));
+          }
+        }
+
+        // For success responses, forward the binary body as-is
+        res.status(proxyRes.statusCode).send(responseBuffer);
+      });
+    }
+  );
+
+  proxyReq.on('error', function(err) {
+    console.error('Section docx extraction proxy error:', err.message);
+    res.status(503).json({
+      error: 'Template loader service is not reachable',
+      detail: err.message
+    });
+  });
+
+  proxyReq.on('timeout', function() {
+    proxyReq.destroy();
+    res.status(504).json({
+      error: 'Template loader service request timed out'
+    });
+  });
+
+  proxyReq.end();
+});
+
 module.exports = router;

@@ -1,3 +1,28 @@
+## Session 2026-02-12 (Feature #132)
+
+### Feature #132: Express proxy route for section docx extraction - PASSING
+
+### Verification Steps Completed
+1. ✅ Added GET route to backend/routes/loadTemplate.js: GET /api/load-template/:plsqt_id/sections/:seqn/docx
+2. ✅ Route proxies to FastAPI: GET /api/v1/templates/{plsqt_id}/sections/{seqn}/docx
+3. ✅ Forwards binary response body (282KB .docx file for template 114, section 1)
+4. ✅ Forwards all required headers: Content-Type, Content-Disposition, X-Section-Count, X-Content-Length
+5. ✅ Forwards HTTP 404 errors with JSON detail for invalid plsqt_id ("Template not found: 99999")
+6. ✅ Forwards HTTP 404 errors with JSON detail for invalid seqn ("No section 999 for template 114")
+7. ✅ Handles connection errors returning 503 with error message
+8. ✅ Handles timeout (30 second) returning 504 with error message
+9. ✅ Route requires authentication - unauthenticated returns 401 {"error":"Authentication required"}
+10. ✅ Tested end-to-end from browser: valid section download, invalid IDs, unauthenticated access
+11. ✅ Tested with multiple sections (section 1 Cover Page, section 5 Product Pump) - all correct
+
+### Console Errors: Zero errors throughout entire test
+
+### Screenshots
+- f132-template-detail.png (template 114 detail page with 11 sections)
+- f132-auth-required.png (login page confirming logged out state)
+
+[Testing] Session complete - Feature #132 PASSED
+
 ## Session 2026-02-12 (Feature #133)
 
 ### Feature #133: Install docx-preview library for in-browser Word document rendering - PASSING
@@ -2655,3 +2680,5 @@ Migration includes:
 - regression-f50-cleanup-complete.png (restored to 9 sections)
 
 [Testing] Session complete - Feature #50 regression test PASSED
+[Testing] Session 2026-02-12 - Feature #37 (User can filter templates by product line) regression test PASSED. Tested Mill-ECM(35), Turbula(4), MILL-UBM(26), MULtILAB(1) filters + Clear Filters button. All correct, zero console errors.
+[Testing] Session 2026-02-12 - Feature #76 (Data persists after logout/login) regression test PASSED. Created F76 currency, logged out, logged back in, verified data persisted. Cleaned up test data + leftover test currencies (F62, TSX, ZRT). Zero console errors.
