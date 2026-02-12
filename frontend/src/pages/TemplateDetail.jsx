@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import { renderAsync } from 'docx-preview';
 
 const STATUS_COLORS = {
   'not started': 'bg-gray-100 text-gray-800',
@@ -47,6 +48,8 @@ function TemplateDetail() {
   const [cascadeToSections, setCascadeToSections] = useState(false);
   const [statusChanging, setStatusChanging] = useState(false);
   const [showResequence, setShowResequence] = useState(false);
+  const [hasDocument, setHasDocument] = useState(false);
+  const [docxViewerSection, setDocxViewerSection] = useState(null); // section to view in docx modal
 
   useEffect(() => {
     loadData();
@@ -63,6 +66,8 @@ function TemplateDetail() {
       setTemplate(templateRes.data);
       setSections(sectionsRes.data);
       setSectionTypes(typesRes.data);
+      // Check if template has a document (has_document comes from template detail endpoint)
+      setHasDocument(!!templateRes.data.has_document);
     } catch (err) {
       setError(err.error || 'Failed to load template');
     } finally {
@@ -329,6 +334,14 @@ function TemplateDetail() {
                       )}
                     </div>
                     <div className="flex items-center gap-2">
+                      {hasDocument && (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setDocxViewerSection(section); }}
+                          className="text-sm text-blue-600 hover:text-blue-800"
+                        >
+                          View
+                        </button>
+                      )}
                       {canEditSection && (
                         <button
                           onClick={(e) => { e.stopPropagation(); setEditingSection(section); setShowSectionForm(true); }}
@@ -468,6 +481,15 @@ function TemplateDetail() {
         />
       )}
 
+      {/* Docx Viewer Modal */}
+      {docxViewerSection && template && (
+        <DocxViewerModal
+          plsqtId={template.plsqt_id}
+          section={docxViewerSection}
+          onClose={() => setDocxViewerSection(null)}
+        />
+      )}
+
       {/* Status Change Modal */}
       {showStatusChange && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -529,6 +551,137 @@ function TemplateDetail() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function DocxViewerModal({ plsqtId, section, onClose }) {
+  const containerRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadDocx = async () => {
+      setLoading(true);
+      setError('');
+
+      try {
+        const response = await fetch(`/api/load-template/${plsqtId}/sections/${section.plsqts_seqn}/docx`, {
+          credentials: 'include'
+        });
+
+        if (cancelled) return;
+
+        if (!response.ok) {
+          throw new Error('Failed to load document section');
+        }
+
+        const arrayBuffer = await response.arrayBuffer();
+        if (cancelled) return;
+
+        if (containerRef.current) {
+          // Clear previous content
+          containerRef.current.innerHTML = '';
+          await renderAsync(arrayBuffer, containerRef.current, null, {
+            className: 'docx-viewer-content',
+            inWrapper: true,
+            ignoreWidth: false,
+            ignoreHeight: true,
+            ignoreFonts: false,
+            breakPages: true,
+            ignoreLastRenderedPageBreak: true,
+            experimental: false,
+            trimXmlDeclaration: true,
+            useBase64URL: true
+          });
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError('Document section not available');
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadDocx();
+
+    return () => { cancelled = true; };
+  }, [plsqtId, section.plsqts_seqn]);
+
+  // Handle Escape key to close modal
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  const sectionName = section.plsqts_use_alt_name && section.plsqts_alt_name
+    ? section.plsqts_alt_name
+    : section.section_type_name;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-xl w-[95vw] max-w-[1200px] h-[90vh] flex flex-col m-4">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-gray-200 flex-shrink-0">
+          <h3 className="text-lg font-semibold text-gray-800">
+            Section {section.plsqts_seqn}: {sectionName}
+          </h3>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-6 min-h-0">
+          {loading && (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-600 mx-auto mb-4"></div>
+                <p className="text-gray-500">Loading document section...</p>
+              </div>
+            </div>
+          )}
+          {error && !loading && (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <svg className="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <p className="text-gray-500 text-lg">{error}</p>
+              </div>
+            </div>
+          )}
+          <div
+            ref={containerRef}
+            className={loading || error ? 'hidden' : ''}
+            style={{ minHeight: '200px' }}
+          />
+        </div>
+
+        {/* Footer with buttons */}
+        <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3 flex-shrink-0">
+          <button
+            disabled
+            className="px-4 py-2 bg-gray-100 text-gray-400 rounded-md cursor-not-allowed"
+            title="Edit functionality coming soon"
+          >
+            Edit
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
