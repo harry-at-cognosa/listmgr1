@@ -1,7 +1,9 @@
 # EC2 Deployment Guide: listmgr + listldr
 
 **Created:** 2026-03-01
+**Updated:** 2026-03-02
 **Target:** AWS EC2 t2.small, Ubuntu 24.04 LTS, us-west-2 (Oregon)
+**Elastic IP:** 44.238.186.85
 **Architecture:** Nginx (port 80) -> Express (port 3001) -> FastAPI (port 8000), PostgreSQL 17
 
 ---
@@ -9,7 +11,7 @@
 ## Architecture Overview
 
 ```
-  Browser (http://<PUBLIC_IP>)
+  Browser (http://44.238.186.85)
        |
        v
   +---------+        +------------------+        +------------------+
@@ -73,13 +75,23 @@
 
 After launch, note the **Public IPv4 address** from the instance details page.
 
+### Elastic IP (recommended)
+
+To avoid IP changes on stop/start, assign an Elastic IP:
+
+1. **EC2 -> Elastic IPs** -> "Allocate Elastic IP address" -> "Allocate"
+2. Select the new IP -> **Actions -> "Associate Elastic IP address"**
+3. Select your instance -> "Associate"
+
+The current Elastic IP is **44.238.186.85**. This persists across stop/start cycles.
+
 ---
 
 ## Part 2: SSH In and Initial System Setup
 
 ```bash
 # From your local machine (adjust .pem path as needed):
-ssh -i ~/.ssh/ctc01instance.pem ubuntu@<PUBLIC_IP>
+ssh -i ~/ctc01instance.pem ubuntu@44.238.186.85
 ```
 
 ### 2a. System updates
@@ -176,11 +188,15 @@ Upload your dump file from your local machine, then restore it:
 
 ```bash
 # --- Run this on your LOCAL machine ---
-scp -i ~/.ssh/ctc01instance.pem /path/to/your/dumpfile.dump ubuntu@<PUBLIC_IP>:~/
+scp -i ~/ctc01instance.pem /path/to/your/dumpfile.dump ubuntu@44.238.186.85:~/
 
 # --- Then on the EC2 instance ---
+# Copy to /tmp so the postgres user can access it
+# (the postgres user cannot read files under /home/ubuntu/)
+sudo cp ~/dumpfile.dump /tmp/
+
 # For a custom-format dump (.dump):
-sudo -u postgres pg_restore -d listmgr1 -v ~/dumpfile.dump
+sudo -u postgres pg_restore -d listmgr1 -v /tmp/dumpfile.dump
 
 # For a plain SQL dump (.sql):
 # sudo -u postgres psql -d listmgr1 < ~/dumpfile.sql
@@ -392,11 +408,14 @@ server {
 sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/listmgr /etc/nginx/sites-enabled/listmgr
 
+# Allow nginx (www-data user) to traverse /home/ubuntu/ to reach the dist/ files
+chmod 755 /home/ubuntu
+
 # Test the configuration for syntax errors
 sudo nginx -t
 
-# Reload nginx
-sudo systemctl reload nginx
+# Restart nginx (reload alone may not pick up the new site)
+sudo systemctl restart nginx
 ```
 
 ---
@@ -409,12 +428,12 @@ Since nginx serves both the React static files and proxies API calls on the **sa
 nano ~/1_listmgr/backend/index.js
 ```
 
-Find the `origin` array in the CORS configuration and add your public IP:
+Find the `origin` array in the CORS configuration and add the Elastic IP:
 
 ```javascript
 origin: [
   'http://localhost:5173',    // local dev (keep for convenience)
-  'http://<PUBLIC_IP>',       // EC2 public access
+  'http://44.238.186.85',    // EC2 Elastic IP
 ],
 ```
 
@@ -541,7 +560,7 @@ curl -s http://localhost/ | head -5
 
 Then from your **local browser**, navigate to:
 ```
-http://<PUBLIC_IP>/
+http://44.238.186.85/
 ```
 
 You should see the ListMgr login page. Default credentials: `admin` / `admin`
@@ -552,7 +571,7 @@ You should see the ListMgr login page. Default credentials: `admin` / `admin`
 
 ```bash
 # SSH into the instance
-ssh -i ~/.ssh/ctc01instance.pem ubuntu@<PUBLIC_IP>
+ssh -i ~/ctc01instance.pem ubuntu@44.238.186.85
 
 # Activate the Python virtual environment
 cd ~/1_listldr
@@ -613,16 +632,17 @@ deactivate
 
 Search for these and replace with your actual values:
 
-| Placeholder           | Where Used                          | Example Value              |
+| Placeholder           | Where Used                          | Actual Value               |
 |-----------------------|-------------------------------------|----------------------------|
-| `<PUBLIC_IP>`         | SSH commands, CORS, browser URL     | `34.215.xxx.xxx`          |
-| `<YOUR_DB_PASSWORD>`  | All .env files, PostgreSQL setup    | A strong password          |
+| `<YOUR_DB_PASSWORD>`  | All .env files, PostgreSQL setup    | (your chosen password)     |
+
+**Elastic IP:** `44.238.186.85` (persists across stop/start cycles)
 
 ---
 
 ## Verification Checklist
 
-- [ ] EC2 instance running with public IP
+- [ ] EC2 instance running with Elastic IP (44.238.186.85)
 - [ ] Can SSH in with `ctc01instance` key
 - [ ] PostgreSQL 17 running, `listmgr1` database restored
 - [ ] PostGIS extension enabled
@@ -635,5 +655,5 @@ Search for these and replace with your actual values:
 - [ ] Express backend running (systemd) on port 3001
 - [ ] FastAPI running (systemd) on port 8000
 - [ ] `/api/health` reachable via nginx on port 80
-- [ ] Login page accessible from browser at `http://<PUBLIC_IP>/`
+- [ ] Login page accessible from browser at `http://44.238.186.85/`
 - [ ] Can SSH in and run batch scripts with Python venv
